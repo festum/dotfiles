@@ -311,6 +311,8 @@ function dmp() {
 alias k8='kubectl'
 alias k8a='kubectl apply -f'
 alias k8c='kubectl config'
+alias k8l='kubectl logs'
+alias k8lf='kubectl logs --tail=1 -f'
 alias k8d='kubectl describe'
 alias k8x='kubectl exec -it'
 alias k8g='kubectl get'
