@@ -206,56 +206,52 @@ alias 'pgrestore=pg_restore --verbose --clean --no-acl --no-owner -h localhost -
 # -------------------------------------------------------------------
 # Git
 # -------------------------------------------------------------------
-alias gitclean='git ls-files --deleted -z | xargs -0 git rm'
 alias ga='git add'
 alias gaa='git add .'
 alias gb='git branch'
-alias gbn='git checkout -b'
-alias gbd='git branch -d'
-alias gbdl='git branch -D'
-alias gbdr='f(){ git push origin :$@;  unset -f f; }; f'
+alias gbd='git branch -D'
 alias gc='git checkout'
-alias gr='git rm'
-alias gpush='git push -f'
-alias gpushb='git push origin'
-alias gpull='git pull --all'
-alias gpullf='git pull --rebase --autostash'
-alias gpullu='git fetch upstream && git rebase upstream/master'
-alias gfe='git fetch --progress --prune origin'
-alias gundo='git reset HEAD~1'
-alias gpushf='git push -f '
-alias gl='git log --date=iso --name-status'
-alias gpl="git log --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ad) %C(bold blue)<%an>%Creset' --abbrev-commit --no-merges --date=iso"
-alias gs='git status -sb'
-alias gst=gs
-alias gt='git stash'
-alias gtb='git stash apply'
-alias gtb='git stash branch'
-alias gtcl='git stash clear'
-alias gtd='git stash drop -q'
-alias gtl='git stash list'
-alias gtp='git stash pop'
-alias gts='git stash show -p'
+alias gcb='git checkout -b'
+alias gcl='git clone'
 alias gd='git diff'
+alias gfe='git fetch --progress --prune origin'
 alias gm='git commit -m'
 alias gma='git commit -am'
 alias gmr='git commit --amend -m'
 alias gmg='git merge'
-alias gra='git remote add'
-alias grau='git remote add upstream'
-alias grso='git remote set-url --add --push origin'
+alias gp='git pull --all'
+alias gpf='git pull --rebase --autostash'
+alias gpu='git fetch upstream && git rebase upstream/master'
+alias gph='git push -f'
+alias gpho='git push origin'
+alias gl='git log --date=iso --name-status'
+alias glp="git log --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ad) %C(bold blue)<%an>%Creset' --abbrev-commit --no-merges --date=iso"
+alias glc='git log --pretty=format:'%s' | cut -d " " -f 1 | sort | uniq -c | sort -nr' # get counts
+alias gr='git rm --ignore-unmatch -f -r --cached'
+alias grc='git ls-files --deleted -z | xargs -0 git rm' # clean
+alias gru="git status -su | cut -d' ' -f2- | tr '\n' '\0' | xargs -0 rm"
 alias grb='git rebase'
 alias grbc='git rebase --continue'
-alias gmerge='git rebase --interactive'
-alias grr='git remote rm'
-alias gcl='git clone'
+alias grbi='git rebase --interactive' # merge
+alias grf='git reflog'
+alias grm='git remote'
+alias grma='git remote add'
+alias grmr='git remote rm'
+alias grmau='git remote add upstream'
+alias grmso='git remote set-url --add --push origin'
+alias grs1='git reset HEAD~1'
+alias gs='git stash'
+alias gsb='git stash apply'
+alias gsb='git stash branch'
+alias gscl='git stash clear'
+alias gsd='git stash drop -q'
+alias gsl='git stash list'
+alias gsp='git stash pop'
+alias gss='git stash show -p'
+alias gst='git status -sb'
+alias gslc="git shortlog | grep -E '^[ ]+\w+' | wc -l"
+alias gslu="git shortlog | grep -E '^[^ ]'"
 alias gta='git tag -a -m'
-alias gf='git reflog'
-alias gv='git log --pretty=format:'%s' | cut -d " " -f 1 | sort | uniq -c | sort -nr'
-alias grd='git rm -r --cached'
-alias gsh="git shortlog | grep -E '^[ ]+\w+' | wc -l"
-alias gu="git shortlog | grep -E '^[^ ]'"
-
 
 # ------------------------------------
 # Docker alias and function
@@ -536,4 +532,3 @@ function welcome(){
 ===============================================
 "
 }
-
