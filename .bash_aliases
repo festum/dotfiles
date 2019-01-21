@@ -240,7 +240,8 @@ alias grmr='git remote rm'
 alias grmau='git remote add upstream'
 alias grmso='git remote set-url --add --push origin'
 alias grs1='git reset HEAD~1'
-alias gs='git stash'
+alias gs='git status -sb'
+alias gst='git stash'
 alias gsb='git stash apply'
 alias gsb='git stash branch'
 alias gscl='git stash clear'
@@ -248,7 +249,6 @@ alias gsd='git stash drop -q'
 alias gsl='git stash list'
 alias gsp='git stash pop'
 alias gss='git stash show -p'
-alias gst='git status -sb'
 alias gslc="git shortlog | grep -E '^[ ]+\w+' | wc -l"
 alias gslu="git shortlog | grep -E '^[^ ]'"
 alias gta='git tag -a -m'
@@ -315,7 +315,7 @@ alias k8d='kubectl describe'
 alias k8x='kubectl exec -it'
 alias k8g='kubectl get'
 alias k8l='kubectl get deployment,svc,pods,pvc,rc,rs'
-alias k8r='kubectl delete -f'
+alias k8r='kubectl delete'
 alias kc='kompose'
 alias kcc='kompose convert -f'
 
@@ -532,3 +532,4 @@ function welcome(){
 ===============================================
 "
 }
+
