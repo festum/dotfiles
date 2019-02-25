@@ -4,6 +4,14 @@
 [ -f ~/configs/custom_aliases ] && . ~/configs/custom_aliases
 
 # -------------------------------------------------------------------
+# Config
+# -------------------------------------------------------------------
+
+GIT_USERNAME="Festum Qin"
+GIT_USEREMAIL="festum@g.pl"
+SSH_PK="/Users/festum/Dropbox/Festum/Archives/AppConf/ssh/f_app"
+
+# -------------------------------------------------------------------
 # General
 # -------------------------------------------------------------------
 
@@ -49,7 +57,7 @@ function exit_and_rm(){
   exit
 }
 alias ssh='ssh_with_rc'
-alias sshf='ssh -i /Users/festum/Dropbox/Festum/Archives/AppConf/ssh/f_app'
+alias sshf='ssh -i "${SSH_PK}"'
 alias sshr='ssh -R 52698:localhost:52698'
 alias exit=exit_and_rm
 alias init_vim='git clone --depth=1 https://github.com/amix/vimrc.git ~/.vim_runtime; sh ~/.vim_runtime/install_awesome_vimrc.sh'
@@ -215,13 +223,15 @@ alias gcb='git checkout -b'
 alias gcl='git clone'
 alias gd='git diff'
 alias gfe='git fetch --progress --prune origin'
-alias gm='git commit -m'
+alias gm='git commit -m '
 alias gma='git commit -am'
 alias gmr='git commit --amend -m'
+alias gmu='git -c user.name="${GIT_USERNAME}" -c user.email="${GIT_USEREMAIL}" commit -m '
 alias gmg='git merge'
 alias gp='git pull --all'
 alias gpf='git pull --rebase --autostash'
 alias gpu='git fetch upstream && git rebase upstream/master'
+alias gpush=gph
 alias gph='git push -f'
 alias gpho='git push origin'
 alias gl='git log --date=iso --name-status'
@@ -309,15 +319,22 @@ function dmp() {
 alias k8='kubectl'
 alias k8a='kubectl apply -f'
 alias k8c='kubectl config'
-alias k8l='kubectl logs'
-alias k8lf='kubectl logs --tail=1 -f'
 alias k8d='kubectl describe'
-alias k8x='kubectl exec -it'
 alias k8g='kubectl get'
-alias k8l='kubectl get deployment,svc,pods,pvc,rc,rs'
+alias k8gd='kubectl get deployment,svc,pods,pvc,rc,rs'
+alias k8l='kubectl logs'
 alias k8r='kubectl delete'
+alias k8rp='kubectl delete pods --grace-period=0 --force'
+alias k8t='kubectl logs --tail=1 -f'
+alias k8x='kubectl exec -it'
 alias kc='kompose'
 alias kcc='kompose convert -f'
+alias dsh='f(){   unset -f f; }; f'
+# for each in $(kubectl get pods|grep Terminating|awk '{print $1}');
+# do
+# kubectl delete pods $each --force --grace-period=0
+# done
+
 
 # ------------------------------------
 # Serverless and AWS
@@ -347,6 +364,7 @@ alias de='direnv'
 alias dea='direnv allow'
 alias det='vim .envrc'
 alias lynx='/Applications/Lynxlet.app/Contents/Resources/lynx/bin/lynx'
+alias zt='zerotier-cli'
 
 # -------------------------------------------------------------------
 # Servers
@@ -418,10 +436,10 @@ function dl() {
   curl -OJ $@
 }
 function serveo() { #https://serveo.net/
-  ssh -R 80:$DMHOST:$1 serveo.net
+  ssh -R 80:$1 serveo.net
 }
 function serveop() { #https://serveo.net/
-  autossh -M 0 -R 80:$DMHOST:$1 serveo.net
+  autossh -M 0 -R 80:$1 serveo.net
 }
 function ngr() {
   ngrok http $DMHOST:$1

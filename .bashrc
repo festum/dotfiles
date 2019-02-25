@@ -72,7 +72,7 @@ if [ "$(uname)" != "Darwin" ]; then
 fi
 export ME=$(id -u -n)
 export HISTTIMEFORMAT="%Y-%m-%d %T "
-export HISTCONTROL=ignorespace
+export HISTCONTROL=ignoreboth:erasedups
 export HISTFILESIZE=10000
 export HISTSIZE=${HISTFILESIZE}
 export HH_CONFIG=hicolor,keywords,favorites,noconfirm,verbose-kill
