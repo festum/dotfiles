@@ -7,9 +7,10 @@
 # Config
 # -------------------------------------------------------------------
 
-GIT_USERNAME="Festum Qin"
-GIT_USEREMAIL="festum@g.pl"
-SSH_PK="/Users/festum/Dropbox/Festum/Archives/AppConf/ssh/f_app"
+GIT_USERNAME='Festum Qin'
+GIT_USEREMAIL='festum@g.pl'
+GIT_LOG_FORMAT="format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ad) %C(bold blue)<%an>%Creset'"
+SSH_PK='/Users/festum/Dropbox/Festum/Archives/AppConf/ssh/f_app'
 
 # -------------------------------------------------------------------
 # General
@@ -221,44 +222,47 @@ alias gbd='git branch -D'
 alias gc='git checkout'
 alias gcb='git checkout -b'
 alias gcl='git clone'
-alias gd='git diff'
+alias gd='git diff --no-renames -b -w --ignore-blank-lines'
 alias gfe='git fetch --progress --prune origin'
 alias gm='git commit -m '
 alias gma='git commit -am'
 alias gmr='git commit --amend -m'
 alias gmu='git -c user.name="${GIT_USERNAME}" -c user.email="${GIT_USEREMAIL}" commit -m '
 alias gmg='git merge'
-alias gp='git pull --all'
-alias gpf='git pull --rebase --autostash'
+alias gp='git pull'
+alias gpa='git pull --all'
+alias gpf='git pull --all --rebase --autostash'
 alias gpu='git fetch upstream && git rebase upstream/master'
 alias gpush=gph
 alias gph='git push -f'
 alias gpho='git push origin'
 alias gl='git log --date=iso --name-status'
-alias glp="git log --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ad) %C(bold blue)<%an>%Creset' --abbrev-commit --no-merges --date=iso"
+alias glp='git log --pretty="${GIT_LOG_FORMAT}" --abbrev-commit --no-merges --date=iso'
+alias glp2='git log --graph --topo-order --decorate --oneline --all'
 alias glc='git log --pretty=format:'%s' | cut -d " " -f 1 | sort | uniq -c | sort -nr' # get counts
-alias gr='git rm --ignore-unmatch -f -r --cached'
-alias grc='git ls-files --deleted -z | xargs -0 git rm' # clean
-alias gru="git status -su | cut -d' ' -f2- | tr '\n' '\0' | xargs -0 rm"
 alias grb='git rebase'
 alias grbc='git rebase --continue'
 alias grbi='git rebase --interactive' # merge
+alias grc='git ls-files --deleted -z | xargs -0 git rm' # clean
 alias grf='git reflog'
-alias grm='git remote'
-alias grma='git remote add'
-alias grmr='git remote rm'
-alias grmau='git remote add upstream'
-alias grmso='git remote set-url --add --push origin'
+alias grm='git rm --ignore-unmatch -f -r --cached'
+alias grs='git reset'
 alias grs1='git reset HEAD~1'
+alias gru="git status -su | cut -d' ' -f2- | tr '\n' '\0' | xargs -0 rm"
+alias gmt='git remote'
+alias gmta='git remote add'
+alias gmtr='git remote rm'
+alias gmtau='git remote add upstream'
+alias gmtsu='git remote set-url --add --push origin'
 alias gs='git status -sb'
-alias gst='git stash'
-alias gsb='git stash apply'
-alias gsb='git stash branch'
-alias gscl='git stash clear'
-alias gsd='git stash drop -q'
-alias gsl='git stash list'
-alias gsp='git stash pop'
-alias gss='git stash show -p'
+alias gsh='git stash'
+alias gsha='git stash apply'
+alias gshb='git stash branch'
+alias gshc='git stash clear'
+alias gshd='git stash drop -q'
+alias gshl='git stash list'
+alias gshp='git stash pop'
+alias gshs='git stash show -p'
 alias gslc="git shortlog | grep -E '^[ ]+\w+' | wc -l"
 alias gslu="git shortlog | grep -E '^[^ ]'"
 alias gta='git tag -a -m'
