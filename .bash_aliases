@@ -160,7 +160,7 @@ alias venvr='source venv/bin/activate'
 alias pipi='pip install -r requirements.txt'
 alias pe='pipenv'
 alias pei='pipenv install'
-alias pei='pipenv shell'
+alias pes='pipenv shell'
 alias pep='pipenv run python'
 alias pipu="sudo pip2 freeze — local | grep -v ‘^\-e’ | cut -d = -f 1 | xargs -n1 sudo -H pip2 install -U"
 alias pips=pip_install_save
@@ -222,7 +222,8 @@ alias gbd='git branch -D'
 alias gc='git checkout'
 alias gcb='git checkout -b'
 alias gcl='git clone'
-alias gd='git diff --no-renames -b -w --ignore-blank-lines'
+alias gd='git diff --no-renames -b -w --ignore-blank-lines --color'
+alias gds='gd --stat'
 alias gfe='git fetch --progress --prune origin'
 alias gm='git commit -m '
 alias gma='git commit -am'
@@ -263,9 +264,23 @@ alias gshd='git stash drop -q'
 alias gshl='git stash list'
 alias gshp='git stash pop'
 alias gshs='git stash show -p'
+alias gsho='git show --color'
 alias gslc="git shortlog | grep -E '^[ ]+\w+' | wc -l"
 alias gslu="git shortlog | grep -E '^[^ ]'"
+alias gt='git tag -n'
 alias gta='git tag -a -m'
+function gta2() {
+  local date=`date +%Y-%m-%d`
+  if test -z $1; then
+    echo -e $C_1"use it like that: "$C_2"gt \$tagname"$C_1
+    echo -e "it will do: "$C_2"git tag -am\"`date +%Y-%m-%d` \$tagname\" \$tagname"$C_1
+    echo -e "example: "$C_2"gt v0.0.1"$C_0
+  else
+    echo -e $C_1"----→ git tag -f -am\"${date} $1\" $1"$C_0
+    git tag -f -am"${date} $1" $1
+    echo -e $C_1"----→ done"$C_0
+  fi
+}
 
 # ------------------------------------
 # Docker alias and function
