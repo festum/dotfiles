@@ -348,6 +348,7 @@ alias k8t='kubectl logs --tail=1 -f'
 alias k8x='kubectl exec -it'
 alias kc='kompose'
 alias kcc='kompose convert -f'
+alias mk='minikube'
 alias dsh='f(){   unset -f f; }; f'
 # for each in $(kubectl get pods|grep Terminating|awk '{print $1}');
 # do
