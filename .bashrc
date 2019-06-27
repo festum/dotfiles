@@ -2,6 +2,34 @@
 
 ME="$(id -u -n)"
 
+
+# Perform file completion in a case insensitive fashion
+bind "set completion-ignore-case on"
+# Treat hyphens and underscores as equivalent
+bind "set completion-map-case on"
+# Display matches for ambiguous patterns at first tab press
+bind "set show-all-if-ambiguous on"
+# Immediately add a trailing slash when autocompleting symlinks to directories
+bind "set mark-symlinked-directories on"
+# Enable history expansion with space
+# E.g. typing !!<space> will replace the !! with your last command
+bind Space:magic-space
+# Case-insensitive globbing (used in pathname expansion)
+shopt -s nocaseglob;
+# Save multi-line commands as one command
+shopt -s cmdhist
+# Prepend cd to directory names automatically
+shopt -s autocd 2> /dev/null
+# Correct spelling errors during tab-completion
+shopt -s dirspell 2> /dev/null
+# Correct spelling errors in arguments supplied to cd
+shopt -s cdspell 2> /dev/null
+# Turn on recursive globbing (enables ** to recurse all directories)
+shopt -s globstar 2> /dev/null
+# Allows to bookmark favorite places across the file system
+shopt -s cdable_vars
+
+
 case $- in
     *i*) ;;
       *) return;;
@@ -62,7 +90,7 @@ fi
 export BASH_IT_THEME='minimal'
 [ ! -f ~/.bash_it/install.sh ] && git clone --depth=1 https://github.com/Bash-it/bash-it.git ~/.bash_it && ~/.bash_it/install.sh -s -n
 [ -f ~/.bash_aliases ] && . ~/.bash_aliases
-[ -f ~/.fe0/.bash_aliases ] && . ~/.fe0/.bash_aliases && export BASH_IT_THEME='sexy'
+[ -f ~/.fe0/.bash_aliases ] && . ~/.fe0/.bash_aliases && export BASH_IT_THEME='candy'
 if [ "$(uname)" != "Darwin" ]; then
     shopt -s histappend
     shopt -s cdspell
@@ -71,13 +99,13 @@ if [ "$(uname)" != "Darwin" ]; then
     welcome
 fi
 export ME=$(id -u -n)
-export HISTTIMEFORMAT="%Y-%m-%d %T "
+export HISTTIMEFORMAT="%F %T "
 export HISTCONTROL=ignoreboth:erasedups
-export HISTFILESIZE=10000
+export HISTFILESIZE=500000
 export HISTSIZE=${HISTFILESIZE}
 export HH_CONFIG=hicolor,keywords,favorites,noconfirm,verbose-kill
 export PROMPT_COMMAND="history -a; history -n; ${PROMPT_COMMAND}"
-export HISTIGNORE="exit:hh:history*:h:ps:gs:gpl:gaa:gpull:gpush:rv:venv:pipi:python:php:go:java:node:"
+export HISTIGNORE="&:[ ]*:ls:ll:bg:fg:clear:cls:c:exit:history*:h:hh:ps:rv*:gs:gaa:gp:gl:gpl:gpush:gps:venv:pipi:python:php:go:java:node"
 export BASH_IT=$HOME/.bash_it
 export BYOBU_PREFIX=/usr/local
 export TERM=xterm-256color
