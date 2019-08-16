@@ -4,16 +4,16 @@ ME="$(id -u -n)"
 
 
 # Perform file completion in a case insensitive fashion
-bind "set completion-ignore-case on"
+# bind "set completion-ignore-case on"
 # Treat hyphens and underscores as equivalent
-bind "set completion-map-case on"
+# bind "set completion-map-case on"
 # Display matches for ambiguous patterns at first tab press
-bind "set show-all-if-ambiguous on"
+# bind "set show-all-if-ambiguous on"
 # Immediately add a trailing slash when autocompleting symlinks to directories
-bind "set mark-symlinked-directories on"
+# bind "set mark-symlinked-directories on"
 # Enable history expansion with space
 # E.g. typing !!<space> will replace the !! with your last command
-bind Space:magic-space
+# bind Space:magic-space
 # Case-insensitive globbing (used in pathname expansion)
 shopt -s nocaseglob;
 # Save multi-line commands as one command
@@ -32,7 +32,7 @@ shopt -s cdable_vars
 
 case $- in
     *i*) ;;
-      *) return;;
+    *) return;;
 esac
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ] && debian_chroot=$(cat /etc/debian_chroot)
@@ -56,10 +56,10 @@ fi
 unset color_prompt force_color_prompt
 unset MAILCHECK
 case "$TERM" in
-xterm*|rxvt*)
-    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
+    xterm*|rxvt*)
+        PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
     ;;
-*)
+    *)
     ;;
 esac
 
@@ -76,16 +76,16 @@ fi
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
 if [[ $PS1 && -f /usr/share/bash-completion/bash_completion ]]; then
-  . /usr/share/bash-completion/bash_completion
-  set show-all-if-ambiguous on
-  set visible-stats on
+    . /usr/share/bash-completion/bash_completion
+    set show-all-if-ambiguous on
+    set visible-stats on
 fi
 if ! shopt -oq posix; then
-  if [ -f /usr/share/bash-completion/bash_completion ]; then
-    . /usr/share/bash-completion/bash_completion
-  elif [ -f /etc/bash_completion ]; then
-    . /etc/bash_completion
-  fi
+    if [ -f /usr/share/bash-completion/bash_completion ]; then
+        . /usr/share/bash-completion/bash_completion
+        elif [ -f /etc/bash_completion ]; then
+        . /etc/bash_completion
+    fi
 fi
 export BASH_IT_THEME='minimal'
 [ ! -f ~/.bash_it/install.sh ] && git clone --depth=1 https://github.com/Bash-it/bash-it.git ~/.bash_it && ~/.bash_it/install.sh -s -n
@@ -139,7 +139,7 @@ if [ -x /usr/local/bin/hh ] || [ -x /usr/bin/hh ]; then
     [[ $- =~ .*i.* ]] && bind '"\C-r": "\C-a hh -- \C-j"'
     [[ $- =~ .*i.* ]] && bind '"\C-xk": "\C-a hh -k \C-j"'
 fi
-[ -x /usr/bin/docker-machine ] || [ -x /usr/local/bin/docker-machine ] && export DMHOST=$(docker-machine ip default) && dmused
+[ -x /usr/local/bin/docker-machine ] && [ "$(uname)" != "Linux" ] && export DMHOST=$(docker-machine ip default) && dmused
 [ -x /usr/bin/direnv ] || [ -x /usr/local/bin/direnv ] && eval "$(direnv hook bash)"
 [ -x /usr/local/bin/thefuck ] && eval "$(thefuck --alias)"
 [ -s ${HOME}/.sdkman/bin/sdkman-init.sh ] && source ${HOME}/.sdkman/bin/sdkman-init.sh
@@ -153,4 +153,3 @@ fi
 [ -f ${NVM_DIR}/versions/node/v8.4.0/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.bash ] && source ${NVM_DIR}/versions/node/v8.4.0/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.bash
 [ -x /usr/bin/pipenv ] || [ -x /usr/local/bin/pipenv ] && eval "$(pipenv --completion)"
 [ -x /usr/bin/kubectl ] || [ -x /usr/local/bin/kubectl ] && source <(kubectl completion bash)
-
