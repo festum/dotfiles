@@ -37,25 +37,25 @@ alias grep='grep --color=auto'
 # Setup
 # -------------------------------------------------------------------
 function ssh_with_rc(){
-  if [ "$(uname)" == "Darwin" ]; then
-    break_arg='-b 0'
-  else
-    break_arg='-w0'
-  fi
-  if [ -f ${HOME}/.fe0/.bash_aliases ]; then
-    RC_DATA=`cat ${HOME}/.fe0/.bashrc | base64 ${break_arg}`
-    AL_DATA=`cat ${HOME}/.fe0/.bash_aliases | base64 ${break_arg}`
-  else
-    RC_DATA=`cat ${HOME}/.bashrc | base64 ${break_arg}`
-    AL_DATA=`cat ${HOME}/.bash_aliases | base64 ${break_arg}`
-  fi
-  ssh -t $@ "mkdir ~/.fe0;echo \"${RC_DATA}\" | base64 --decode > ~/.fe0/.bashrc;echo \"${AL_DATA}\" | base64 --decode > ~/.fe0/.bash_aliases;bash --rcfile ~/.fe0/.bashrc"
+    if [ "$(uname)" == "Darwin" ]; then
+        break_arg='-b 0'
+    else
+        break_arg='-w0'
+    fi
+    if [ -f ${HOME}/.fe0/.bash_aliases ]; then
+        RC_DATA=`cat ${HOME}/.fe0/.bashrc | base64 ${break_arg}`
+        AL_DATA=`cat ${HOME}/.fe0/.bash_aliases | base64 ${break_arg}`
+    else
+        RC_DATA=`cat ${HOME}/.bashrc | base64 ${break_arg}`
+        AL_DATA=`cat ${HOME}/.bash_aliases | base64 ${break_arg}`
+    fi
+    ssh -t $@ "mkdir ~/.fe0;echo \"${RC_DATA}\" | base64 --decode > ~/.fe0/.bashrc;echo \"${AL_DATA}\" | base64 --decode > ~/.fe0/.bash_aliases;bash --rcfile ~/.fe0/.bashrc"
 }
 function exit_and_rm(){
-  if [ -f ${HOME}/.fe0/.bash_aliases ]; then
-    rm -rf ${HOME}/.fe0/
-  fi
-  exit
+    if [ -f ${HOME}/.fe0/.bash_aliases ]; then
+        rm -rf ${HOME}/.fe0/
+    fi
+    exit
 }
 alias ssh='ssh_with_rc'
 alias sshf='ssh -i "${SSH_PK}"'
@@ -63,30 +63,30 @@ alias sshr='ssh -R 52698:localhost:52698'
 alias exit=exit_and_rm
 alias init_vim='git clone --depth=1 https://github.com/amix/vimrc.git ~/.vim_runtime; sh ~/.vim_runtime/install_awesome_vimrc.sh'
 function bashrc(){
-  [ -f ~/.bash_keys ] && . ~/.bash_keys
-  [ -f ~/.bash_aliases ] && . ~/.bash_aliases
-  [ -f ~/.bashrc ] && . ~/.bashrc
-  [ -f ~/.bach_profile ] && . ~/.bach_profile
-  [ -f ~/.profile ] && . ~/.profile
-  [ -f ~/.fe0/.bash_aliases ] && . ~/.fe0/.bash_aliases
-  [ -f ~/.fe0/.bashrc ] && . ~/.fe0/.bashrc
+    [ -f ~/.bash_keys ] && . ~/.bash_keys
+    [ -f ~/.bash_aliases ] && . ~/.bash_aliases
+    [ -f ~/.bashrc ] && . ~/.bashrc
+    [ -f ~/.bach_profile ] && . ~/.bach_profile
+    [ -f ~/.profile ] && . ~/.profile
+    [ -f ~/.fe0/.bash_aliases ] && . ~/.fe0/.bash_aliases
+    [ -f ~/.fe0/.bashrc ] && . ~/.fe0/.bashrc
 }
 function ttmux(){
-  # echo "set-option -g default-shell \"/bin/bash\"" > ~/.tmux.conf
-  if ([ -z $TMUX ]); then
-    mv ~/.bashrc ~/.tmuxed
-    cp ~/.bash_it/.bashrc ~/.bashrc
-    source  ~/.bashrc
-    tmux new-session -A -s main
-    cp -f ~/.tmuxed ~/.bashrc
-    rm -rf ~/.tmuxed
-  fi
+    # echo "set-option -g default-shell \"/bin/bash\"" > ~/.tmux.conf
+    if ([ -z $TMUX ]); then
+        mv ~/.bashrc ~/.tmuxed
+        cp ~/.bash_it/.bashrc ~/.bashrc
+        source  ~/.bashrc
+        tmux new-session -A -s main
+        cp -f ~/.tmuxed ~/.bashrc
+        rm -rf ~/.tmuxed
+    fi
 }
 function daemon(){
-  $@ > /dev/null 2>&1 &
+    $@ > /dev/null 2>&1 &
 }
 function daemono(){
-  $@ >> ./out 2>&1 &
+    $@ >> ./out 2>&1 &
 }
 # -------------------------------------------------------------------
 # FS
@@ -146,13 +146,13 @@ alias node='node --harmony'
 # Python
 # -------------------------------------------------------------------
 pip_install_save() {
-  package_name=$1
-  requirements_file=$2
-  if [[ -z $requirements_file ]]
-  then
-      requirements_file='./requirements.txt'
-  fi
-  pip install $package_name && pip freeze | grep -i $package_name >> $requirements_file
+    package_name=$1
+    requirements_file=$2
+    if [[ -z $requirements_file ]]
+    then
+        requirements_file='./requirements.txt'
+    fi
+    pip install $package_name && pip freeze | grep -i $package_name >> $requirements_file
 }
 alias venv='rm -rf ./venv && virtualenv --no-site-packages venv && source venv/bin/activate'
 alias venv3='rm -rf ./venv && virtualenv -p ~/.pyenv/versions/3.7.0/bin/python3.7 --no-site-packages venv && source venv/bin/activate'
@@ -275,16 +275,16 @@ alias gslu="git shortlog | grep -E '^[^ ]'"
 alias gt='git tag -n'
 alias gta='git tag -a -m'
 function gta2() {
-  local date=`date +%Y-%m-%d`
-  if test -z $1; then
-    echo -e $C_1"use it like that: "$C_2"gt \$tagname"$C_1
-    echo -e "it will do: "$C_2"git tag -am\"`date +%Y-%m-%d` \$tagname\" \$tagname"$C_1
-    echo -e "example: "$C_2"gt v0.0.1"$C_0
-  else
-    echo -e $C_1"----→ git tag -f -am\"${date} $1\" $1"$C_0
-    git tag -f -am"${date} $1" $1
-    echo -e $C_1"----→ done"$C_0
-  fi
+    local date=`date +%Y-%m-%d`
+    if test -z $1; then
+        echo -e $C_1"use it like that: "$C_2"gt \$tagname"$C_1
+        echo -e "it will do: "$C_2"git tag -am\"`date +%Y-%m-%d` \$tagname\" \$tagname"$C_1
+        echo -e "example: "$C_2"gt v0.0.1"$C_0
+    else
+        echo -e $C_1"----→ git tag -f -am\"${date} $1\" $1"$C_0
+        git tag -f -am"${date} $1" $1
+        echo -e $C_1"----→ done"$C_0
+    fi
 }
 
 # ------------------------------------
@@ -294,16 +294,17 @@ alias dm='docker-machine'
 alias dmip='docker-machine ip'
 alias dme='docker-machine env'
 function dmuse() {
-  if [ "$(docker-machine status ${1})" == "Stopped" ]; then
-    docker-machine start ${1}
-  fi
-  eval $(docker-machine env ${1})
+    if [ "$(docker-machine status ${1})" == "Stopped" ]; then
+        docker-machine start ${1}
+    fi
+    eval $(docker-machine env ${1})
 }
 alias dmused='dmuse default'
 alias dc='docker-compose'
 alias dcd='docker-compose down'
-alias dcu='docker-compose up -d'
-alias dcb='docker-compose up -d --no-deps --build '
+alias dcu='docker-compose up'
+alias dcub='docker-compose up --build --force-recreate'
+alias dcb='docker-compose up --no-deps --build '
 alias dcr='docker-compose down && docker-compose up -d'
 alias dcl='docker-compose logs'
 alias dce='docker-compose exec'
@@ -316,8 +317,7 @@ alias dkb='docker build .'
 alias dkr='docker run -it -d -P'
 alias dkp='docker ps -a'
 alias dkpl='docker ps -l -q'
-alias dkpf='docker ps --format "table {{.Names}}\t{{.Image}}\t{{.Ports}}\t{{.Command}}\t{{.Status}}\t"
-'
+alias dkpf='docker ps --format "table {{.Names}}\t{{.Image}}\t{{.Ports}}\t{{.Command}}\t{{.Status}}\t"'
 alias dks='docker stats --format "table {{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}"'
 alias dkr='f(){ docker ps -ga --filter name="$@" | xargs --no-run-if-empty docker rm -f;  unset -f f; }; f'
 alias dkrm='f(){ docker rm $(docker ps -aq --filter name="$@") }; f'
@@ -336,8 +336,8 @@ random_local_port() {
 function dmp() {
     PORT="$(random_local_port)"
     ssh -f -o ExitOnForwardFailure=yes \
-        -L "127.0.0.1:$PORT:127.0.0.1:2375" "$PRODSERVER" \
-        sleep 5
+    -L "127.0.0.1:$PORT:127.0.0.1:2375" "$PRODSERVER" \
+    sleep 5
     DOCKER_HOST="127.0.0.1:$PORT" "$@"
 }
 alias k8='kubectl'
@@ -408,44 +408,50 @@ alias zt='zerotier-cli'
 alias k81='kubelogin k8s1 --namespace=jobfeed --user=festum'
 
 # -------------------------------------------------------------------
+# Conditions
+# -------------------------------------------------------------------
+
+[ -x /usr/bin/codium ] && alias code='codium'
+[ -x /usr/bin/hstr ] && alias hh=hstr
+
+# -------------------------------------------------------------------
 # UTILITIES
 # -------------------------------------------------------------------
 function swap() {
-  local TMPFILE=tmp.$$
-  mv "$1" $TMPFILE && mv "$2" "$1" && mv $TMPFILE $2
+    local TMPFILE=tmp.$$
+    mv "$1" $TMPFILE && mv "$2" "$1" && mv $TMPFILE $2
 }
 
 function authme() {
-  cat ~/.ssh/id_rsa.pub | ssh $1 'umask 0077; mkdir -p ~/.ssh; cat >> .ssh/authorized_keys && chmod 700 ~/.ssh && chmod 600 ~/.ssh/authorized_keys && echo "Key copied"'
+    cat ~/.ssh/id_rsa.pub | ssh $1 'umask 0077; mkdir -p ~/.ssh; cat >> .ssh/authorized_keys && chmod 700 ~/.ssh && chmod 600 ~/.ssh/authorized_keys && echo "Key copied"'
 }
 
 # ex - archive extractor.
 # Usage: ex <file>.
 function ex(){
-  if [ -f $1 ] ; then
-    case $1 in
-      *.tar.bz2)   tar xjf $1   ;;
-      *.tar.gz)    tar xzf $1   ;;
-      *.bz2)       bunzip2 $1   ;;
-      *.rar)       unrar e $1   ;;
-      *.gz)        gunzip $1    ;;
-      *.tar)       tar xf $1    ;;
-      *.tbz2)      tar xjf $1   ;;
-      *.tgz)       tar xzf $1   ;;
-      *.zip)       unzip $1     ;;
-      *.Z)         uncompress $1;;
-      *.7z)        7z x $1      ;;
-      *)           echo "'$1' cannot be extracted via ex()" ;;
-    esac
-  else
-    echo "'$1' is not a valid file"
-  fi
+    if [ -f $1 ] ; then
+        case $1 in
+            *.tar.bz2)   tar xjf $1   ;;
+            *.tar.gz)    tar xzf $1   ;;
+            *.bz2)       bunzip2 $1   ;;
+            *.rar)       unrar e $1   ;;
+            *.gz)        gunzip $1    ;;
+            *.tar)       tar xf $1    ;;
+            *.tbz2)      tar xjf $1   ;;
+            *.tgz)       tar xzf $1   ;;
+            *.zip)       unzip $1     ;;
+            *.Z)         uncompress $1;;
+            *.7z)        7z x $1      ;;
+            *)           echo "'$1' cannot be extracted via ex()" ;;
+        esac
+    else
+        echo "'$1' is not a valid file"
+    fi
 }
 function ar(){
-  BN=`basename ${1}`
-  tar -zcvf ${BN}.tar.gz ${1}
+    BN=`basename ${1}`
+    tar -zcvf ${BN}.tar.gz ${1}
 }
-
 
 export LESS_TERMCAP_mb=$'\E[01;31m'
 export LESS_TERMCAP_md=$'\E[01;31m'
@@ -456,34 +462,34 @@ export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[01;32m'
 
 function transfer() {
-  curl --progress-bar --upload-file $1 https://transfer.sh/$(basename $1) | tee /dev/null;
+    curl --progress-bar --upload-file $1 https://transfer.sh/$(basename $1) | tee /dev/null;
 }
 function dl() {
-  curl -OJ $@
+    curl -OJ $@
 }
 function serveo() { #https://serveo.net/
-  ssh -R 80:$1 serveo.net
+    ssh -R 80:$1 serveo.net
 }
 function serveop() { #https://serveo.net/
-  autossh -M 0 -R 80:$1 serveo.net
+    autossh -M 0 -R 80:$1 serveo.net
 }
 function ngr() {
-  ngrok http $DMHOST:$1
+    ngrok http $DMHOST:$1
 }
 # Find a file with a pattern in name:
 function ff() {
-  find . -type f -iname '*'$@'*' -ls | grep -v "Permission denied";
+    find . -type f -iname '*'$@'*' -ls | grep -v "Permission denied";
 }
 # Find a file with pattern $1 in name and Execute $2 on it:
 function fe() {
-  find . -type f -iname '*'$@'*' -exec "${2:-file}" {} \;  ;
+    find . -type f -iname '*'$@'*' -exec "${2:-file}" {} \;  ;
 }
 # search from CLI
 function google {
-  if [ ! -x /usr/local/bin/googler ]; then
-    sudo curl -o /usr/local/bin/googler https://raw.githubusercontent.com/jarun/googler/v2.9/googler && sudo chmod +x /usr/local/bin/googler
-  fi
-  googler
+    if [ ! -x /usr/local/bin/googler ]; then
+        sudo curl -o /usr/local/bin/googler https://raw.githubusercontent.com/jarun/googler/v2.9/googler && sudo chmod +x /usr/local/bin/googler
+    fi
+    googler
 }
 # translate fr zh
 function translate() {
@@ -507,9 +513,9 @@ alias ll='ls -alF --block-size=M'
 alias la='ls -A --block-size=M'
 alias l='ls -CF --block-size=M'
 if [ "$(uname)" == "Darwin" ]; then
-  alias ll='ls -alF'
-  alias la='ls -A'
-  alias l='ls -CF'
+    alias ll='ls -alF'
+    alias la='ls -A'
+    alias l='ls -CF'
 fi
 
 # Add an "alert" alias for long running commands.  Use like so:
@@ -529,12 +535,12 @@ alias chm='find . -type d -exec sudo chmod 755 {} \; && find . -type f -exec sud
 
 # show status
 function getstate(){
-  echo "CPU `LC_ALL=C top -bn1 | grep "Cpu(s)" | sed "s/.*, *\([0-9.]*\)%* id.*/\1/" | awk '{print 100 - $1}'`% RAM `free -m | awk '/Mem:/ { printf("%3.1f%%", $3/$2*100) }'` HDD `df -h / | awk '/\// {print $(NF-1)}'`"
+    echo "CPU `LC_ALL=C top -bn1 | grep "Cpu(s)" | sed "s/.*, *\([0-9.]*\)%* id.*/\1/" | awk '{print 100 - $1}'`% RAM `free -m | awk '/Mem:/ { printf("%3.1f%%", $3/$2*100) }'` HDD `df -h / | awk '/\// {print $(NF-1)}'`"
 }
 function pss(){
-  ps -eaf | grep "$1"
+    ps -eaf | grep "$1"
 }
-update_terminal_cwd() {
+function update_terminal_cwd() {
     # Identify the directory using a "file:" scheme URL,
     # including the host name to disambiguate local vs.
     # remote connections. Percent-escape spaces.
@@ -543,28 +549,29 @@ update_terminal_cwd() {
     local PWD_URL="file://$HOSTNAME${PWD//$SEARCH/$REPLACE}"
     printf '\e]7;%s\a' "$PWD_URL"
 }
-alias pss='ps -p $1 -o %cpu,%mem,cmd'
+alias psss='ps -o %cpu,%mem,cmd -p'
 alias myip="ifconfig | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p'"
 alias myipr='curl ifconfig.me'
+
 function welcome(){
-  # Basic info
-  HOSTNAME=`uname -n`
-  ROOT=`df -h | awk '$NF=="/"{printf "%s", $5}'`
-  # System load
-  MEMORY1=`free -t -m | grep Total | awk '{print $3" MB";}'`
-  MEMORY2=`free -t -m | grep "Mem" | awk '{print $2" MB";}'`
-  DISK_TOTAL=`df -h --total | awk 'END {print $2}'`
-  DISK_USED=`df -h --total | awk 'END {print $3}'`
-  DISK_USAGE=`df -h --total | awk 'END {print $5}'`
-  LOAD1=`cat /proc/loadavg | awk {'print $1'}`
-  LOAD5=`cat /proc/loadavg | awk {'print $2'}`
-  LOAD15=`cat /proc/loadavg | awk END{'print $3'}`
-  if [ -f /etc/os-release ]; then
-    DISTO1=`awk -F'=' '/PRETTY_NAME/ {print $2}' /etc/os-release`
-  else
-    DISTO1="Unknown"
-  fi
-  echo "
+    # Basic info
+    HOSTNAME=`uname -n`
+    ROOT=`df -h | awk '$NF=="/"{printf "%s", $5}'`
+    # System load
+    MEMORY1=`free -t -m | grep Total | awk '{print $3" MB";}'`
+    MEMORY2=`free -t -m | grep "Mem" | awk '{print $2" MB";}'`
+    DISK_TOTAL=`df -h --total | awk 'END {print $2}'`
+    DISK_USED=`df -h --total | awk 'END {print $3}'`
+    DISK_USAGE=`df -h --total | awk 'END {print $5}'`
+    LOAD1=`cat /proc/loadavg | awk {'print $1'}`
+    LOAD5=`cat /proc/loadavg | awk {'print $2'}`
+    LOAD15=`cat /proc/loadavg | awk END{'print $3'}`
+    if [ -f /etc/os-release ]; then
+        DISTO1=`awk -F'=' '/PRETTY_NAME/ {print $2}' /etc/os-release`
+    else
+        DISTO1="Unknown"
+    fi
+    echo "
 ===============================================
  - Hostname............: $HOSTNAME
  - Linux Distribution..: $DISTO1
@@ -574,6 +581,5 @@ function welcome(){
  - Memory used.........: $MEMORY1 / $MEMORY2
  - Swap in use.........: `free -m | tail -n 1 | awk '{print $3}'` MB
 ===============================================
-"
+    "
 }
-
