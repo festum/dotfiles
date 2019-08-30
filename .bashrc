@@ -129,7 +129,7 @@ export GOPATH=$HOME/Repo/godev
 export GO111MODULE=on
 export JAVA_HOME=/usr/lib/jvm/java-8-oracle
 export CARGO=$HOME/.cargo/bin
-export BIN=$HOME/bin:$HOME/.local/bin:/fe0/bin:/usr/local/go/bin:$GOROOT/bin:$GOPATH/bin
+export BIN=$HOME/bin:$HOME/.local/bin:/fe0/bin:/usr/local/go/bin:$GOROOT/bin:$GOPATH/bin:/fe0/opt/gotools/bin
 export PYBIN=$HOME/Library/Python/3.6/bin:$HOME/Library/Python/2.7/bin
 export PATH=/usr/bin:/usr/local/bin:$PYBIN:$BIN:$CARGO:$HOME/.nexustools:$PATH
 

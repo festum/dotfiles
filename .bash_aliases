@@ -27,7 +27,7 @@ alias mvi='mv -i'
 alias rmi='rm -i'
 alias rm0='find . -size 0 -print0 |xargs -0 rm --'
 alias {ack,ak}='ack-grep'
-alias rv='source ~/.bash_aliases'
+alias rv='source ~/.bashrc'
 alias rva='source ~/.bash_aliases && source ~/.bashrc'
 alias myip="ifconfig | ack 'inet (\d+.*) netmask .* broadcast'"
 alias gpc='grep --color=always -R'
@@ -219,6 +219,7 @@ alias ga='git add'
 alias gaa='git add .'
 alias gb='git branch'
 alias gbd='git branch -D'
+alias gbdr='git push origin --delete'
 alias gc='git checkout'
 alias gcb='git checkout -b'
 alias gcl='git clone'
@@ -549,6 +550,7 @@ function update_terminal_cwd() {
     local PWD_URL="file://$HOSTNAME${PWD//$SEARCH/$REPLACE}"
     printf '\e]7;%s\a' "$PWD_URL"
 }
+
 alias psss='ps -o %cpu,%mem,cmd -p'
 alias myip="ifconfig | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p'"
 alias myipr='curl ifconfig.me'
