@@ -1,0 +1,62 @@
+# List all matches in case multiple possible completions are possible
+set show-all-if-ambiguous on
+
+# Make Tab autocomplete regardless of filename case
+set completion-ignore-case on
+
+# Do not autocomplete hidden files unless the pattern explicitly begins with a dot
+set match-hidden-files off
+
+# Show all autocomplete results at once
+set page-completions off
+
+# If there are more than 200 possible completions for a word, ask to show them all
+set completion-query-items 200
+
+# Show extra file information when completing, like `ls -F` does
+set visible-stats on
+
+# Be more intelligent when autocompleting by also looking at the text after
+# the cursor. For example, when the current line is "cd ~/src/mozil", and
+# the cursor is on the "z", pressing Tab will not autocomplete it to "cd
+# ~/src/mozillail", but to "cd ~/src/mozilla". (This is supported by the
+# Readline used by Bash 4.)
+set skip-completed-text on
+
+# Allow UTF-8 input and output, instead of showing stuff like $'\0123\0456'
+set input-meta on
+set output-meta on
+set convert-meta off
+
+# Key bindings, up/down arrow searches through history
+"\e[A": history-search-backward
+"\e[B": history-search-forward
+"\eOA": history-search-backward
+"\eOB": history-search-forward
+
+### ctrl+arrows
+# works in most terminals: xterm, gnome-terminal, terminator, st, sakura, termit, …
+"\e[1;5C": forward-word
+"\e[1;5D": backward-word
+# urxvt
+"\eOc": forward-word
+"\eOd": backward-word
+
+### ctrl+delete
+"\e[3;5~": kill-word
+# in this case, st misbehaves (even with tmux)
+"\e[M": kill-word
+# and of course, urxvt must be always special
+"\e[3^": kill-word
+# Use Alt/Meta + Delete to delete the preceding word
+"\e[3;3~": kill-word
+
+### ctrl+backspace
+"\C-h": backward-kill-word
+
+### ctrl+shift+delete
+"\e[3;6~": kill-line
+# URxvt note: you have to disable Ctrl+Shift popup in ~/.Xresources:
+# URxvt.iso14755: true
+# URxvt.iso14755_52: false
+"\e[3@": kill-line
