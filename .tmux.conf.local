@@ -276,6 +276,8 @@ tmux_conf_copy_to_os_clipboard=false
 
 set -g default-terminal "xterm-256color"
 
+# moving left-right between words
+set -g xterm-keys on
 
 # increase history size
 set -g history-limit 50000
@@ -284,6 +286,7 @@ set -g history-limit 50000
 set -g mouse on
 set -g set-clipboard off #basically disables (broken) automatic copy on selection.
 
+#set -g status-position top
 
 # force Vi mode
 #   really you should export VISUAL or EDITOR environment variable, see manual
@@ -306,8 +309,6 @@ bind - split-window -v # Add horizontal pane
 bind l source-file ${HOME}/.tmux.conf \; display-message "setting reloaded"
 
 bind a run-shell "if [[ `tmux show-options -w | grep 'synchronize-panes.*on'` ]]; then toggle=off; else export toggle=on; fi; tmux display-message \"sync panes tmux: \$toggle\"; tmux set-option -w synchronize-panes \$toggle &> /dev/null"
-
-#set -g status-position top
 
 bind-key -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe-and-cancel "xclip -se c -i"
 
