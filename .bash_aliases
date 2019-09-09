@@ -324,6 +324,7 @@ alias dkpf='docker ps --format "table {{.Names}}\t{{.Image}}\t{{.Ports}}\t{{.Com
 alias dks='docker stats --format "table {{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}"'
 alias dkr='f(){ docker ps -ga --filter name="$@" | xargs --no-run-if-empty docker rm -f;  unset -f f; }; f'
 alias dkrm='f(){ docker rm $(docker ps -aq --filter name="$@") }; f'
+alias dkrma='docker rm -f $(docker ps -a -q)'
 alias dkra='docker ps -qa | xargs --no-run-if-empty docker rm -f'
 alias dkip="docker inspect --format '{{ .NetworkSettings.IPAddress }}'"
 alias dki='docker images'
@@ -332,7 +333,6 @@ alias dkirn='docker rmi $(docker images | grep "^<none>" | awk "{ print $3 }"")'
 alias dkird='docker rmi $(docker images -f "dangling=true" -q)'
 alias dkire='docker images -q -f dangling=true | xargs --no-run-if-empty docker rmi'
 alias dsh='f(){ docker exec -it "$@" /bin/bash;  unset -f f; }; f'
-alias dkkill='docker rm -f $(docker ps -a -q)'
 random_local_port() {
     python -c 'import socket; s = socket.socket(); s.bind(("127.0.0.1", 0)); print s.getsockname()[1]; s.close();'
 }
