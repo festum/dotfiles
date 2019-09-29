@@ -30,8 +30,6 @@ alias {ack,ak}='ack-grep'
 alias rv='source ~/.bashrc'
 alias rva='source ~/.bash_aliases && source ~/.bashrc'
 alias myip="ifconfig | ack 'inet (\d+.*) netmask .* broadcast'"
-alias gpc='grep --color=always -R'
-alias grep='grep --color=auto'
 
 # -------------------------------------------------------------------
 # Setup
@@ -96,6 +94,8 @@ alias ls='ls -GFh'  # Colorize output, add file type indicator, and put sizes in
 alias ll='ls -GFhl' # Same as above, but in long listing format -alF'
 alias lh='ls -d .*' # show hidden files/directories only
 alias la='ls -A'
+alias lt='ls --human-readable --size -1 -S --classify'
+alias left='ls -t -1'
 alias diff='git diff --no-index'
 alias ~='cd ~'
 alias d='cd ~/Downloads/'
@@ -109,6 +109,9 @@ alias getg='cat /etc/group | cut -d: -f1'
 alias joing='f(){ usermod -a -G $1 $USER; unset -f f; }; f'
 alias uig='f(){ grep -i --color $@ /etc/group; unset -f f; }; f'
 alias rep='find . -type f -print0 | xargs -0 sed -i'
+alias gh='history | grep'
+alias cpv='rsync -ah --info=progress2'
+alias tcn='mv --force -t ~/.local/share/Trash '
 
 # -------------------------------------------------------------------
 # Tmux
@@ -222,6 +225,7 @@ alias gbd='git branch -D'
 alias gbdr='git push origin --delete'
 alias gc='git checkout'
 alias gcb='git checkout -b'
+alias gcp='git cherry-pick'
 alias gcl='git clone'
 alias gd='git diff --no-renames -b -w --ignore-blank-lines --color'
 alias gds='gd --stat'
