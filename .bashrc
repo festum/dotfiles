@@ -143,6 +143,7 @@ export PATH=/usr/bin:/usr/local/bin:$PYBIN:$BIN:$CARGO:$HOME/.nexustools:$PATH
 [ -f ${HOME}/.bashhub/bashhub.sh ] && source ${HOME}/.bashhub/bashhub.sh
 [ -f $(pwd)/alacritty-completions.bash ] && source ${pwd}/alacritty-completions.bash
 [ -f ${HOME}/.fzf.bash ] && source ${HOME}/.fzf.bash
+[ -f /usr/local/lib/python2.7/dist-packages/powerline/bindings/bash/powerline.sh ] && source /usr/local/lib/python2.7/dist-packages/powerline/bindings/bash/powerline.sh
 [ -f ${NVM_DIR}/versions/node/v8.4.0/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.bash ] && source ${NVM_DIR}/versions/node/v8.4.0/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.bash
 [ -f ${NVM_DIR}/versions/node/v8.4.0/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.bash ] && source ${NVM_DIR}/versions/node/v8.4.0/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.bash
 [ -x /usr/bin/pipenv ] || [ -x /usr/local/bin/pipenv ] && eval "$(pipenv --completion)"
