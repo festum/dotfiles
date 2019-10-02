@@ -328,9 +328,10 @@ alias dkp='docker ps -a'
 alias dkpl='docker ps -l -q'
 alias dkpf='docker ps --format "table {{.Names}}\t{{.Image}}\t{{.Ports}}\t{{.Command}}\t{{.Status}}\t"'
 alias dks='docker stats --format "table {{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}"'
-alias dkr='f(){ docker ps -ga --filter name="$@" | xargs --no-run-if-empty docker rm -f;  unset -f f; }; f'
-alias dkrm='f(){ docker rm $(docker ps -aq --filter name="$@") }; f'
-alias dkrma='docker rm -f $(docker ps -a -q)'
+alias dkr='f(){ docker ps -ga -f name="$@" | xargs --no-run-if-empty docker rm -f;  unset -f f; }; f'
+alias dkrm='f(){ docker rm $(docker ps -aq -f name="$@") }; f'
+alias dkrma='docker rm -f $(docker ps -aq)'
+alias dkrme='docker rm $(docker ps -aq -f status=exited)'
 alias dkra='docker ps -qa | xargs --no-run-if-empty docker rm -f'
 alias dkip="docker inspect --format '{{ .NetworkSettings.IPAddress }}'"
 alias dki='docker images'
@@ -421,8 +422,8 @@ alias k81='kubelogin k8s1 --namespace=jobfeed --user=festum'
 # Conditions
 # -------------------------------------------------------------------
 
-[ -x /usr/bin/codium ] && alias code='codium'
-[ -x /usr/bin/hstr ] && alias hh=hstr
+[ -x "$(command -v codium)" ] && alias code='codium'
+[ -x "$(command -v hstr)" ] && alias hh=hstr
 
 # -------------------------------------------------------------------
 # UTILITIES

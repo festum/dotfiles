@@ -136,6 +136,10 @@ export PATH=/usr/bin:/usr/local/bin:$PYBIN:$BIN:$CARGO:$HOME/.nexustools:$PATH
 [ -x /usr/local/bin/docker-machine ] && [ "$(uname)" != "Linux" ] && export DMHOST=$(docker-machine ip default) && dmused
 [ -x /usr/bin/direnv ] || [ -x /usr/local/bin/direnv ] && eval "$(direnv hook bash)"
 [ -x /usr/local/bin/thefuck ] && eval "$(thefuck --alias)"
+[ -x /usr/bin/pipenv ] || [ -x /usr/local/bin/pipenv ] && eval "$(pipenv --completion)"
+[ -x /usr/bin/kubectl ] || [ -x /usr/local/bin/kubectl ] && source <(kubectl completion bash)
+[ -x /usr/local/bin/awless ] && source <(awless completion bash)
+[ -x /usr/bin/direnv ] || [ -x /usr/local/bin/direnv ] && eval "$(direnv hook bash)"
 [ -s ${HOME}/.sdkman/bin/sdkman-init.sh ] && source ${HOME}/.sdkman/bin/sdkman-init.sh
 [ -s $NVM_DIR/nvm.sh ] && \. $NVM_DIR/nvm.sh
 [ -s $NVM_DIR/bash_completion ] && \. $NVM_DIR/bash_completion && c
@@ -146,12 +150,9 @@ export PATH=/usr/bin:/usr/local/bin:$PYBIN:$BIN:$CARGO:$HOME/.nexustools:$PATH
 [ -f /usr/local/lib/python2.7/dist-packages/powerline/bindings/bash/powerline.sh ] && source /usr/local/lib/python2.7/dist-packages/powerline/bindings/bash/powerline.sh
 [ -f ${NVM_DIR}/versions/node/v8.4.0/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.bash ] && source ${NVM_DIR}/versions/node/v8.4.0/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.bash
 [ -f ${NVM_DIR}/versions/node/v8.4.0/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.bash ] && source ${NVM_DIR}/versions/node/v8.4.0/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.bash
-[ -x /usr/bin/pipenv ] || [ -x /usr/local/bin/pipenv ] && eval "$(pipenv --completion)"
-[ -x /usr/bin/kubectl ] || [ -x /usr/local/bin/kubectl ] && source <(kubectl completion bash)
-[ -x /usr/local/bin/awless ] && source <(awless completion bash)
-[ -x /usr/bin/direnv ] || [ -x /usr/local/bin/direnv ] && eval "$(direnv hook bash)"
 
 if [ -x /usr/bin/hstr ]; then
     if [[ $- =~ .*i.* ]]; then bind '"\C-r": "\C-a hstr -- \C-j"'; fi
     if [[ $- =~ .*i.* ]]; then bind '"\C-xk": "\C-a hstr -k \C-j"'; fi
 fi
+if [ $TILIX_ID ] || [ $VTE_VERSION ] ; then source /etc/profile.d/vte.sh; fi # Ubuntu Budgie END
