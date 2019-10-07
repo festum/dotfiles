@@ -87,6 +87,9 @@ if ! shopt -oq posix; then
 fi
 export BASH_IT_THEME='minimal'
 [ ! -f ~/.bash_it/install.sh ] && git clone --depth=1 https://github.com/Bash-it/bash-it.git ~/.bash_it && ~/.bash_it/install.sh -s -n
+[ ! -d ~/.tmux ] && git clone --depth=1 https://github.com/gpakosz/.tmux.git ~/.tmux && cp ~/.tmux/.tmux.conf.local ~
+[ ! -d ~/.tmux/plugins/tpm ] && git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+
 [ -f ~/.bash_aliases ] && . ~/.bash_aliases
 [ -f ~/.fe0/.bash_aliases ] && . ~/.fe0/.bash_aliases && export BASH_IT_THEME='candy'
 if [ "$(uname)" != "Darwin" ]; then
