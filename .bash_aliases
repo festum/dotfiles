@@ -32,6 +32,7 @@ alias rva='source ~/.bash_aliases && source ~/.bashrc'
 alias myip="ifconfig | ack 'inet (\d+.*) netmask .* broadcast'"
 alias gpc='grep --color=always -R'
 alias grep='grep --color=auto'
+alias cp2='rsync --progress'
 
 # -------------------------------------------------------------------
 # Setup
