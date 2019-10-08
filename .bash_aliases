@@ -30,6 +30,7 @@ alias {ack,ak}='ack-grep'
 alias rv='source ~/.bashrc'
 alias rva='source ~/.bash_aliases && source ~/.bashrc'
 alias myip="ifconfig | ack 'inet (\d+.*) netmask .* broadcast'"
+alias cp2='rsync --progress'
 
 # -------------------------------------------------------------------
 # Setup
