@@ -143,14 +143,14 @@ tmux_conf_theme_window_status_last_bg='default'
 tmux_conf_theme_window_status_last_attr='none'
 
 # status left/right sections separators
-tmux_conf_theme_left_separator_main=''
-tmux_conf_theme_left_separator_sub='|'
-tmux_conf_theme_right_separator_main=''
-tmux_conf_theme_right_separator_sub='|'
-#tmux_conf_theme_left_separator_main='\uE0B0'  # /!\ you don't need to install Powerline
-#tmux_conf_theme_left_separator_sub='\uE0B1'   #   you only need fonts patched with
-#tmux_conf_theme_right_separator_main='\uE0B2' #   Powerline symbols or the standalone
-#tmux_conf_theme_right_separator_sub='\uE0B3'  #   PowerlineSymbols.otf font, see README.md
+#tmux_conf_theme_left_separator_main=''
+#tmux_conf_theme_left_separator_sub='|'
+#tmux_conf_theme_right_separator_main=''
+#tmux_conf_theme_right_separator_sub='|'
+tmux_conf_theme_left_separator_main='\uE0B0'  # /!\ you don't need to install Powerline
+tmux_conf_theme_left_separator_sub='\uE0B1'   #   you only need fonts patched with
+tmux_conf_theme_right_separator_main='\uE0B2' #   Powerline symbols or the standalone
+tmux_conf_theme_right_separator_sub='\uE0B3'  #   PowerlineSymbols.otf font, see README.md
 
 # status left/right content:
 #   - separate main sections with '|'
@@ -295,12 +295,14 @@ unbind %
 bind | split-window -h # Add vertical pane
 unbind '"'
 bind - split-window -v # Add horizontal pane
-#unbind l
-bind l source-file ${HOME}/.tmux.conf \; display-message "setting reloaded"
 
 bind a run-shell "if [[ `tmux show-options -w | grep 'synchronize-panes.*on'` ]]; then toggle=off; else export toggle=on; fi; tmux display-message \"sync panes tmux: \$toggle\"; tmux set-option -w synchronize-panes \$toggle &> /dev/null"
 
 bind-key -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe-and-cancel "xclip -se c -i"
+
+# Reorder windows
+bind-key -n S-Left swap-window -t -1
+bind-key -n S-Right swap-window -t +1
 
 # use p to paste
 bind -T copy-mode-vi p paste-buffer
@@ -321,13 +323,14 @@ set -g @plugin 'tmux-plugins/tmux-copycat'
 set -g @plugin 'tmux-plugins/tmux-yank'
 
 ## Plugin config
+set -g @continuum-boot 'on'
 set -g @continuum-restore 'on'
 set -g @continuum-save-interval '10'
 set -g @resurrect-capture-pane-contents 'on'
 set -g @resurrect-strategy-nvim 'session'
 set -g @resurrect-save-shell-history 'on'
 set -g @resurrect-save 'S'
-set -g @resurrect-restore 'L'
+set -g @resurrect-restore 'R'
 
 # Initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf)
 run '~/.tmux/plugins/tpm/tpm'
