@@ -137,9 +137,9 @@ alias tmns='tmuxinator start'
 # -------------------------------------------------------------------
 # Go
 # -------------------------------------------------------------------
-# alias go='GOPATH=$(echo $(pwd)) go'
-alias gog='go get -d ./...'
-alias addgp='echo export GOPATH=$(pwd) > .envrc'
+alias gog='GO111MODULE=off go get -u'
+alias gogd='go get -d ./...'
+alias gopi='echo export GOPATH=$(pwd) > .envrc'
 
 # -------------------------------------------------------------------
 # Node
@@ -256,6 +256,7 @@ alias grf='git reflog'
 alias grm='git rm --ignore-unmatch -f -r --cached'
 alias grs='git reset'
 alias grs1='git reset --soft HEAD^1'
+alias grh='git reset --hard HEAD'
 alias grh1='git reset --hard HEAD^1'
 alias gru="git status -su | cut -d' ' -f2- | tr '\n' '\0' | xargs -0 rm"
 alias gmt='git remote'
@@ -316,7 +317,7 @@ alias dcub='docker-compose up --build --force-recreate'
 alias dcubn='docker-compose up --no-deps --build '
 alias dcr='docker-compose down && docker-compose up -d'
 alias dcl='docker-compose logs'
-alias dce='docker-compose exec'
+alias dcx='docker-compose exec'
 alias dk='docker'
 alias dkx='docker exec -it'
 alias dkm='docker commit'
