@@ -138,7 +138,10 @@ alias tmns='tmuxinator start'
 # Go
 # -------------------------------------------------------------------
 alias gog='GO111MODULE=off go get -u'
+alias goi='GO111MODULE=off go install'
 alias gogd='go get -d ./...'
+alias gol='golangci-lint --color always'
+alias golr='golangci-lint run --color always'
 alias gopi='echo export GOPATH=$(pwd) > .envrc'
 
 # -------------------------------------------------------------------
