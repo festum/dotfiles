@@ -46,3 +46,4 @@ Thumbs.db
 **/*~
 **/*.bak
 **/*.sw[abcdefghijklmnop]
+**/launch.json
