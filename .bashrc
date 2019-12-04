@@ -91,6 +91,7 @@ export BASH_IT_THEME='minimal'
 [ ! -d ~/.tmux/plugins/tpm ] && git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
 [ -f ~/.bash_aliases ] && . ~/.bash_aliases
+[ -f ~/.bashrc_local ] && . ~/.bashrc_local
 [ -f ~/.fe0/.bash_aliases ] && . ~/.fe0/.bash_aliases && export BASH_IT_THEME='candy'
 if [ "$(uname)" != "Darwin" ]; then
     shopt -s histappend
@@ -130,10 +131,10 @@ export NVM_DIR=$HOME/.nvm
 export GOROOT=/usr/local/go
 export GOPATH=$HOME/Repo/godev
 export GO111MODULE=on
-export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64/
+export JAVA_HOME=/opt/jdk-11.0.5
 export CARGO=$HOME/.cargo/bin
-export BIN=$HOME/bin:$HOME/.local/bin:/fe0/bin:/usr/local/go/bin:$GOROOT/bin:$GOPATH/bin:/fe0/opt/gotools/bin
-export PYBIN=$HOME/Library/Python/3.6/bin:$HOME/Library/Python/2.7/bin
+export BIN=$HOME/bin:$HOME/.local/bin:/fe0/bin:/usr/local/go/bin:$GOROOT/bin:$GOPATH/bin:/fe0/opt/gotools/bin:$JAVA_HOME/bin
+export PYBIN=$HOME/Library/Python/2.7/bin:$HOME/Library/Python/3.6/bin
 export PATH=/usr/bin:/usr/local/bin:$PYBIN:$BIN:$CARGO:$HOME/.nexustools:$PATH
 
 [ -x /usr/local/bin/docker-machine ] && [ "$(uname)" != "Linux" ] && export DMHOST=$(docker-machine ip default) && dmused
