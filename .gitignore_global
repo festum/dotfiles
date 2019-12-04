@@ -3,10 +3,12 @@
 *.com
 *.class
 *.dll
-*.exe
+*.exe*
 *.o
 *.so
 **/*.py[oc]
+.gradle
+*.dylib
 
 # Packages
 # it's better to unpack these files and commit the raw source
@@ -47,3 +49,13 @@ Thumbs.db
 **/*.bak
 **/*.sw[abcdefghijklmnop]
 **/launch.json
+
+# Test binary, build with `go test -c`
+*.test
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+*.out
+
+# My files
+**/.dev
+*.me.*

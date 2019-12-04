@@ -4,9 +4,8 @@
 [ -f ~/configs/custom_aliases ] && . ~/configs/custom_aliases
 
 # -------------------------------------------------------------------
-# Config
+# Config (Replace with yours)
 # -------------------------------------------------------------------
-
 GIT_USERNAME='Festum Qin'
 GIT_USEREMAIL='festum@g.pl'
 GIT_LOG_FORMAT="format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ad) %C(bold blue)<%an>%Creset'"
@@ -15,7 +14,6 @@ SSH_PK='/Users/festum/Dropbox/Festum/Archives/AppConf/ssh/f_app'
 # -------------------------------------------------------------------
 # General
 # -------------------------------------------------------------------
-
 alias c="clear && printf '\e[3J'"
 alias cls="echo -ne '\033c'"
 alias rd='rm -rf'
@@ -29,8 +27,12 @@ alias rm0='find . -size 0 -print0 |xargs -0 rm --'
 alias {ack,ak}='ack-grep'
 alias rv='source ~/.bashrc'
 alias rva='source ~/.bash_aliases && source ~/.bashrc'
-alias myip="ifconfig | ack 'inet (\d+.*) netmask .* broadcast'"
 alias cp2='rsync --progress'
+alias myip="ifconfig | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p'"
+alias myextip='curl ifconfig.me'
+alias pscpu='ps -ax -opid,lstart,pcpu,cputime,comm --sort=-%cpu,-cputime | head -11'
+alias psmem='ps -ax -opid,lstart,pmem,rss,comm --sort=-pmem,-rss | head -11'
+alias ps2='ps -Ao pid,comm,pcpu,pmem --sort=-pcpu | head -11'
 
 # -------------------------------------------------------------------
 # Setup
@@ -232,13 +234,18 @@ alias gcb='git checkout -b'
 alias gcp='git cherry-pick'
 alias gcl='git clone'
 alias gd='git diff --no-renames -b -w --ignore-blank-lines --color'
+alias gda='git diff --shortstat master | sed -E "s/([0-9]+) file.* ([0-9]+) insertion.* ([0-9]+) deletion.*/#\1 +\2 -\3/"'
+alias gdc='git diff --shortstat --cached'
+alias gdev='git checkout master && git branch -D dev && git pull && git checkout -b dev'
 alias gds='gd --stat'
+alias gfa='git fetch --all -p'
 alias gfe='git fetch --progress --prune origin'
 alias gm='git commit -m '
 alias gma='git commit -am'
 alias gmr='git commit --amend -m'
 alias gmu='git -c user.name="${GIT_USERNAME}" -c user.email="${GIT_USEREMAIL}" commit -m '
 alias gmg='git merge'
+alias gmgp='git merge @{-1}'
 alias gmv='git mv'
 alias gp='git pull'
 alias gpa='git pull --all'
@@ -246,18 +253,23 @@ alias gpf='git pull --all --rebase --autostash'
 alias gpu='git fetch upstream && git rebase upstream/master'
 alias gpush=gph
 alias gph='git push -f'
+alias gphb='git push --set-upstream origin $(git rev-parse --abbrev-ref HEAD)' # git branch --show-current for git 2.22
 alias gpho='git push origin'
 alias gl='git log --date=iso --name-status'
 alias glp='git log --pretty="${GIT_LOG_FORMAT}" --abbrev-commit --no-merges --date=iso'
 alias glp2='git log --graph --topo-order --decorate --oneline --all'
 alias glc='git log --pretty=format:'%s' | cut -d " " -f 1 | sort | uniq -c | sort -nr' # get counts
 alias grb='git rebase'
+alias grba='git rebase --abort'
 alias grbc='git rebase --continue'
+alias grbs='git rebase --skip'
 alias grbi='git rebase --interactive' # merge
+alias grbm='git rebase master'
 alias grc='git ls-files --deleted -z | xargs -0 git rm' # clean
 alias grf='git reflog'
 alias grm='git rm --ignore-unmatch -f -r --cached'
 alias grs='git reset'
+alias grs0='git reset --soft HEAD^1 && git add . && git commit -C HEAD@{1}'
 alias grs1='git reset --soft HEAD^1'
 alias grh='git reset --hard HEAD'
 alias grh1='git reset --hard HEAD^1'
@@ -286,6 +298,7 @@ alias gslc="git shortlog | grep -E '^[ ]+\w+' | wc -l"
 alias gslu="git shortlog | grep -E '^[^ ]'"
 alias gt='git tag -n'
 alias gta='git tag -a -m'
+alias ghusky='rm -rf .git/hooks/ && npm i -D husky' # https://github.com/typicode/husky/issues/333
 function gta2() {
     local date=`date +%Y-%m-%d`
     if test -z $1; then
@@ -300,7 +313,7 @@ function gta2() {
 }
 
 # ------------------------------------
-# Docker alias and function
+# Docker aliases/functions
 # ------------------------------------
 alias dm='docker-machine'
 alias dmip='docker-machine ip'
@@ -371,11 +384,6 @@ alias kc='kompose'
 alias kcc='kompose convert -f'
 alias mk='minikube'
 alias dsh='f(){   unset -f f; }; f'
-# for each in $(kubectl get pods|grep Terminating|awk '{print $1}');
-# do
-# kubectl delete pods $each --force --grace-period=0
-# done
-
 
 # ------------------------------------
 # Serverless and AWS
@@ -397,7 +405,7 @@ alias vgd='vagrant destroy'
 alias vgs='vagrant ssh'
 
 # -------------------------------------------------------------------
-# Clients
+# CLI shortcuts
 # -------------------------------------------------------------------
 alias bws='bw list items --search'
 alias nrc='nrclientcmd -d f0 -u festum'
@@ -407,12 +415,13 @@ alias dea='direnv allow'
 alias det='vim .envrc'
 alias lynx='/Applications/Lynxlet.app/Contents/Resources/lynx/bin/lynx'
 alias zt='zerotier-cli'
+alias surf='sudo surfshark-vpn'
+alias surfa='sudo surfshark-vpn attack'
+alias surfd='sudo surfshark-vpn down'
 
 # -------------------------------------------------------------------
-# Servers
+# Serverlist (Please keep it in .aliases.local)
 # -------------------------------------------------------------------
-# Serverlist
-
 # A server with a non-standard SSH port, using passwordless RSA key authentication
 #alias server1='ssh -p 2200 user@server-domain.com'
 
@@ -421,10 +430,9 @@ alias zt='zerotier-cli'
 
 # Automatically switch to a directory upon login
 #alias server3='ssh -t -p 2200 user@123.123.123.123 "cd /var/www/vhosts ; bash"'
-alias k81='kubelogin k8s1 --namespace=jobfeed --user=festum'
 
 # -------------------------------------------------------------------
-# Conditions
+# Commands mapping
 # -------------------------------------------------------------------
 
 [ -x "$(command -v codium)" ] && alias code='codium'
@@ -565,10 +573,6 @@ function update_terminal_cwd() {
     local PWD_URL="file://$HOSTNAME${PWD//$SEARCH/$REPLACE}"
     printf '\e]7;%s\a' "$PWD_URL"
 }
-
-alias psss='ps -o %cpu,%mem,cmd -p'
-alias myip="ifconfig | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p'"
-alias myipr='curl ifconfig.me'
 
 function welcome(){
     # Basic info
