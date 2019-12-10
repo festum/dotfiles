@@ -261,6 +261,7 @@ alias glp2='git log --graph --topo-order --decorate --oneline --all'
 alias glc='git log --pretty=format:'%s' | cut -d " " -f 1 | sort | uniq -c | sort -nr' # get counts
 alias grb='git rebase'
 alias grba='git rebase --abort'
+alias grbb='git stash && git checkout master && git pull && git branch -D  @{-1} && git checkout -b @{-1} && git rebase master && git stash pop'
 alias grbc='git rebase --continue'
 alias grbs='git rebase --skip'
 alias grbi='git rebase --interactive' # merge
