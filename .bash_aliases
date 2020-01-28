@@ -490,7 +490,7 @@ export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[01;32m'
 
 function bindl() {
-    curl -L $1 | sudo sh -s -- -b /usr/local/bin
+    sudo curl -o "/usr/local/bin/${1##*/}" $1 && sudo sudo chmod +x "/usr/local/bin/${1##*/}"
 }
 function transfer() {
     curl --progress-bar --upload-file $1 https://transfer.sh/$(basename $1) | tee /dev/null;
@@ -518,13 +518,16 @@ function fe() {
 # search from CLI
 function google {
     if [ ! -x /usr/local/bin/googler ]; then
-        sudo curl -o /usr/local/bin/googler https://raw.githubusercontent.com/jarun/googler/v2.9/googler && sudo chmod +x /usr/local/bin/googler
+        sudo curl -o /usr/local/bin/googler https://raw.githubusercontent.com/jarun/googler/v4.0/googler && sudo chmod +x /usr/local/bin/googler
     fi
     googler
 }
-# translate fr zh
+# translate
 function translate() {
-    wget -U "Mozilla/5.0" -qO - "https://translate.google.com/translate_a/single?client=t&sl=${3:-auto}&tl=${2:-en}&dt=t&q=$1" | cut -d'"' -f2;
+    if [ ! -x /usr/local/bin/googler ]; then
+        sudo curl -o /usr/local/bin/trans https://git.io/trans && sudo chmod +x /usr/local/bin/trans
+    fi
+    translate
 }
 
 # Request a new DHCP lease for a new IP address
