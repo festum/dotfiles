@@ -489,6 +489,9 @@ export LESS_TERMCAP_so=$'\E[01;44;33m'
 export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[01;32m'
 
+function bindl() {
+    curl -L $1 | sudo sh -s -- -b /usr/local/bin
+}
 function transfer() {
     curl --progress-bar --upload-file $1 https://transfer.sh/$(basename $1) | tee /dev/null;
 }
