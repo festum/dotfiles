@@ -60,12 +60,6 @@ function ttmux(){
         rm -rf ~/.tmuxed
     fi
 }
-function daemon(){
-    $@ > /dev/null 2>&1 &
-}
-function daemono(){
-    $@ >> ./out 2>&1 &
-}
 
 # -------------------------------------------------------------------
 # Aliases
@@ -148,15 +142,16 @@ alias memHogsPs='ps wwaxm -o pid,stat,vsize,rss,time,command | head -10'
 alias cpuHogs='ps wwaxr -o pid,stat,%cpu,time,command | head -10' # Find CPU hogs
 alias topForever='top -l 9999999 -s 10 -o cpu' # Continual 'top' listing (every 10 seconds)
 alias ttop="top -R -F -s 10 -o rsize" # Recommended 'top' invocation to minimize resources
-alias psp='ps -Ao pid,comm,pcpu,pmem --sort=-pcpu | head -11'                      # psc: List processes with minimal info
-alias psc='ps -ax -opid,lstart,pcpu,cputime,comm --sort=-%cpu,-cputime | head -11' # psc: List processes by CPU
-alias psm='ps -ax -opid,lstart,pmem,rss,comm --sort=-pmem,-rss | head -11'         # psm: List processes by memory
-alias pss='f(){ ps -eaf | grep "$1"; unset -f f; }; f'                            # pss: Search process
-alias fu='sudo kill'
-alias fuu='sudo kill -9'
-alias fuuu='sudo killall'
-alias fuuuu='sudo killall -9'
-alias fp='f(){ sudo netstat -nlp | grep $@; unset -f f; }; f' # Get process by port
+alias psa='ps -Ao pid,comm,pcpu,pmem --sort=-pcpu | head -11'                      # psa:     List processes with minimal info
+alias psc='ps -ax -opid,lstart,pcpu,cputime,comm --sort=-%cpu,-cputime | head -11' # psc:     List processes by CPU
+alias psm='ps -ax -opid,lstart,pmem,rss,comm --sort=-pmem,-rss | head -11'         # psm:     List processes by memory
+alias pss='f(){ ps -eaf | grep "$1"; unset -f f; }; f'                             # pss:     Search process
+alias psp='f(){ sudo netstat -nlp | grep $@; unset -f f; }; f'                     # psp:     Get process by port
+alias daemon='f(){ $@ > /dev/null 2>&1 &; unset -f f; }; f'                        # daemon:  Run in background
+alias daemono='f(){ $@ >> ./out 2>&1 &; unset -f f; }; f'                          # daemono: Run in background with output
+alias fu='sudo kill -9'      # fu:   Force kill
+alias fuu='sudo killall'     # fuu:  Kill them all
+alias fuuu='sudo killall -9' # fuuu: Force kill them all
 # Networking
 alias netCons='lsof -i'                                   # netCons:      Show all open TCP/IP sockets
 alias lsock='sudo /usr/sbin/lsof -i -P'                   # lsock:        Display open sockets
