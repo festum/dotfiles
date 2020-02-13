@@ -271,18 +271,18 @@ tmux_conf_copy_to_os_clipboard=true
 # -- user customizations -------------------------------------------------------
 # this is the place to override or undo settings by Festum
 # Want to have tmux but no root access? https://gist.github.com/ryin/3106801
-# TPM: must have plug-in manager git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+# TPM: must have plug-in manager
+#     git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 # ------------------------------------------------------------------------------
 
-set -g default-terminal "xterm-256color"
-set -g xterm-keys on
 set -g history-limit 50000
+set -g mode-keys vi
 set -g mouse on
+#set -g default-terminal "xterm-256color"
+#set -g xterm-keys on
 set -g set-clipboard off #basically disables (broken) automatic copy on selection.
 #set -g status-position top
 #set -g status-keys vi
-set -g mode-keys vi
-
 
 # replace C-b by C-a instead of using both prefixes
 # set -gu prefix2

@@ -5,14 +5,14 @@ ME="$(id -u -n)"
 # Perform file completion in a case insensitive fashion
 # bind "set completion-ignore-case on"
 # Treat hyphens and underscores as equivalent
-# bind "set completion-map-case on"
+bind "set completion-map-case on"
 # Display matches for ambiguous patterns at first tab press
-# bind "set show-all-if-ambiguous on"
+bind "set show-all-if-ambiguous on"
 # Immediately add a trailing slash when autocompleting symlinks to directories
-# bind "set mark-symlinked-directories on"
+bind "set mark-symlinked-directories on"
 # Enable history expansion with space
 # E.g. typing !!<space> will replace the !! with your last command
-# bind Space:magic-space
+bind Space:magic-space
 # Case-insensitive globbing (used in pathname expansion)
 shopt -s nocaseglob;
 # Save multi-line commands as one command
@@ -98,9 +98,9 @@ export BASH_IT=$HOME/.bash_it
 export BYOBU_PREFIX=/usr/local
 export TERM=xterm-256color
 export GIT_HOSTING=$ME@gitlab.com
+export GIT_EDITOR=$VISUAL
 export VISUAL=vim
 export EDITOR=$VISUAL
-export GIT_EDITOR=$VISUAL
 export TODO=t
 export TMUX_TMPDIR=~/.tmux/tmp
 export LANG=en_US.UTF-8
@@ -120,8 +120,9 @@ export JAVA_HOME=/opt/jdk
 export CARGO=$HOME/.cargo/bin
 export BIN=$HOME/bin:$HOME/.local/bin:/fe0/bin:/usr/local/go/bin:$GOROOT/bin:$GOPATH/bin:/fe0/opt/gotools/bin:$JAVA_HOME/bin
 export PYBIN=$HOME/Library/Python/2.7/bin:$HOME/Library/Python/3.6/bin
-export PATH=/usr/bin:/usr/local/bin:$PYBIN:$BIN:$CARGO:$HOME/.nexustools:$PATH
+export PATH=$PYBIN:$BIN:$CARGO:$HOME/.nexustools:$PATH
 [ ! -d /usr/local/bin ] && sudo mkdir /usr/local &&Z sudo ln -s /usr/bin /usr/local/bin
+[ ! -f ${HOME}/.bash_profile ] && echo "source ~/.bashrc" >> ${HOME}/.bash_profile
 [ ! -f ~/.bash_it/install.sh ] && git clone --depth=1 https://github.com/Bash-it/bash-it.git ~/.bash_it && ~/.bash_it/install.sh -s -n
 [ ! -d ~/.tmux ] && git clone --depth=1 https://github.com/gpakosz/.tmux.git ~/.tmux && ln -s -f ~/.tmux/.tmux.conf ~
 [ ! -d ~/.tmux/plugins/tpm ] && git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm

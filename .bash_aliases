@@ -1,5 +1,6 @@
 #!/bin/bash
 
+[ -f ~/.aliases_local ] && . ~/.aliases_local
 [ -f ~/.aliases.local ] && . ~/.aliases.local
 [ -f ~/configs/custom_aliases ] && . ~/configs/custom_aliases
 
