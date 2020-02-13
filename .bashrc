@@ -85,19 +85,6 @@ if ! shopt -oq posix; then
         . /etc/bash_completion
     fi
 fi
-export BASH_IT_THEME='minimal'
-[ ! -f ~/.bash_it/install.sh ] && git clone --depth=1 https://github.com/Bash-it/bash-it.git ~/.bash_it && ~/.bash_it/install.sh -s -n
-[ ! -d ~/.tmux ] && git clone --depth=1 https://github.com/gpakosz/.tmux.git ~/.tmux && cp ~/.tmux/.tmux.conf.local ~
-[ ! -d ~/.tmux/plugins/tpm ] && git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-[ -f ~/.bash_aliases ] && . ~/.bash_aliases
-[ -f ~/.fe0/.bash_aliases ] && . ~/.fe0/.bash_aliases && export BASH_IT_THEME='candy'
-if [ "$(uname)" != "Darwin" ]; then
-    shopt -s histappend
-    shopt -s cdspell
-    shopt -s checkwinsize
-    shopt -s globstar
-    welcome
-fi
 export ME=$(id -u -n)
 export HISTTIMEFORMAT="%F %T "
 export HISTCONTROL=ignoreboth:erasedups
@@ -106,6 +93,7 @@ export HISTSIZE=${HISTFILESIZE}
 export HSTR_CONFIG=hicolor,keywords,favorites,noconfirm,verbose-kill
 export PROMPT_COMMAND="history -a; history -n; ${PROMPT_COMMAND}"
 export HISTIGNORE="&:[ ]*:ls:ll:bg:fg:clear:cls:c:exit:history*:h:hh:ps:rv*:gs:gaa:gp:gl:gpl:gpush:gps:venv:pipi:python:php:go:java:node"
+export BASH_IT_THEME='minimal'
 export BASH_IT=$HOME/.bash_it
 export BYOBU_PREFIX=/usr/local
 export TERM=xterm-256color
@@ -123,7 +111,6 @@ export SHORT_HOSTNAME=$(hostname -s)
 export SHORT_USER=${USER:0:8}
 export SHORT_TERM_LINE=true
 export BASH_IT_AUTOMATIC_RELOAD_AFTER_CONFIG_CHANGE=1
-[ -f ${BASH_IT}/bash_it.sh ] && source "$BASH_IT"/bash_it.sh
 export SDKMAN_DIR=$HOME/.sdkman
 export NVM_DIR=$HOME/.nvm
 export GOROOT=/usr/local/go
@@ -134,27 +121,38 @@ export CARGO=$HOME/.cargo/bin
 export BIN=$HOME/bin:$HOME/.local/bin:/fe0/bin:/usr/local/go/bin:$GOROOT/bin:$GOPATH/bin:/fe0/opt/gotools/bin:$JAVA_HOME/bin
 export PYBIN=$HOME/Library/Python/2.7/bin:$HOME/Library/Python/3.6/bin
 export PATH=/usr/bin:/usr/local/bin:$PYBIN:$BIN:$CARGO:$HOME/.nexustools:$PATH
-[ -f ~/.bashrc_local ] && . ~/.bashrc_local
+[ ! -d /usr/local/bin ] && sudo mkdir /usr/local &&Z sudo ln -s /usr/bin /usr/local/bin
+[ ! -f ~/.bash_it/install.sh ] && git clone --depth=1 https://github.com/Bash-it/bash-it.git ~/.bash_it && ~/.bash_it/install.sh -s -n
+[ ! -d ~/.tmux ] && git clone --depth=1 https://github.com/gpakosz/.tmux.git ~/.tmux && ln -s -f ~/.tmux/.tmux.conf ~
+[ ! -d ~/.tmux/plugins/tpm ] && git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+[ -f ~/.bash_aliases ] && . ~/.bash_aliases
+[ -f ~/.fe0/.bash_aliases ] && . ~/.fe0/.bash_aliases && export BASH_IT_THEME='candy'
+[ -f ~/.bashrc_local ] && source ~/.bashrc_local
+[ -f ${BASH_IT}/bash_it.sh ] && source "$BASH_IT"/bash_it.sh
 [ -x /usr/local/bin/docker-machine ] && [ "$(uname)" != "Linux" ] && export DMHOST=$(docker-machine ip default) && dmused
-[ -x /usr/bin/direnv ] || [ -x /usr/local/bin/direnv ] && eval "$(direnv hook bash)"
+[ -x /usr/local/bin/direnv ] && eval "$(direnv hook bash)"
 [ -x /usr/local/bin/thefuck ] && eval "$(thefuck --alias)"
-[ -x /usr/bin/pipenv ] || [ -x /usr/local/bin/pipenv ] && eval "$(pipenv --completion)"
-[ -x /usr/bin/kubectl ] || [ -x /usr/local/bin/kubectl ] && source <(kubectl completion bash)
+[ -x /usr/local/bin/pipenv ] && eval "$(pipenv --completion)"
+[ -x /usr/local/bin/kubectl ] && source <(kubectl completion bash)
 [ -x /usr/local/bin/awless ] && source <(awless completion bash)
-[ -x /usr/bin/direnv ] || [ -x /usr/local/bin/direnv ] && eval "$(direnv hook bash)"
+[ -x /usr/local/bin/direnv ] && eval "$(direnv hook bash)"
 [ -s ${HOME}/.sdkman/bin/sdkman-init.sh ] && source ${HOME}/.sdkman/bin/sdkman-init.sh
 [ -s $NVM_DIR/nvm.sh ] && \. $NVM_DIR/nvm.sh
-[ -s $NVM_DIR/bash_completion ] && \. $NVM_DIR/bash_completion && c
+[ -s $NVM_DIR/bash_completion ] && source $NVM_DIR/bash_completion && c
 [ -f ${HOME}/.gvm/scripts/gvm ] && source ${HOME}/.gvm/scripts/gvm
 [ -f ${HOME}/.bashhub/bashhub.sh ] && source ${HOME}/.bashhub/bashhub.sh
 [ -f $(pwd)/alacritty-completions.bash ] && source ${pwd}/alacritty-completions.bash
 [ -f ${HOME}/.fzf.bash ] && source ${HOME}/.fzf.bash
 [ -f /usr/local/lib/python2.7/dist-packages/powerline/bindings/bash/powerline.sh ] && source /usr/local/lib/python2.7/dist-packages/powerline/bindings/bash/powerline.sh
-[ -f ${NVM_DIR}/versions/node/v8.4.0/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.bash ] && source ${NVM_DIR}/versions/node/v8.4.0/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.bash
-[ -f ${NVM_DIR}/versions/node/v8.4.0/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.bash ] && source ${NVM_DIR}/versions/node/v8.4.0/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.bash
-
+if [ "$(uname)" != "Darwin" ]; then
+    shopt -s histappend
+    shopt -s cdspell
+    shopt -s checkwinsize
+    shopt -s globstar
+    welcome
+fi
 if [ -x /usr/bin/hstr ]; then
     if [[ $- =~ .*i.* ]]; then bind '"\C-r": "\C-a hstr -- \C-j"'; fi
     if [[ $- =~ .*i.* ]]; then bind '"\C-xk": "\C-a hstr -k \C-j"'; fi
 fi
-if [ $TILIX_ID ] || [ $VTE_VERSION ] ; then source /etc/profile.d/vte.sh; fi # Ubuntu Budgie END
+[ $TILIX_ID ] && source /etc/profile.d/vte.sh # Ubuntu Budgie END
