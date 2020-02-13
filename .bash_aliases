@@ -12,29 +12,6 @@ GIT_LOG_FORMAT="format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ad) %C(b
 SSH_PK='/Users/festum/Dropbox/Festum/Archives/AppConf/ssh/f_app'
 
 # -------------------------------------------------------------------
-# General
-# -------------------------------------------------------------------
-alias c="clear && printf '\e[3J'"
-alias cls="echo -ne '\033c'"
-alias rd='rm -rf'
-alias md='mkdir'
-alias h='history | tail'
-alias g='grep'
-alias hg='history | grep'
-alias mvi='mv -i'
-alias rmi='rm -i'
-alias rm0='find . -size 0 -print0 |xargs -0 rm --'
-alias {ack,ak}='ack-grep'
-alias rv='source ~/.bashrc'
-alias rva='source ~/.bash_aliases && source ~/.bashrc'
-alias cp2='rsync --progress'
-alias myip="ifconfig | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p'"
-alias myextip='curl ifconfig.me'
-alias pscpu='ps -ax -opid,lstart,pcpu,cputime,comm --sort=-%cpu,-cputime | head -11'
-alias psmem='ps -ax -opid,lstart,pmem,rss,comm --sort=-pmem,-rss | head -11'
-alias ps2='ps -Ao pid,comm,pcpu,pmem --sort=-pcpu | head -11'
-
-# -------------------------------------------------------------------
 # Setup
 # -------------------------------------------------------------------
 function ssh_with_rc(){
@@ -89,32 +66,130 @@ function daemon(){
 function daemono(){
     $@ >> ./out 2>&1 &
 }
+
 # -------------------------------------------------------------------
-# FS
+# Aliases
 # -------------------------------------------------------------------
-alias l='ls -al'    # -CF
-alias ls='ls -GFh'  # Colorize output, add file type indicator, and put sizes in human readable format
-alias ll='ls -GFhl' # Same as above, but in long listing format -alF'
-alias lh='ls -d .*' # show hidden files/directories only
-alias la='ls -A'
-alias lt='ls --human-readable --size -1 -S --classify'
+# General
+alias c="clear && printf '\e[3J'"
+alias cls="echo -ne '\033c'"
+alias cp='cp -iv'                           # Preferred 'cp' implementation
+alias cpv='rsync -ah --info=progress2'      # CP continuously
+alias mv='mv -iv'                           # Preferred 'mv' implementation
+alias mkdir='mkdir -pv'                     # Preferred 'mkdir' implementation
+alias ll='ls -GFhl'                         # Preferred 'ls' implementation
+alias less='less -FSRXc'                    # Preferred 'less' implementation
+alias nano='nano -W'                        # Preferred 'nano' implementation
+alias wget='wget -c'                        # Preferred 'wget' implementation (resume download)
+alias c='clear'                             # c:            Clear terminal display
+alias path='echo -e ${PATH//:/\\n}'         # path:         Echo all executable Paths
+alias show_options='shopt'                  # Show_options: display bash options settings
+alias fix_stty='stty sane'                  # fix_stty:     Restore terminal settings when screwed up
+alias cic='set completion-ignore-case On'   # cic:          Make tab-completion case-insensitive
+alias src='source ~/.bashrc'                # src:          Reload .bashrc file
+alias tcn='mv --force -t ~/.local/share/Trash '
+alias h='history | tail'
+alias hg='history | grep'
+alias g='grep'
+alias {ack,ak}='ack-grep'
+# Directory Listing aliases
+alias dir='ls -hFx'
+alias l.='ls -d .* --color=tty' # short listing, only hidden files - .*
+alias l='ls -lathF'             # long, sort by newest to oldest
+alias L='ls -latrhF'            # long, sort by oldest to newest
+alias la='ls -Al'               # show hidden files
+alias lc='ls -lcr'              # sort by change time
+alias lk='ls -lSr'              # sort by size
+alias lh='ls -lSrh'             # sort by size human readable
+alias lm='ls -al | more'        # pipe through 'more'
+alias lo='ls -laSFh'            # sort by size largest to smallest
+alias lr='ls -lR'               # recursive ls
+alias lt='ls -ltr'              # sort by date
+alias lu='ls -lur'              # sort by access time
 alias left='ls -t -1'
-alias diff='git diff --no-index'
+alias lr='ls -R | grep ":$" | sed -e '\''s/:$//'\'' -e '\''s/[^-][^\/]*\//--/g'\'' -e '\''s/^/   /'\'' -e '\''s/-/|/'\'' | less' # Full Recursive Directory Listing
+alias dud='du -d 1 -h'          # Short and human-readable file listing
+alias duf='du -sh *'            # Short and human-readable directory listing
+# Permission
+alias perm='stat --printf "%a %n \n "'      # perm: Show permission of target in number
+alias 000='chmod 000'                       # ---------- (nobody)
+alias 640='chmod 640'                       # -rw-r----- (user: rw, group: r, other: -)
+alias 644='chmod 644'                       # -rw-r--r-- (user: rw, group: r, other: -)
+alias 755='chmod 755'                       # -rwxr-xr-x (user: rwx, group: rx, other: x)
+alias 775='chmod 775'                       # -rwxrwxr-x (user: rwx, group: rwx, other: rx)
+alias mx='chmod a+x'                        # ---x--x--x (user: --x, group: --x, other: --x)
+alias ux='chmod u+x'                        # ---x------ (user: --x, group: -, other: -)
+alias gpin='f(){ usermod -a -G $1 $USER; unset -f f; }; f' # gpin: Join group
+alias gpls='cat /etc/group | cut -d: -f1'                  # gpls: List groups
+alias vboxin='usermod -aG vboxsf $USER'                    # vboxin: Allow me to have access for shared folder
+alias chm='find . -type d -exec sudo chmod 755 {} \; && find . -type f -exec sudo chmod 644 {} \;' # normalize permission
+# File and folder
+alias rd='rm -rf'
+alias rmi='rm -i'
+alias rm0='find . -size 0 -print0 |xargs -0 rm --'  # Remove zero size files
+alias mkdir="mkdir -p"
+alias md='mkdir'
+alias mvi='mv -i'
+alias ln="ln -v"
 alias ~='cd ~'
 alias d='cd ~/Downloads/'
-alias ln="ln -v"
-alias mkdir="mkdir -p"
-alias fe0='cd /fe0/repo'
-alias fm='python /fe0/bin/ranger/ranger.py'
-alias r='ranger'
-alias count='f(){ cat $@ |wc -l; unset -f f; }; f'
-alias getg='cat /etc/group | cut -d: -f1'
-alias joing='f(){ usermod -a -G $1 $USER; unset -f f; }; f'
+alias numFiles='echo $(ls -1 | wc -l)'               # numFiles: Count of non-hidden files in current dir
+alias make1mb='truncate -s 1m ./1MB.dat'             # make1mb:  Creates a file of 1mb size (all zeros)
+alias make5mb='truncate -s 5m ./5MB.dat'             # make5mb:  Creates a file of 5mb size (all zeros)
+alias make10mb='truncate -s 10m ./10MB.dat'          # make10mb: Creates a file of 10mb size (all zeros)
+alias ffind='f(){ find . -type f -iname '*'$@'*' -ls | grep -v "Permission denied"; unset -f f; }; f' # Find a file with a pattern in name:
+alias efind='f(){ find . -type f -iname '*'$@'*' -exec "${2:-file}" {} \; unset -f f; }; f' # Find a file with pattern $1 in name and Execute $2 on it:
+alias qfind="find . -name "                          # qfind:    Quickly search for file
+alias count='f(){ cat $@ |wc -l; unset -f f; }; f'   # count:    Get the number of files in this folder
+alias rep='find . -type f -print0 | xargs -0 sed -i' # rep:      Find file by string
+# Process
+alias memHogsTop='top -l 1 -o rsize | head -20' # Find memory hogs
+alias memHogsPs='ps wwaxm -o pid,stat,vsize,rss,time,command | head -10'
+alias cpuHogs='ps wwaxr -o pid,stat,%cpu,time,command | head -10' # Find CPU hogs
+alias topForever='top -l 9999999 -s 10 -o cpu' # Continual 'top' listing (every 10 seconds)
+alias ttop="top -R -F -s 10 -o rsize" # Recommended 'top' invocation to minimize resources
+alias psp='ps -Ao pid,comm,pcpu,pmem --sort=-pcpu | head -11'                      # psc: List processes with minimal info
+alias psc='ps -ax -opid,lstart,pcpu,cputime,comm --sort=-%cpu,-cputime | head -11' # psc: List processes by CPU
+alias psm='ps -ax -opid,lstart,pmem,rss,comm --sort=-pmem,-rss | head -11'         # psm: List processes by memory
+alias pss='f(){ ps -eaf | grep "$1"; unset -f f; }; f'                            # pss: Search process
+alias fu='sudo kill'
+alias fuu='sudo kill -9'
+alias fuuu='sudo killall'
+alias fuuuu='sudo killall -9'
+alias fp='f(){ sudo netstat -nlp | grep $@; unset -f f; }; f' # Get process by port
+# Networking
+alias netCons='lsof -i'                                   # netCons:      Show all open TCP/IP sockets
+alias lsock='sudo /usr/sbin/lsof -i -P'                   # lsock:        Display open sockets
+alias lsockU='sudo /usr/sbin/lsof -nP | grep UDP'         # lsockU:       Display only open UDP sockets
+alias lsockT='sudo /usr/sbin/lsof -nP | grep TCP'         # lsockT:       Display only open TCP sockets
+alias ipInfo0='ifconfig getpacket en0'                    # ipInfo0:      Get info on connections for en0
+alias ipInfo1='ifconfig getpacket en1'                    # ipInfo1:      Get info on connections for en1
+alias openPorts='sudo lsof -i | grep LISTEN'              # openPorts:    All listening connections
+alias showBlocked='sudo ipfw list'                        # showBlocked:  All ipfw rules inc/ blocked IPs
+alias myip='curl ifconfig.me'                             # myip:         Show my external IP
+alias myips="ifconfig | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p'"
+alias newip='sudo ipconfig set en0 BOOTP ; ipconfig set en0 DHCP'     # Request a new DHCP lease for a new IP address
+alias portf='f(){ kill "$(lsof -t -i :$1)"; unset -f f; }; f'         # portf: Free occupied process for certain port
+alias portt='f(){ kill -kill "$(lsof -t -i :$1)"; unset -f f; }; f'   # portt: Kill occupied process for certain port
+alias dl='f(){ curl -OJ $@; unset -f f; }; f'                         # dl:    Download
+alias dlb='f(){ sudo curl -o "/usr/local/bin/${1##*/}" $1 && sudo sudo chmod +x "/usr/local/bin/${1##*/}"; unset -f f; }; f' # dlb: Download binary and move as executable
+alias transfer='f(){  curl --progress-bar --upload-file $1 https://transfer.sh/$(basename $1) | tee /dev/null; unset -f f; }; f' # transfer: Upload to public
+alias serveo='f(){ ssh -R 80:$1 serveo.net; unset -f f; }; f'           # dl: Expose local port
+alias serveop='f(){ autossh -M 0 -R 80:$1 serveo.net; unset -f f; }; f' # dl: Expose local port as daemon
+# Date
+alias bdate="date '+%a, %b %d %Y %T %Z'"
+alias cal3='cal -3'
+alias da='date "+%Y-%m-%d %A    %T %Z"'
+alias daysleft='echo "There are $(($(date +%j -d"Dec 31, $(date +%Y)")-$(date +%j))) left in year $(date +%Y)."'
+alias epochtime='date +%s'
+alias mytime='date +%H:%M:%S'
+alias secconvert='date -d@1234567890'
+alias stamp='date "+%Y%m%d%a%H%M"'
+alias timestamp='date "+%Y%m%dT%H%M%S"'
+alias today='date +"%A, %B %-d, %Y"'
+alias weeknum='date +%V'
+# Misc
 alias uig='f(){ grep -i --color $@ /etc/group; unset -f f; }; f'
-alias rep='find . -type f -print0 | xargs -0 sed -i'
-alias gh='history | grep'
-alias cpv='rsync -ah --info=progress2'
-alias tcn='mv --force -t ~/.local/share/Trash '
 
 # -------------------------------------------------------------------
 # Tmux
@@ -139,11 +214,13 @@ alias tmns='tmuxinator start'
 # -------------------------------------------------------------------
 # Go
 # -------------------------------------------------------------------
-alias gog='GO111MODULE=off go get -u'
-alias goi='GO111MODULE=off go install'
+alias gog='go get -u'
+alias goi='go install'
+alias got='go test ./... -tags test'
+alias go.='go run .'
+alias gom='go mod'
 alias gogd='go get -d ./...'
 alias gol='golangci-lint --color always'
-alias golr='golangci-lint run --color always'
 alias gopi='echo export GOPATH=$(pwd) > .envrc'
 
 # -------------------------------------------------------------------
@@ -173,17 +250,6 @@ alias pes='pipenv shell'
 alias pep='pipenv run python'
 alias pipu="sudo pip2 freeze — local | grep -v ‘^\-e’ | cut -d = -f 1 | xargs -n1 sudo -H pip2 install -U"
 alias pips=pip_install_save
-
-# -------------------------------------------------------------------
-# Ruby
-# -------------------------------------------------------------------
-alias rake="noglob rake" # necessary to make rake work inside of zsh
-alias be='bundle exec'
-alias rials='rails'
-alias raisl='rails'
-alias rs='rails s'
-alias rc='rails c'
-alias rdb='rake db:migrate db:test:prepare'
 
 # -------------------------------------------------------------------
 # Heroku
@@ -224,6 +290,9 @@ alias 'pgrestore=pg_restore --verbose --clean --no-acl --no-owner -h localhost -
 # -------------------------------------------------------------------
 # Git
 # -------------------------------------------------------------------
+alias save='git stash'
+alias undo='git reset --hard && git clean -fd'
+alias diff='git diff --no-index'
 alias ga='git add'
 alias gaa='git add .'
 alias gb='git branch'
@@ -274,7 +343,6 @@ alias grm='git rm --ignore-unmatch -f -r --cached'
 alias grs='git reset'
 alias grs0='git reset --soft HEAD^1 && git add . && git commit -C HEAD@{1} && git push -f'
 alias grs1='git reset --soft HEAD^1'
-alias grh='git reset --hard HEAD'
 alias grh1='git reset --hard HEAD^1'
 alias gru="git status -su | cut -d' ' -f2- | tr '\n' '\0' | xargs -0 rm"
 alias gmt='git remote'
@@ -351,7 +419,7 @@ alias dkpl='docker ps -l -q'
 alias dkpf='docker ps --format "table {{.Names}}\t{{.Image}}\t{{.Ports}}\t{{.Command}}\t{{.Status}}\t"'
 alias dks='docker stats --format "table {{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}"'
 alias dkr='f(){ docker ps -ga -f name="$@" | xargs --no-run-if-empty docker rm -f;  unset -f f; }; f'
-alias dkrm='f(){ docker rm $(docker ps -aq -f name="$@") }; f'
+alias dkrm='f(){ docker rm $(docker ps -aq -f name="$@"); unset -f f; }; f'
 alias dkrma='docker rm -f $(docker ps -aq)'
 alias dkrme='docker rm $(docker ps -aq -f status=exited)'
 alias dkra='docker ps -qa | xargs --no-run-if-empty docker rm -f'
@@ -381,13 +449,13 @@ alias k8g='kubectl get'
 alias k8gd='kubectl get deployment,svc,pods,pvc,rc,rs'
 alias k8l='kubectl logs'
 alias k8r='kubectl delete -f'
+alias k8s='kubectl config use-context'
 alias k8rp='kubectl delete --grace-period=1 --force po'
 alias k8t='kubectl logs --tail=1 -f'
 alias k8x='kubectl exec -it'
 alias kc='kompose'
 alias kcc='kompose convert -f'
 alias mk='minikube'
-alias dsh='f(){   unset -f f; }; f'
 
 # ------------------------------------
 # Serverless and AWS
@@ -409,37 +477,26 @@ alias vgd='vagrant destroy'
 alias vgs='vagrant ssh'
 
 # -------------------------------------------------------------------
-# CLI shortcuts
+# Commands aliases
 # -------------------------------------------------------------------
 alias bws='bw list items --search'
 alias nrc='nrclientcmd -d f0 -u festum'
 alias https='http --default-scheme=https --verify=no'
-alias de='direnv'
+alias de=direnv
 alias dea='direnv allow'
 alias det='vim .envrc'
 alias lynx='/Applications/Lynxlet.app/Contents/Resources/lynx/bin/lynx'
-alias zt='zerotier-cli'
+alias eo=eopkg
+alias zt=zerotier-cli
 alias surf='sudo surfshark-vpn'
 alias surfa='sudo surfshark-vpn attack'
 alias surfd='sudo surfshark-vpn down'
 
 # -------------------------------------------------------------------
-# Serverlist (Please keep it in .aliases.local)
-# -------------------------------------------------------------------
-# A server with a non-standard SSH port, using passwordless RSA key authentication
-#alias server1='ssh -p 2200 user@server-domain.com'
-
-# A server that uses a certficate for authentication
-#alias server2='ssh -i ~/.ssh/amazon_ec2_certificate.pem user@123.123.123.123'
-
-# Automatically switch to a directory upon login
-#alias server3='ssh -t -p 2200 user@123.123.123.123 "cd /var/www/vhosts ; bash"'
-
-# -------------------------------------------------------------------
 # Commands mapping
 # -------------------------------------------------------------------
-
-[ -x "$(command -v codium)" ] && alias code='codium'
+[ -x "$(command -v code-oss)" ] && alias code=code-oss
+[ -x "$(command -v codium)" ] && alias code=codium
 [ -x "$(command -v hstr)" ] && alias hh=hstr
 
 # -------------------------------------------------------------------
@@ -449,11 +506,9 @@ function swap() {
     local TMPFILE=tmp.$$
     mv "$1" $TMPFILE && mv "$2" "$1" && mv $TMPFILE $2
 }
-
 function authme() {
     cat ~/.ssh/id_rsa.pub | ssh $1 'umask 0077; mkdir -p ~/.ssh; cat >> .ssh/authorized_keys && chmod 700 ~/.ssh && chmod 600 ~/.ssh/authorized_keys && echo "Key copied"'
 }
-
 # ex - archive extractor.
 # Usage: ex <file>.
 function ex(){
@@ -480,7 +535,6 @@ function ar(){
     BN=`basename ${1}`
     tar -zcvf ${BN}.tar.gz ${1}
 }
-
 export LESS_TERMCAP_mb=$'\E[01;31m'
 export LESS_TERMCAP_md=$'\E[01;31m'
 export LESS_TERMCAP_me=$'\E[0m'
@@ -488,32 +542,8 @@ export LESS_TERMCAP_se=$'\E[0m'
 export LESS_TERMCAP_so=$'\E[01;44;33m'
 export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[01;32m'
-
-function bindl() {
-    sudo curl -o "/usr/local/bin/${1##*/}" $1 && sudo sudo chmod +x "/usr/local/bin/${1##*/}"
-}
-function transfer() {
-    curl --progress-bar --upload-file $1 https://transfer.sh/$(basename $1) | tee /dev/null;
-}
-function dl() {
-    curl -OJ $@
-}
-function serveo() { #https://serveo.net/
-    ssh -R 80:$1 serveo.net
-}
-function serveop() { #https://serveo.net/
-    autossh -M 0 -R 80:$1 serveo.net
-}
 function ngr() {
     ngrok http $DMHOST:$1
-}
-# Find a file with a pattern in name:
-function ff() {
-    find . -type f -iname '*'$@'*' -ls | grep -v "Permission denied";
-}
-# Find a file with pattern $1 in name and Execute $2 on it:
-function fe() {
-    find . -type f -iname '*'$@'*' -exec "${2:-file}" {} \;  ;
 }
 # search from CLI
 function google {
@@ -529,10 +559,6 @@ function translate() {
     fi
     translate
 }
-
-# Request a new DHCP lease for a new IP address
-alias newip='sudo ipconfig set en0 BOOTP ; ipconfig set en0 DHCP'
-
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
@@ -541,11 +567,6 @@ if [ -x /usr/bin/dircolors ]; then
     alias fgrep='fgrep --color=auto'
     alias egrep='egrep --color=auto'
 fi
-
-# some more ls aliases
-alias ll='ls -alF --block-size=M'
-alias la='ls -A --block-size=M'
-alias l='ls -CF --block-size=M'
 if [ "$(uname)" == "Darwin" ]; then
     alias ll='ls -alF'
     alias la='ls -A'
@@ -555,24 +576,9 @@ fi
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
-
-# task kill
-alias fu='sudo kill'
-alias fuu='sudo kill -9'
-alias fuuu='sudo killall'
-alias fuuuu='sudo killall -9'
-alias fp='f(){ sudo netstat -nlp | grep $@;  unset -f f; }; f'
-free-port() { kill "$(lsof -t -i :$1)"; }
-kill-port() { kill -kill "$(lsof -t -i :$1)"; }
-# normalize permission
-alias chm='find . -type d -exec sudo chmod 755 {} \; && find . -type f -exec sudo chmod 644 {} \;'
-
 # show status
 function getstate(){
     echo "CPU `LC_ALL=C top -bn1 | grep "Cpu(s)" | sed "s/.*, *\([0-9.]*\)%* id.*/\1/" | awk '{print 100 - $1}'`% RAM `free -m | awk '/Mem:/ { printf("%3.1f%%", $3/$2*100) }'` HDD `df -h / | awk '/\// {print $(NF-1)}'`"
-}
-function pss(){
-    ps -eaf | grep "$1"
 }
 function update_terminal_cwd() {
     # Identify the directory using a "file:" scheme URL,

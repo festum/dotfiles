@@ -8,7 +8,7 @@ link() {
 	if [[ -n $2 ]]; then TARGET_DIR=$2; fi
     if test ! -f "$TARGET_DIR/$FILENAME"; then
 		echo "linking to $TARGET_DIR/$FILENAME"
-		ln -s $DOTFILES_DIR/$FILENAME $HOME/$FILENAME
+		ln -s $DOTFILES_DIR/$FILENAME $TARGET_DIR/$FILENAME
 	fi
 }
 

@@ -89,9 +89,7 @@ export BASH_IT_THEME='minimal'
 [ ! -f ~/.bash_it/install.sh ] && git clone --depth=1 https://github.com/Bash-it/bash-it.git ~/.bash_it && ~/.bash_it/install.sh -s -n
 [ ! -d ~/.tmux ] && git clone --depth=1 https://github.com/gpakosz/.tmux.git ~/.tmux && cp ~/.tmux/.tmux.conf.local ~
 [ ! -d ~/.tmux/plugins/tpm ] && git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-
 [ -f ~/.bash_aliases ] && . ~/.bash_aliases
-[ -f ~/.bashrc_local ] && . ~/.bashrc_local
 [ -f ~/.fe0/.bash_aliases ] && . ~/.fe0/.bash_aliases && export BASH_IT_THEME='candy'
 if [ "$(uname)" != "Darwin" ]; then
     shopt -s histappend
@@ -136,7 +134,7 @@ export CARGO=$HOME/.cargo/bin
 export BIN=$HOME/bin:$HOME/.local/bin:/fe0/bin:/usr/local/go/bin:$GOROOT/bin:$GOPATH/bin:/fe0/opt/gotools/bin:$JAVA_HOME/bin
 export PYBIN=$HOME/Library/Python/2.7/bin:$HOME/Library/Python/3.6/bin
 export PATH=/usr/bin:/usr/local/bin:$PYBIN:$BIN:$CARGO:$HOME/.nexustools:$PATH
-
+[ -f ~/.bashrc_local ] && . ~/.bashrc_local
 [ -x /usr/local/bin/docker-machine ] && [ "$(uname)" != "Linux" ] && export DMHOST=$(docker-machine ip default) && dmused
 [ -x /usr/bin/direnv ] || [ -x /usr/local/bin/direnv ] && eval "$(direnv hook bash)"
 [ -x /usr/local/bin/thefuck ] && eval "$(thefuck --alias)"
