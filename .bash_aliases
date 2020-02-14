@@ -289,6 +289,7 @@ alias 'pgrestore=pg_restore --verbose --clean --no-acl --no-owner -h localhost -
 alias save='git stash'
 alias undo='git reset --hard && git clean -fd'
 alias diff='git diff --no-index'
+alias pname='basename `git rev-parse --show-toplevel`'
 alias ga='git add'
 alias gaa='git add .'
 alias gb='git branch'
@@ -377,6 +378,25 @@ function gta2() {
         echo -e $C_1"----→ git tag -f -am\"${date} $1\" $1"$C_0
         git tag -f -am"${date} $1" $1
         echo -e $C_1"----→ done"$C_0
+    fi
+}
+function gitit() {
+    url=$(git config --get remote.origin.url)
+    re="^(https|git)(:\/\/|@)([^\/:]+)[\/:]([^\/:]+)\/(.+).git$"
+    if [[ $url =~ $re ]]; then
+        export repo_proto=${BASH_REMATCH[1]}
+        export repo_sepa=${BASH_REMATCH[2]}
+        export repo_host=${BASH_REMATCH[3]}
+        export repo_user=${BASH_REMATCH[4]}
+        export repo_name=${BASH_REMATCH[5]}
+    fi
+}
+function mr(){
+    gitit
+    link="https://${repo_host}/${repo_user}/${repo_name}/merge_requests/new?merge_request%5Bsource_branch%5D=$(git rev-parse --abbrev-ref HEAD)"
+    if [ "$(uname)" == "Darwin" ]
+    then open $link
+    else xdg-open $link
     fi
 }
 
