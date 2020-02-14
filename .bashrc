@@ -121,7 +121,9 @@ export CARGO=$HOME/.cargo/bin
 export BIN=$HOME/bin:$HOME/.local/bin:/fe0/bin:/usr/local/go/bin:$GOROOT/bin:$GOPATH/bin:/fe0/opt/gotools/bin:$JAVA_HOME/bin
 export PYBIN=$HOME/Library/Python/2.7/bin:$HOME/Library/Python/3.6/bin
 export PATH=$PYBIN:$BIN:$CARGO:$HOME/.nexustools:$PATH
-[ ! -d /usr/local/bin ] && sudo mkdir /usr/local &&Z sudo ln -s /usr/bin /usr/local/bin
+[ ! -d /usr/local ] && sudo mkdir /usr/local
+[ ! -d /usr/local/bin ] && sudo ln -s /usr/bin /usr/local/bin
+[ ! -d /usr/local/include ] && sudo ln -s /usr/include /usr/local/include
 [ ! -f ${HOME}/.bash_profile ] && echo "source ~/.bashrc" >> ${HOME}/.bash_profile
 [ ! -f ~/.bash_it/install.sh ] && git clone --depth=1 https://github.com/Bash-it/bash-it.git ~/.bash_it && ~/.bash_it/install.sh -s -n
 [ ! -d ~/.tmux ] && git clone --depth=1 https://github.com/gpakosz/.tmux.git ~/.tmux && ln -s -f ${HOME}/.tmux/.tmux.conf ${HOME} && mkdir ${HOME}/.tmux/tmp
