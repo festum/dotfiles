@@ -124,7 +124,7 @@ export PATH=$PYBIN:$BIN:$CARGO:$HOME/.nexustools:$PATH
 [ ! -d /usr/local/bin ] && sudo mkdir /usr/local &&Z sudo ln -s /usr/bin /usr/local/bin
 [ ! -f ${HOME}/.bash_profile ] && echo "source ~/.bashrc" >> ${HOME}/.bash_profile
 [ ! -f ~/.bash_it/install.sh ] && git clone --depth=1 https://github.com/Bash-it/bash-it.git ~/.bash_it && ~/.bash_it/install.sh -s -n
-[ ! -d ~/.tmux ] && git clone --depth=1 https://github.com/gpakosz/.tmux.git ~/.tmux && ln -s -f ~/.tmux/.tmux.conf ~
+[ ! -d ~/.tmux ] && git clone --depth=1 https://github.com/gpakosz/.tmux.git ~/.tmux && ln -s -f ${HOME}/.tmux/.tmux.conf ${HOME} && mkdir ${HOME}/.tmux/tmp
 [ ! -d ~/.tmux/plugins/tpm ] && git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 [ -f ~/.bash_aliases ] && . ~/.bash_aliases
 [ -f ~/.fe0/.bash_aliases ] && . ~/.fe0/.bash_aliases && export BASH_IT_THEME='candy'
