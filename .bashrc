@@ -85,6 +85,15 @@ if ! shopt -oq posix; then
         . /etc/bash_completion
     fi
 fi
+if ! [ -f /etc/os-release ]; then
+    if ! [ -x "$(command -v sudo)" ]; then
+        pkg install ncurses-utils
+        git cone https://gitlab.com/st42/termux-sudo.git
+        cat termux-sudo/sudo > /data/data/com.termux/files/usr/bin/sudo
+        chmod 700 /data/data/com.termux/files/usr/bin/sudo
+        rm -rf termux-sudo
+    fi
+fi
 export ME=$(id -u -n)
 export HISTTIMEFORMAT="%F %T "
 export HISTCONTROL=ignoreboth:erasedups
