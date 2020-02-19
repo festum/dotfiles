@@ -5,7 +5,7 @@
 [ -f ~/configs/custom_aliases ] && . ~/configs/custom_aliases
 
 # -------------------------------------------------------------------
-# Config (Replace with yours)
+# Config (set your own personal data in ~/.bashrc_local)
 # -------------------------------------------------------------------
 GIT_USERNAME='Festum Qin'
 GIT_USEREMAIL='festum@g.pl'
@@ -419,7 +419,7 @@ alias dcd='docker-compose down'
 alias dcu='docker-compose up'
 alias dcub='docker-compose up --build --force-recreate'
 alias dcubn='docker-compose up --no-deps --build '
-alias dcr='docker-compose down && docker-compose up -d'
+alias dcrs='docker-compose down && docker-compose up -d'
 alias dcl='docker-compose logs'
 alias dcx='docker-compose exec'
 alias dk='docker'
@@ -610,29 +610,28 @@ function welcome(){
     # Basic info
     HOSTNAME=`uname -n`
     ROOT=`df -h | awk '$NF=="/"{printf "%s", $5}'`
-    # System load
-    MEMORY1=`free -t -m | grep Total | awk '{print $3" MB";}'`
-    MEMORY2=`free -t -m | grep "Mem" | awk '{print $2" MB";}'`
-    DISK_TOTAL=`df -h --total | awk 'END {print $2}'`
-    DISK_USED=`df -h --total | awk 'END {print $3}'`
-    DISK_USAGE=`df -h --total | awk 'END {print $5}'`
-    LOAD1=`cat /proc/loadavg | awk {'print $1'}`
-    LOAD5=`cat /proc/loadavg | awk {'print $2'}`
-    LOAD15=`cat /proc/loadavg | awk END{'print $3'}`
+    DF="df -h --total"
     if [ -f /etc/os-release ]; then
         DISTO1=`awk -F'=' '/PRETTY_NAME/ {print $2}' /etc/os-release`
     else
         DISTO1="Unknown"
+        DF="df -ha"
     fi
-    echo "
-===============================================
+    # System load
+    MEMORY1=`free -t -m | grep Total | awk '{print $3" MB";}'`
+    MEMORY2=`free -t -m | grep "Mem" | awk '{print $2" MB";}'`
+    DISK_TOTAL=`eval $DF | awk 'END {print $2}'`
+    DISK_USED=`eval $DF | awk 'END {print $3}'`
+    DISK_USAGE=`eval $DF | awk 'END {print $5}'`
+    LOAD1=`cat /proc/loadavg | awk {'print $1'}`
+    LOAD5=`cat /proc/loadavg | awk {'print $2'}`
+    LOAD15=`cat /proc/loadavg | awk END{'print $3'}`
+    echo "===============================================
  - Hostname............: $HOSTNAME
  - Linux Distribution..: $DISTO1
  - Disk Space..........: $DISK_USED/$DISK_TOTAL ($DISK_USAGE) used
-===============================================
  - CPU usage...........: $LOAD1, $LOAD5, $LOAD15 (1, 5, 15 min)
  - Memory used.........: $MEMORY1 / $MEMORY2
  - Swap in use.........: `free -m | tail -n 1 | awk '{print $3}'` MB
-===============================================
-    "
+==============================================="
 }
