@@ -86,6 +86,7 @@ if ! shopt -oq posix; then
     fi
 fi
 if ! [ -f /etc/os-release ]; then
+    # install sudo for termux
     if ! [ -x "$(command -v sudo)" ]; then
         pkg install ncurses-utils
         git cone https://gitlab.com/st42/termux-sudo.git
@@ -93,6 +94,10 @@ if ! [ -f /etc/os-release ]; then
         chmod 700 /data/data/com.termux/files/usr/bin/sudo
         rm -rf termux-sudo
     fi
+else  # create folder for non-termux
+    [ ! -d /usr/local ] && sudo mkdir /usr/local
+    [ ! -d /usr/local/bin ] && sudo ln -s /usr/bin /usr/local/bin
+    [ ! -d /usr/local/include ] && sudo ln -s /usr/include /usr/local/include
 fi
 export ME=$(id -u -n)
 export HISTTIMEFORMAT="%F %T "
@@ -130,9 +135,6 @@ export CARGO=$HOME/.cargo/bin
 export BIN=$HOME/bin:$HOME/.local/bin:/fe0/bin:/usr/local/go/bin:$GOROOT/bin:$GOPATH/bin:/fe0/opt/gotools/bin:$JAVA_HOME/bin
 export PYBIN=$HOME/Library/Python/2.7/bin:$HOME/Library/Python/3.6/bin
 export PATH=$PYBIN:$BIN:$CARGO:$HOME/.nexustools:$PATH
-[ ! -d /usr/local ] && sudo mkdir /usr/local
-[ ! -d /usr/local/bin ] && sudo ln -s /usr/bin /usr/local/bin
-[ ! -d /usr/local/include ] && sudo ln -s /usr/include /usr/local/include
 [ ! -f ${HOME}/.bash_profile ] && echo "source ~/.bashrc" >> ${HOME}/.bash_profile
 [ ! -f ~/.bash_it/install.sh ] && git clone --depth=1 https://github.com/Bash-it/bash-it.git ~/.bash_it && ~/.bash_it/install.sh -s -n
 [ ! -d ~/.tmux ] && git clone --depth=1 https://github.com/gpakosz/.tmux.git ~/.tmux && ln -s -f ${HOME}/.tmux/.tmux.conf ${HOME} && mkdir ${HOME}/.tmux/tmp
