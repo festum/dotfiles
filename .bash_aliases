@@ -208,8 +208,9 @@ alias tmno='tmuxinator open'
 alias tmns='tmuxinator start'
 
 # -------------------------------------------------------------------
-# Go
+# Coding
 # -------------------------------------------------------------------
+# Go
 alias gog='go get -u'
 alias goi='go install'
 alias got='go test ./... -tags test'
@@ -219,14 +220,13 @@ alias gogd='go get -d ./...'
 alias gol='golangci-lint --color always'
 alias gopi='echo export GOPATH=$(pwd) > .envrc'
 
-# -------------------------------------------------------------------
 # Node
-# -------------------------------------------------------------------
 alias node='node --harmony'
 
-# -------------------------------------------------------------------
+# Kotlin
+alias ktl="ktlint -F '**/*.kt'"
+
 # Python
-# -------------------------------------------------------------------
 pip_install_save() {
     package_name=$1
     requirements_file=$2
@@ -395,8 +395,8 @@ function mr(){
     gitit
     link="https://${repo_host}/${repo_user}/${repo_name}/merge_requests/new?merge_request%5Bsource_branch%5D=$(git rev-parse --abbrev-ref HEAD)"
     if [ "$(uname)" == "Darwin" ]
-    then open $link
-    else xdg-open $link
+    then open $link </dev/null >/dev/null 2>&1 & disown
+    else xdg-open $link </dev/null >/dev/null 2>&1 & disown
     fi
 }
 

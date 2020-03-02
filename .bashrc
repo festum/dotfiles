@@ -1,4 +1,10 @@
+#!/usr/bin/env bash
 # ~/.bashrc: executed by Festum-bash(1) for non-login shells.
+
+case $- in
+  *i*) ;;
+    *) return;;
+esac
 
 ME="$(id -u -n)"
 
@@ -120,11 +126,11 @@ export TMUX_TMPDIR=~/.tmux/tmp
 export LANG=en_US.UTF-8
 export LC_ALL=$LANG
 export IRC_CLIENT=irssi
-export SCM_CHECK=true
-export SHORT_HOSTNAME=$(hostname -s)
-export SHORT_USER=${USER:0:8}
-export SHORT_TERM_LINE=true
-export BASH_IT_AUTOMATIC_RELOAD_AFTER_CONFIG_CHANGE=1
+export SCM_CHECK=true #Version control status checking
+export SHORT_HOSTNAME=$(hostname -s) #Set Xterm/screen/Tmux title with only a short hostname
+export SHORT_TERM_LINE=true #Set Xterm/screen/Tmux title with shortened command and directory
+export SHORT_USER=${USER:0:8} #Trim max len of username
+export BASH_IT_AUTOMATIC_RELOAD_AFTER_CONFIG_CHANGE=1 #Bash-it auto reload
 export SDKMAN_DIR=$HOME/.sdkman
 export NVM_DIR=$HOME/.nvm
 export GOROOT=/usr/local/go
