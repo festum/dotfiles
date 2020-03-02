@@ -307,7 +307,7 @@ alias gdc='git diff --shortstat --cached'
 alias gdev='git checkout master && git branch -D dev && git pull && git checkout -b dev'
 alias gds='gd --stat'
 alias gfa='git fetch --all -p'
-alias gfe='git fetch --progress --prune origin'
+alias gfp='git fetch --progress --prune origin'
 alias gm='git commit -m '
 alias gma='git commit -am'
 alias gmr='git commit --amend -m'
@@ -382,7 +382,7 @@ function gta2() {
 }
 function gitit() {
     url=$(git config --get remote.origin.url)
-    re="^(https|git)(:\/\/|@)([^\/:]+)[\/:]([^\/:]+)\/(.+).git$"
+    re="^(https|git)(:\/\/|@)([^\/:]+)[\/:]([^\/:]+)\/(.+)(.git)?$"
     if [[ $url =~ $re ]]; then
         export repo_proto=${BASH_REMATCH[1]}
         export repo_sepa=${BASH_REMATCH[2]}
