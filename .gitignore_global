@@ -58,7 +58,8 @@ Thumbs.db
 
 # My files
 **/.dev
-*.me.*
+*.dev.*
+*.dev
 
 # Generated files
 *.pb.go
