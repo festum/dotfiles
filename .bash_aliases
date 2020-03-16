@@ -388,7 +388,7 @@ function gitit() {
         export repo_sepa=${BASH_REMATCH[2]}
         export repo_host=${BASH_REMATCH[3]}
         export repo_user=${BASH_REMATCH[4]}
-        export repo_name=${BASH_REMATCH[5]}
+        export repo_name=`basename -s .git ${BASH_REMATCH[5]}`
     fi
 }
 function mr(){
