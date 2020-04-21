@@ -294,8 +294,8 @@ alias ga='git add'
 alias gaa='git add .'
 alias gb='git branch'
 alias gbd='git branch -D'
-alias gbdr='git push origin --delete'
-alias gbdd='git fetch --all -p; git branch -vv | grep ": gone]" | awk "{ print $1 }" | xargs -n 1 git branch -D'
+alias gbdr='git push -d origin'
+alias gbdd='f() { git branch --merged | grep -v "master" | while read i; do git branch -d $i; done; unset -f f; }; f'
 alias gbo='git for-each-ref --sort=committerdate refs/heads/ --format="%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))"'
 alias gc='git checkout'
 alias gcb='git checkout -b'
@@ -609,13 +609,13 @@ function update_terminal_cwd() {
 function welcome(){
     # Basic info
     HOSTNAME=`uname -n`
-    ROOT=`df -h | awk '$NF=="/"{printf "%s", $5}'`
-    DF="df -h --total"
+    ROOT=`df -h 2>/dev/null | awk '$NF=="/"{printf "%s", $5}'`
+    DF="df -h --total 2>/dev/null"
     if [ -f /etc/os-release ]; then
         DISTO1=`awk -F'=' '/PRETTY_NAME/ {print $2}' /etc/os-release`
     else
         DISTO1="Unknown"
-        DF="df -ha"
+        DF="df -ha 2>/dev/null"
     fi
     # System load
     MEMORY1=`free -t -m | grep Total | awk '{print $3" MB";}'`
