@@ -134,20 +134,15 @@ export BASH_IT_AUTOMATIC_RELOAD_AFTER_CONFIG_CHANGE=1 #Bash-it auto reload
 export SDKMAN_DIR=$HOME/.sdkman
 export NVM_DIR=$HOME/.nvm
 export GOROOT=/usr/local/go
-export GOPATH=$HOME/Repo/godev
-export GO111MODULE=on
+export GOBIN=$(go env GOPATH)/bin
 export JAVA_HOME=/opt/jdk
-export CARGO=$HOME/.cargo/bin
-export BIN=$HOME/bin:$HOME/.local/bin:/fe0/bin:/usr/local/go/bin:$GOROOT/bin:$GOPATH/bin:/fe0/opt/gotools/bin:$JAVA_HOME/bin
-export PYBIN=$HOME/Library/Python/2.7/bin:$HOME/Library/Python/3.6/bin
-export PATH=$PYBIN:$BIN:$CARGO:$HOME/.nexustools:$PATH
+[ -f ~/.bashrc_local ] && source ~/.bashrc_local
+export BIN=$HOME/bin:$HOME/.local/bin:/fe0/bin:$GOBIN:$GOROOT/bin:$GOPATH/bin:/fe0/opt/gotools/bin:$JAVA_HOME/bin:$CARGO
+export PATH=$BIN:$CARGO:$HOME/.nexustools:$PATH
 [ ! -f ${HOME}/.bash_profile ] && echo "source ~/.bashrc" >> ${HOME}/.bash_profile
 [ ! -f ~/.bash_it/install.sh ] && git clone --depth=1 https://github.com/Bash-it/bash-it.git ~/.bash_it && ~/.bash_it/install.sh -s -n
 [ ! -d ~/.tmux ] && git clone --depth=1 https://github.com/gpakosz/.tmux.git ~/.tmux && ln -s -f ${HOME}/.tmux/.tmux.conf ${HOME} && mkdir ${HOME}/.tmux/tmp
 [ ! -d ~/.tmux/plugins/tpm ] && git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-[ -f ~/.bash_aliases ] && . ~/.bash_aliases
-[ -f ~/.fe0/.bash_aliases ] && . ~/.fe0/.bash_aliases && export BASH_IT_THEME='candy'
-[ -f ~/.bashrc_local ] && source ~/.bashrc_local
 [ -f ${BASH_IT}/bash_it.sh ] && source "$BASH_IT"/bash_it.sh
 [ -x /usr/local/bin/docker-machine ] && [ "$(uname)" != "Linux" ] && export DMHOST=$(docker-machine ip default) && dmused
 [ -x /usr/local/bin/direnv ] && eval "$(direnv hook bash)"
@@ -156,6 +151,8 @@ export PATH=$PYBIN:$BIN:$CARGO:$HOME/.nexustools:$PATH
 [ -x /usr/local/bin/kubectl ] && source <(kubectl completion bash)
 [ -x /usr/local/bin/awless ] && source <(awless completion bash)
 [ -x /usr/local/bin/direnv ] && eval "$(direnv hook bash)"
+[ -f ~/.bash_aliases ] && . ~/.bash_aliases
+[ -f ~/.fe0/.bash_aliases ] && . ~/.fe0/.bash_aliases && export BASH_IT_THEME='candy'
 [ -s ${HOME}/.sdkman/bin/sdkman-init.sh ] && source ${HOME}/.sdkman/bin/sdkman-init.sh
 [ -s $NVM_DIR/nvm.sh ] && \. $NVM_DIR/nvm.sh
 [ -s $NVM_DIR/bash_completion ] && source $NVM_DIR/bash_completion && c

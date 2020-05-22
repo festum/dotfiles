@@ -295,7 +295,7 @@ alias gaa='git add .'
 alias gb='git branch'
 alias gbd='git branch -D'
 alias gbdr='git push -d origin'
-alias gbdd='f() { git branch --merged | grep -v "master" | while read i; do git branch -d $i; done; unset -f f; }; f'
+alias gbdd="git branch -r --merged | grep -v master | sed 's/origin\///' | xargs -n 1 git push -dq origin"
 alias gbo='git for-each-ref --sort=committerdate refs/heads/ --format="%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))"'
 alias gc='git checkout'
 alias gcb='git checkout -b'
