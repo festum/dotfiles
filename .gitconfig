@@ -70,7 +70,7 @@ fc = "!f() { git log --pretty=format:'%C(yellow)%h  %Cblue%ad  %Creset%s%Cgreen 
 fm = "!f() { git log --pretty=format:'%C(yellow)%h  %Cblue%ad  %Creset%s%Cgreen  [%cn] %Cred%d' --decorate --date=short --grep=$1; }; f"
 
 # Remove branches that have already been merged with master
-# a.k.a. ‘delete merged’
+# a.k.a. "delete merged"
 dm = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
 
 # List contributors with number of commits
@@ -183,3 +183,5 @@ pushInsteadOf = "git://gist.github.com/"
 [url "git://gist.github.com/"]
 
 insteadOf = "gist:"
+[pull]
+	rebase = true
