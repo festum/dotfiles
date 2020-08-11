@@ -316,15 +316,13 @@ alias gmr='git commit --amend -m'
 alias gmu='git -c user.name="${GIT_USERNAME}" -c user.email="${GIT_USEREMAIL}" commit -m '
 alias gmg='git merge'
 alias gmgp='git merge @{-1}'
+alias gmgm='git merge master'
 alias gmv='git mv'
 alias gp='git pull'
 alias gpa='git pull --all'
 alias gpf='git pull --all --rebase --autostash'
 alias gpu='git fetch upstream && git rebase upstream/master'
-alias gpush=gph
-alias gph='git push -f'
-alias gphb='git push --set-upstream origin $(git rev-parse --abbrev-ref HEAD)' # git branch --show-current for git 2.22
-alias gpho='git push origin'
+alias gpush=gu
 alias gl='git log --date=iso --name-status'
 alias glp='git log --pretty="${GIT_LOG_FORMAT}" --abbrev-commit --no-merges --date=iso'
 alias glg='git log --graph --topo-order --decorate --oneline --all'
@@ -369,6 +367,9 @@ alias gslu="git shortlog | grep -E '^[^ ]'"
 alias gt='git tag -n'
 alias gta='git tag -a -m'
 alias ghusky='rm -rf .git/hooks/ && npm i -D husky' # https://github.com/typicode/husky/issues/333
+alias gu='git push -f'
+alias gub='git push --set-upstream origin $(git rev-parse --abbrev-ref HEAD)' # git branch --show-current for git 2.22
+alias guo='git push origin'
 function gta2() {
     local date=`date +%Y-%m-%d`
     if test -z $1; then
