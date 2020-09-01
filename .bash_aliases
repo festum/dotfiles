@@ -489,14 +489,6 @@ alias alac='aws lambda create-function --memory-size 512 --timeout 300 --functio
 alias aecrlogin='$(aws ecr get-login --region eu-central-1 --no-include-email)'
 
 # -------------------------------------------------------------------
-# Vagrant
-# -------------------------------------------------------------------
-alias vgu='vagrant up --provision'
-alias vgh='vagrant halt'
-alias vgd='vagrant destroy'
-alias vgs='vagrant ssh'
-
-# -------------------------------------------------------------------
 # Commands aliases
 # -------------------------------------------------------------------
 alias bws='bw list items --search'
@@ -515,10 +507,11 @@ alias surfd='sudo surfshark-vpn down'
 # -------------------------------------------------------------------
 # Commands mapping
 # -------------------------------------------------------------------
-[ -x "$(command -v code-oss)" ] && alias code=code-oss
-[ -x "$(command -v codium)" ] && alias code=codium
+if [ ! -x "$(command -v code)" ]; then
+    [ -x "$(command -v code-oss)" ] && alias code=code-oss
+    [ -x "$(command -v codium)" ] && alias code=codium
+fi
 [ -x "$(command -v hstr)" ] && alias hh=hstr
-
 # -------------------------------------------------------------------
 # UTILITIES
 # -------------------------------------------------------------------
