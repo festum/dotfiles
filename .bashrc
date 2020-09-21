@@ -133,6 +133,7 @@ export SHORT_USER=${USER:0:8} #Trim max len of username
 export BASH_IT_AUTOMATIC_RELOAD_AFTER_CONFIG_CHANGE=1 #Bash-it auto reload
 export SDKMAN_DIR=$HOME/.sdkman
 export NVM_DIR=$HOME/.nvm
+export GO111MODULE=on
 export GOROOT=/usr/local/go
 export GOBIN=$(go env GOPATH)/bin
 export JAVA_HOME=/opt/jdk
@@ -173,3 +174,5 @@ if [ -x /usr/bin/hstr ]; then
     if [[ $- =~ .*i.* ]]; then bind '"\C-xk": "\C-a hstr -k \C-j"'; fi
 fi
 [ $TILIX_ID ] && source /etc/profile.d/vte.sh # Ubuntu Budgie END
+
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
