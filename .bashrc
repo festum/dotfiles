@@ -115,6 +115,7 @@ export PROMPT_COMMAND="history -a; history -n; ${PROMPT_COMMAND}"
 export HISTIGNORE="&:[ ]*:ls:ll:bg:fg:clear:cls:c:exit:history*:h:hh:ps:rv*:gs:gaa:gp:gl:gpl:gpush:gps:venv:pipi:python:php:go:java:node"
 export BASH_IT_THEME='minimal'
 export BASH_IT=$HOME/.bash_it
+export SCM_GIT_SHOW_MINIMAL_INFO=true
 export BYOBU_PREFIX=/usr/local
 export TERM=xterm-256color
 export GIT_HOSTING=$ME@gitlab.com
@@ -136,9 +137,10 @@ export NVM_DIR=$HOME/.nvm
 export GO111MODULE=on
 export GOROOT=/usr/local/go
 export GOBIN=$(go env GOPATH)/bin
+export GOPROXY=direct
 export JAVA_HOME=/opt/jdk
 [ -f ~/.bashrc_local ] && source ~/.bashrc_local
-export BIN=$HOME/bin:$HOME/.local/bin:/fe0/bin:$GOBIN:$GOROOT/bin:$GOPATH/bin:/fe0/opt/gotools/bin:$JAVA_HOME/bin:$CARGO
+export BIN=$HOME/bin:$HOME/.local/bin:/fe0/bin:$GOBIN:$GOROOT/bin:/fe0/opt/gotools/bin:$JAVA_HOME/bin:$CARGO
 export PATH=$BIN:$CARGO:$HOME/.nexustools:$PATH
 [ ! -f ${HOME}/.bash_profile ] && echo "source ~/.bashrc" >> ${HOME}/.bash_profile
 [ ! -f ~/.bash_it/install.sh ] && git clone --depth=1 https://github.com/Bash-it/bash-it.git ~/.bash_it && ~/.bash_it/install.sh -s -n
