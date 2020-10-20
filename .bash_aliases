@@ -301,6 +301,7 @@ alias gbdd="git branch -r --merged | grep -v master | sed 's/origin\///' | xargs
 alias gbo='git for-each-ref --sort=committerdate refs/heads/ --format="%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))"'
 alias gc='git checkout'
 alias gcb='git checkout -b'
+alias gcm='git checkout master'
 alias gcp='git cherry-pick'
 alias gcl='git clone'
 alias gd='git diff --no-renames -b -w --ignore-blank-lines --color'
@@ -328,6 +329,7 @@ alias gl='git log --date=iso --name-status'
 alias glp='git log --pretty="${GIT_LOG_FORMAT}" --abbrev-commit --no-merges --date=iso'
 alias glg='git log --graph --topo-order --decorate --oneline --all'
 alias glc='git log --pretty=format:'%s' | cut -d " " -f 1 | sort | uniq -c | sort -nr' # get counts
+alias gld='rm -f .git/index.lock'
 alias grb='git rebase'
 alias grba='git rebase --abort'
 alias grbb='git stash && git checkout master && git pull && git branch -D  @{-1} && git checkout -b @{-1} && git rebase master && git stash pop'
@@ -335,6 +337,7 @@ alias grbc='git rebase --continue'
 alias grbs='git rebase --skip'
 alias grbi='git rebase --interactive' # merge
 alias grbm='git rebase master'
+alias grbmb='save && gc master && gp && gc - && grbm'
 alias grc='git ls-files --deleted -z | xargs -0 git rm' # clean
 alias grf='git reflog'
 alias grm='git rm --ignore-unmatch -f -r --cached'

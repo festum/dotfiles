@@ -56,6 +56,13 @@ Thumbs.db
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
 
+# Python virtual environment
+.virtualenvs
+.virenv
+.venv
+*-venv
+.local.env
+
 # My files
 **/.dev
 *.dev.*
