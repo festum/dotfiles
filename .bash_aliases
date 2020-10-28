@@ -239,13 +239,14 @@ pip_install_save() {
 alias venv='rm -rf ./venv && virtualenv --no-site-packages venv && source venv/bin/activate'
 alias venv3='rm -rf ./venv && virtualenv -p ~/.pyenv/versions/3.7.0/bin/python3.7 --no-site-packages venv && source venv/bin/activate'
 alias venvr='source venv/bin/activate'
-alias pipi='pip install -r requirements.txt'
+alias pipi='pip3 install -U'
+alias pipr='pip3 install -r -U requirements.txt'
+alias pipu='pip3 install -U $(pip3 freeze | cut -d '=' -f 1)'
+alias pips=pip_install_save
 alias pe='pipenv'
 alias pei='pipenv install'
 alias pes='pipenv shell'
 alias pep='pipenv run python'
-alias pipu="sudo pip2 freeze — local | grep -v ‘^\-e’ | cut -d = -f 1 | xargs -n1 sudo -H pip2 install -U"
-alias pips=pip_install_save
 
 # -------------------------------------------------------------------
 # Heroku
