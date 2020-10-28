@@ -155,6 +155,8 @@ export PATH=$BIN:$CARGO:$HOME/.nexustools:$PATH
 [ -x /usr/local/bin/kubectl ] && source <(kubectl completion bash)
 [ -x /usr/local/bin/awless ] && source <(awless completion bash)
 [ -x /usr/local/bin/direnv ] && eval "$(direnv hook bash)"
+[ ! -f ~/.autocomplete/fubectl.source ] && curl -L https://rawgit.com/kubermatic/fubectl/master/fubectl.source -o ~/.autocomplete/fubectl.source
+[ -f ~/.autocomplete/fubectl.source ] && source ~/.autocomplete/fubectl.source
 [ -f ~/.bash_aliases ] && . ~/.bash_aliases
 [ -f ~/.fe0/.bash_aliases ] && . ~/.fe0/.bash_aliases && export BASH_IT_THEME='candy'
 [ -s ${HOME}/.sdkman/bin/sdkman-init.sh ] && source ${HOME}/.sdkman/bin/sdkman-init.sh
