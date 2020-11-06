@@ -186,6 +186,7 @@ alias today='date +"%A, %B %-d, %Y"'
 alias weeknum='date +%V'
 # Misc
 alias uig='f(){ grep -i --color $@ /etc/group; unset -f f; }; f'
+alias sudo='sudo '
 
 # -------------------------------------------------------------------
 # Tmux
@@ -287,8 +288,14 @@ alias 'pgrestore=pg_restore --verbose --clean --no-acl --no-owner -h localhost -
 # -------------------------------------------------------------------
 # Git
 # -------------------------------------------------------------------
-alias save='git stash'
+alias save='git stash save -u'
+alias apply='git stash apply'
 alias undo='git reset --hard && git clean -fd'
+alias stashc='git stash clear'
+alias stashd='git stash drop -q'
+alias stashs='git stash show'
+alias stashl='git stash list'
+alias stashb='git stash branch'
 alias diff='git diff --no-index'
 alias pname='basename `git rev-parse --show-toplevel`'
 alias ga='git add'
@@ -309,6 +316,7 @@ alias gd='git diff --no-renames -b -w --ignore-blank-lines --color'
 alias gda='git diff --shortstat master | sed -E "s/([0-9]+) file.* ([0-9]+) insertion.* ([0-9]+) deletion.*/#\1 +\2 -\3/"'
 alias gdc='git diff --shortstat --cached'
 alias gdev='git checkout master && git branch -D dev && git pull && git checkout -b dev'
+alias gdm='git diff master...'
 alias gds='gd --stat'
 alias gfa='git fetch --all -p'
 alias gfp='git fetch --progress --prune origin'
@@ -354,14 +362,6 @@ alias grh1='git reset --hard HEAD^1'
 alias gru="git status -su | cut -d' ' -f2- | tr '\n' '\0' | xargs -0 rm"
 alias gs='git status -sb'
 alias gmod="git status --porcelain | sed -ne 's/^ M //p'"
-alias gsh='git stash'
-alias gsha='git stash apply'
-alias gshb='git stash branch'
-alias gshc='git stash clear'
-alias gshd='git stash drop -q'
-alias gshl='git stash list'
-alias gshp='git stash pop'
-alias gshs='git stash show -p'
 alias gsm='git submodule'
 alias gsmi='git submodule update --init --recursive'
 alias gsmu='git submodule update --remote --merge --recursive'
