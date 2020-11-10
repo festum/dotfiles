@@ -70,3 +70,6 @@ Thumbs.db
 
 # Generated files
 *.pb.go
+
+# Git
+.gitconfig

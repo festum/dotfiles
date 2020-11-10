@@ -359,6 +359,7 @@ alias grs='git reset'
 alias grs0='git reset --soft HEAD^1 && git add . && git commit -C HEAD@{1}'
 alias grs1='git reset --soft HEAD^1'
 alias grh1='git reset --hard HEAD^1'
+alias grhh='git update-ref -d HEAD'
 alias gru="git status -su | cut -d' ' -f2- | tr '\n' '\0' | xargs -0 rm"
 alias gs='git status -sb'
 alias gmod="git status --porcelain | sed -ne 's/^ M //p'"
@@ -491,7 +492,8 @@ alias sli='serverless invoke --function'
 alias sli='serverless invoke local --function'
 alias as3c='aws s3api create-bucket --bucket my-bucket'
 alias alac='aws lambda create-function --memory-size 512 --timeout 300 --function-name'
-alias aecrlogin='$(aws ecr get-login --region eu-central-1 --no-include-email)'
+alias login_ecr='$(aws ecr get-login --region eu-central-1 --no-include-email)'
+alias login_ghcr='echo $CR_PAT | docker login ghcr.io -u $(git config user.email) --password-stdin'
 
 # -------------------------------------------------------------------
 # Commands aliases

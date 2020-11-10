@@ -1,5 +1,5 @@
 [user]
-	email = festum.qin@ppro.com
+	email = festum@g.pl
 	name = Festum Qin
 
 [filter "lfs"]
@@ -183,5 +183,9 @@ pushInsteadOf = "git://gist.github.com/"
 [url "git://gist.github.com/"]
 
 insteadOf = "gist:"
+
 [pull]
 	rebase = true
+
+[includeIf "gitdir:~/Repo/Work/"]
+    path = ~/Repo/Work/.gitconfig
