@@ -105,6 +105,9 @@ else  # create folder for non-termux
     [ ! -d /usr/local/bin ] && sudo ln -s /usr/bin /usr/local/bin
     [ ! -d /usr/local/include ] && sudo ln -s /usr/include /usr/local/include
 fi
+[ ! -d ~/.local ] && mkdir -p ~/.local
+[ ! -d ~/.autocomplete ] && mkdir -p ~/.autocomplete
+
 export ME=$(id -u -n)
 export HISTTIMEFORMAT="%F %T "
 export HISTCONTROL=ignoreboth:erasedups
@@ -115,6 +118,7 @@ export PROMPT_COMMAND="history -a; history -n; ${PROMPT_COMMAND}"
 export HISTIGNORE="&:[ ]*:ls:ll:bg:fg:clear:cls:c:exit:history*:h:hh:ps:rv*:gs:gaa:gp:gl:gpl:gpush:gps:venv:pipi:python:php:go:java:node"
 export BASH_IT_THEME='minimal'
 export BASH_IT=$HOME/.bash_it
+export BASH_IT_AUTOMATIC_RELOAD_AFTER_CONFIG_CHANGE=1 #Bash-it auto reload
 export SCM_GIT_SHOW_MINIMAL_INFO=true
 export BYOBU_PREFIX=/usr/local
 export TERM=xterm-256color
@@ -131,7 +135,6 @@ export SCM_CHECK=true #Version control status checking
 export SHORT_HOSTNAME=$(hostname -s) #Set Xterm/screen/Tmux title with only a short hostname
 export SHORT_TERM_LINE=true #Set Xterm/screen/Tmux title with shortened command and directory
 export SHORT_USER=${USER:0:8} #Trim max len of username
-export BASH_IT_AUTOMATIC_RELOAD_AFTER_CONFIG_CHANGE=1 #Bash-it auto reload
 export SDKMAN_DIR=$HOME/.sdkman
 export NVM_DIR=$HOME/.nvm
 export GO111MODULE=auto
@@ -143,11 +146,11 @@ export JAVA_HOME=/opt/jdk
 [ -f ~/.bashrc_local ] && source ~/.bashrc_local
 export BIN=$HOME/bin:$HOME/.local/bin:/fe0/bin:$GOBIN:$GOROOT/bin:/fe0/opt/gotools/bin:$JAVA_HOME/bin:$CARGO
 export PATH=$BIN:$CARGO:$HOME/.nexustools:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH
-[ ! -f ${HOME}/.bash_profile ] && echo "source ~/.bashrc" >> ${HOME}/.bash_profile
-[ ! -f ~/.bash_it/install.sh ] && git clone --depth=1 https://github.com/Bash-it/bash-it.git ~/.bash_it && ~/.bash_it/install.sh -s -n
-[ ! -d ~/.tmux ] && git clone --depth=1 https://github.com/gpakosz/.tmux.git ~/.tmux && ln -s -f ${HOME}/.tmux/.tmux.conf ${HOME} && mkdir ${HOME}/.tmux/tmp
+[ ! -f ~/.bash_profile ] && echo "source ~/.bashrc" >> ~/.bash_profile
+[ ! -f ~/.bash_it/install.sh ] && git clone --depth=1 https://github.com/Bash-it/bash-it ~/.bash_it && ~/.bash_it/install.sh -s -n
+[ -f $BASH_IT/bash_it.sh ] && source "$BASH_IT"/bash_it.sh
+[ ! -d ~/.tmux ] && git clone --depth=1 https://github.com/gpakosz/.tmux ~/.tmux && ln -s -f ~/.tmux/.tmux.conf ~ && mkdir -p ~/.tmux/tmp
 [ ! -d ~/.tmux/plugins/tpm ] && git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-[ -f ${BASH_IT}/bash_it.sh ] && source "$BASH_IT"/bash_it.sh
 [ -x /usr/local/bin/docker-machine ] && [ "$(uname)" != "Linux" ] && export DMHOST=$(docker-machine ip default) && dmused
 [ -x /usr/local/bin/direnv ] && eval "$(direnv hook bash)"
 [ -x /usr/local/bin/thefuck ] && eval "$(thefuck --alias)"
@@ -159,14 +162,14 @@ export PATH=$BIN:$CARGO:$HOME/.nexustools:$HOME/.yarn/bin:$HOME/.config/yarn/glo
 [ -f ~/.autocomplete/fubectl.source ] && source ~/.autocomplete/fubectl.source
 [ -f ~/.bash_aliases ] && . ~/.bash_aliases
 [ -f ~/.fe0/.bash_aliases ] && . ~/.fe0/.bash_aliases && export BASH_IT_THEME='candy'
-[ -s ${HOME}/.sdkman/bin/sdkman-init.sh ] && source ${HOME}/.sdkman/bin/sdkman-init.sh
+[ -s ~/.sdkman/bin/sdkman-init.sh ] && source ~/.sdkman/bin/sdkman-init.sh
 [ -s $NVM_DIR/nvm.sh ] && \. $NVM_DIR/nvm.sh
 [ -s $NVM_DIR/bash_completion ] && source $NVM_DIR/bash_completion && c
-[ -f ${HOME}/.gvm/scripts/gvm ] && source ${HOME}/.gvm/scripts/gvm
-[ -f ${HOME}/.bashhub/bashhub.sh ] && source ${HOME}/.bashhub/bashhub.sh
+[ -f ~/.gvm/scripts/gvm ] && source ~/.gvm/scripts/gvm
+[ -f ~/.bashhub/bashhub.sh ] && source ~/.bashhub/bashhub.sh
 [ -f $(pwd)/alacritty-completions.bash ] && source ${pwd}/alacritty-completions.bash
-[ -f ${HOME}/.fzf.bash ] && source ${HOME}/.fzf.bash
-[ -f /usr/local/lib/python2.7/dist-packages/powerline/bindings/bash/powerline.sh ] && source /usr/local/lib/python2.7/dist-packages/powerline/bindings/bash/powerline.sh
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
 if [ "$(uname)" != "Darwin" ]; then
     shopt -s histappend
     shopt -s cdspell
