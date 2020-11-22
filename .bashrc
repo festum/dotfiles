@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-# ~/.bashrc: executed by Festum-bash(1) for non-login shells.
+# $HOME/.bashrc: executed by Festum-bash(1) for non-login shells.
 
 case $- in
   *i*) ;;
     *) return;;
 esac
 
-ME="$(id -u -n)"
+ME=$(id -u -n)
 
 # Perform file completion in a case insensitive fashion
 # bind "set completion-ignore-case on"
@@ -34,16 +34,10 @@ shopt -s globstar 2> /dev/null
 # Allows to bookmark favorite places across the file system
 shopt -s cdable_vars
 
-case $- in
-    *i*) ;;
-    *) return;;
-esac
-[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ] && debian_chroot=$(cat /etc/debian_chroot)
 case "$TERM" in
     xterm-color|*-256color) color_prompt=yes;;
 esac
-
 if [ -n "$force_color_prompt" ]; then
     if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
         color_prompt=yes
@@ -51,14 +45,13 @@ if [ -n "$force_color_prompt" ]; then
         color_prompt=
     fi
 fi
-
 if [ "$color_prompt" = yes ]; then
     PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
 else
     PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 fi
 unset color_prompt force_color_prompt
-unset MAILCHECK
+unset MAILCHECK # Don't check mail when opening terminal.
 case "$TERM" in
     xterm*|rxvt*)
         PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
@@ -67,8 +60,8 @@ case "$TERM" in
     ;;
 esac
 
-if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+if [ command -v dircolors &> /dev/null ]; then
+    test -r $HOME/.dircolors && eval "$(dircolors -b $HOME/.dircolors)" || eval "$(dircolors -b)"
     alias ls='ls --color=auto'
     alias dir='dir --color=auto'
     # alias vdir='vdir --color=auto'
@@ -76,9 +69,14 @@ if [ -x /usr/bin/dircolors ]; then
     alias fgrep='fgrep --color=auto'
     alias egrep='egrep --color=auto'
 fi
-
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
+[ ! -d $HOME/.autocomplete ] && mkdir -p $HOME/.autocomplete
+if [ command -v kubectl &> /dev/null ]; then
+    source <(kubectl completion bash)
+    [ ! -f $HOME/.autocomplete/fubectl.source ] && curl -L https://rawgit.com/kubermatic/fubectl/master/fubectl.source -o $HOME/.autocomplete/fubectl.source
+    source $HOME/.autocomplete/fubectl.source
+fi
 if [[ $PS1 && -f /usr/share/bash-completion/bash_completion ]]; then
     . /usr/share/bash-completion/bash_completion
     set show-all-if-ambiguous on
@@ -86,9 +84,9 @@ if [[ $PS1 && -f /usr/share/bash-completion/bash_completion ]]; then
 fi
 if ! shopt -oq posix; then
     if [ -f /usr/share/bash-completion/bash_completion ]; then
-        . /usr/share/bash-completion/bash_completion
+        source /usr/share/bash-completion/bash_completion
         elif [ -f /etc/bash_completion ]; then
-        . /etc/bash_completion
+        source /etc/bash_completion
     fi
 fi
 if ! [ -f /etc/os-release ]; then
@@ -105,8 +103,12 @@ else  # create folder for non-termux
     [ ! -d /usr/local/bin ] && sudo ln -s /usr/bin /usr/local/bin
     [ ! -d /usr/local/include ] && sudo ln -s /usr/include /usr/local/include
 fi
-[ ! -d ~/.local ] && mkdir -p ~/.local
-[ ! -d ~/.autocomplete ] && mkdir -p ~/.autocomplete
+
+if [ command -v hstr &> /dev/null ]; then
+    if [[ $- =~ .*i.* ]]; then bind '"\C-r": "\C-a hstr -- \C-j"'; fi
+    if [[ $- =~ .*i.* ]]; then bind '"\C-xk": "\C-a hstr -k \C-j"'; fi
+fi
+
 
 export ME=$(id -u -n)
 export HISTTIMEFORMAT="%F %T "
@@ -115,71 +117,67 @@ export HISTFILESIZE=500000
 export HISTSIZE=${HISTFILESIZE}
 export HSTR_CONFIG=hicolor,keywords,favorites,noconfirm,verbose-kill
 export PROMPT_COMMAND="history -a; history -n; ${PROMPT_COMMAND}"
-export HISTIGNORE="&:[ ]*:ls:ll:bg:fg:clear:cls:c:exit:history*:h:hh:ps:rv*:gs:gaa:gp:gl:gpl:gpush:gps:venv:pipi:python:php:go:java:node"
-export BASH_IT_THEME='minimal'
+export HISTIGNORE="&:[ ]*:[ \t]*:l[sla]:[bf]g:clear:cls:c:exit:mount:umount:history*:h:hh:ps:rv*:gs:gaa:gp:gl:gpl:gpush:gps:venv:pipi:python:php:go:java:node"
+export BASH_IT_THEME=minimal
 export BASH_IT=$HOME/.bash_it
-export BASH_IT_AUTOMATIC_RELOAD_AFTER_CONFIG_CHANGE=1 #Bash-it auto reload
+export BASH_IT_AUTOMATIC_RELOAD_AFTER_CONFIG_CHANGE=1 # Bash-it auto reload after enabling or disabling aliases, plugins, and completions
+export BASH_IT_RELOAD_LEGACY=0
 export SCM_GIT_SHOW_MINIMAL_INFO=true
 export BYOBU_PREFIX=/usr/local
 export TERM=xterm-256color
-export GIT_HOSTING=$ME@gitlab.com
+export GIT_HOSTING=git@github.com
 export GIT_EDITOR=$VISUAL
 export VISUAL=vim
 export EDITOR=$VISUAL
 export TODO=t
-export TMUX_TMPDIR=~/.tmux/tmp
 export LANG=en_US.UTF-8
+export LANGUAGE=$LANG
 export LC_ALL=$LANG
-export IRC_CLIENT=irssi
-export SCM_CHECK=true #Version control status checking
-export SHORT_HOSTNAME=$(hostname -s) #Set Xterm/screen/Tmux title with only a short hostname
-export SHORT_TERM_LINE=true #Set Xterm/screen/Tmux title with shortened command and directory
-export SHORT_USER=${USER:0:8} #Trim max len of username
-export SDKMAN_DIR=$HOME/.sdkman
+export IRC_CLIENT=irssi # Change this to your console based IRC client of choice.
+export SCM_CHECK=true # Version control status checking
+export SHORT_HOSTNAME=$(hostname -s) # Set Xterm/screen/Tmux title with only a short hostname
+export SHORT_TERM_LINE=true # Set Xterm/screen/Tmux title with shortened command and directory
+#export SHORT_USER=${USER:0:8} # Trim max len of username
+export TMUX_TMPDIR=$HOME/.tmux/tmp
 export NVM_DIR=$HOME/.nvm
 export GO111MODULE=auto
-export GOROOT=/usr/local/go
-export GOPATH=~/.go
-export GOBIN=$(go env GOPATH)/bin
 export GOPROXY=direct
-export JAVA_HOME=/opt/jdk
-[ -f ~/.bashrc_local ] && source ~/.bashrc_local
-export BIN=$HOME/bin:$HOME/.local/bin:/fe0/bin:$GOBIN:$GOROOT/bin:/fe0/opt/gotools/bin:$JAVA_HOME/bin:$CARGO
-export PATH=$BIN:$CARGO:$HOME/.nexustools:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH
-[ ! -f ~/.bash_profile ] && echo "source ~/.bashrc" >> ~/.bash_profile
-[ ! -f ~/.bash_it/install.sh ] && git clone --depth=1 https://github.com/Bash-it/bash-it ~/.bash_it && ~/.bash_it/install.sh -s -n
-[ -f $BASH_IT/bash_it.sh ] && source "$BASH_IT"/bash_it.sh
-[ ! -d ~/.tmux ] && git clone --depth=1 https://github.com/gpakosz/.tmux ~/.tmux && ln -s -f ~/.tmux/.tmux.conf ~ && mkdir -p ~/.tmux/tmp
-[ ! -d ~/.tmux/plugins/tpm ] && git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-[ -x /usr/local/bin/docker-machine ] && [ "$(uname)" != "Linux" ] && export DMHOST=$(docker-machine ip default) && dmused
-[ -x /usr/local/bin/direnv ] && eval "$(direnv hook bash)"
-[ -x /usr/local/bin/thefuck ] && eval "$(thefuck --alias)"
-[ -x /usr/local/bin/pipenv ] && eval "$(pipenv --completion)"
-[ -x /usr/local/bin/kubectl ] && source <(kubectl completion bash)
-[ -x /usr/local/bin/awless ] && source <(awless completion bash)
-[ -x /usr/local/bin/direnv ] && eval "$(direnv hook bash)"
-[ ! -f ~/.autocomplete/fubectl.source ] && curl -L https://rawgit.com/kubermatic/fubectl/master/fubectl.source -o ~/.autocomplete/fubectl.source
-[ -f ~/.autocomplete/fubectl.source ] && source ~/.autocomplete/fubectl.source
-[ -f ~/.bash_aliases ] && . ~/.bash_aliases
-[ -f ~/.fe0/.bash_aliases ] && . ~/.fe0/.bash_aliases && export BASH_IT_THEME='candy'
-[ -s ~/.sdkman/bin/sdkman-init.sh ] && source ~/.sdkman/bin/sdkman-init.sh
-[ -s $NVM_DIR/nvm.sh ] && \. $NVM_DIR/nvm.sh
+export GOPATH=$HOME/.go
+export GOBIN=$GOPATH/bin #$(go env GOPATH)
+[ -d /usr/local/go ] && export GOROOT=/usr/local/go
+[ ! -d $HOME/.local ] && mkdir -p $HOME/.local
+[ ! -d $HOME/.config ] && mkdir -p $HOME/.config
+[ -f $HOME/.bashrc_local ] && source $HOME/.bashrc_local
+export BIN=$HOME/bin:$HOME/.local/bin:/fe0/bin:$GOROOT/bin:$GOBIN:/fe0/opt/gotools/bin:$JAVA_HOME/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin
+export PATH=$BIN:$PATH
+[ ! -f $HOME/.bash_it/install.sh ] && git clone --depth=1 https://github.com/Bash-it/bash-it $HOME/.bash_it && $HOME/.bash_it/install.sh -s -n
+[ -f $BASH_IT/bash_it.sh ] && source $BASH_IT/bash_it.sh
+[ ! -d $HOME/.tmux ] && git clone --depth=1 https://github.com/gpakosz/.tmux $HOME/.tmux && ln -s -f $HOME/.tmux/.tmux.conf $HOME && mkdir -p $HOME/.tmux/tmp
+[ ! -d $HOME/.tmux/plugins/tpm ] && git clone https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm
+[ -f $HOME/.bash_aliases ] && source $HOME/.bash_aliases
+[ -f $HOME/.fe0/.bash_aliases ] && source $HOME/.fe0/.bash_aliases && export BASH_IT_THEME=candy
+[ -s $HOME/.sdkman/bin/sdkman-init.sh ] && export SDKMAN_DIR=$HOME/.sdkman && source $HOME/.sdkman/bin/sdkman-init.sh
+[ -s $NVM_DIR/nvm.sh ] && source $NVM_DIR/nvm.sh
 [ -s $NVM_DIR/bash_completion ] && source $NVM_DIR/bash_completion && c
-[ -f ~/.gvm/scripts/gvm ] && source ~/.gvm/scripts/gvm
-[ -f ~/.bashhub/bashhub.sh ] && source ~/.bashhub/bashhub.sh
-[ -f $(pwd)/alacritty-completions.bash ] && source ${pwd}/alacritty-completions.bash
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+[ -f $HOME/.gvm/scripts/gvm ] && source $HOME/.gvm/scripts/gvm
+[ -f $HOME/.bashhub/bashhub.sh ] && source $HOME/.bashhub/bashhub.sh
+[ -f $(pwd)/alacritty-completions.bash ] && source $(pwd)/alacritty-completions.bash
+[ -f $HOME/.fzf.bash ] && source $HOME/.fzf.bash
+[ command -v docker-compose &> /dev/null ] && [ "$(uname)" != "Linux" ] && export DMHOST=$(docker-machine ip default) && dmused
+[ command -v direnv &> /dev/null ] && eval "$(direnv hook bash)"
+[ command -v thefuck &> /dev/null ] && eval "$(thefuck --alias)"
+[ command -v pipenv &> /dev/null ] && eval "$(pipenv --completion)"
+[ command -v lesspipe &> /dev/null ] && eval "$(SHELL=/bin/sh lesspipe)"
+[ command -v awless &> /dev/null ] && source <(awless completion bash)
 
-if [ "$(uname)" != "Darwin" ]; then
+if [ "$(uname)" == "Darwin" ]; then
+    [ ! -f $HOME/.bash_profile ] && echo source $HOME/.bashrc >> $HOME/.bash_profile
+else
     shopt -s histappend
     shopt -s cdspell
     shopt -s checkwinsize
     shopt -s globstar
     welcome
-fi
-if [ -x /usr/bin/hstr ]; then
-    if [[ $- =~ .*i.* ]]; then bind '"\C-r": "\C-a hstr -- \C-j"'; fi
-    if [[ $- =~ .*i.* ]]; then bind '"\C-xk": "\C-a hstr -k \C-j"'; fi
 fi
 [ $TILIX_ID ] && source /etc/profile.d/vte.sh # Ubuntu Budgie END
 
