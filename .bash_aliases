@@ -21,18 +21,18 @@ function ssh_with_rc(){
     else
         break_arg='-w0'
     fi
-    if [ -f ${HOME}/.fe0/.bash_aliases ]; then
-        RC_DATA=`cat ${HOME}/.fe0/.bashrc | base64 ${break_arg}`
-        AL_DATA=`cat ${HOME}/.fe0/.bash_aliases | base64 ${break_arg}`
+    if [ -f $HOME/.fe0/.bash_aliases ]; then
+        RC_DATA=`cat $HOME/.fe0/.bashrc | base64 $break_arg`
+        AL_DATA=`cat $HOME/.fe0/.bash_aliases | base64 $break_arg`
     else
-        RC_DATA=`cat ${HOME}/.bashrc | base64 ${break_arg}`
-        AL_DATA=`cat ${HOME}/.bash_aliases | base64 ${break_arg}`
+        RC_DATA=`cat $HOME/.bashrc | base64 $break_arg`
+        AL_DATA=`cat $HOME/.bash_aliases | base64 $break_arg`
     fi
     ssh -t $@ "mkdir ~/.fe0;echo \"${RC_DATA}\" | base64 --decode > ~/.fe0/.bashrc;echo \"${AL_DATA}\" | base64 --decode > ~/.fe0/.bash_aliases;bash --rcfile ~/.fe0/.bashrc"
 }
 function exit_and_rm(){
-    if [ -f ${HOME}/.fe0/.bash_aliases ]; then
-        rm -rf ${HOME}/.fe0/
+    if [ -f $HOME/.fe0/.bash_aliases ]; then
+        rm -rf $HOME/.fe0/
     fi
     exit
 }
@@ -342,6 +342,7 @@ alias glc='git log --pretty=format:'%s' | cut -d " " -f 1 | sort | uniq -c | sor
 alias gld='rm -f .git/index.lock'
 alias grb='git rebase'
 alias grba='git rebase --abort'
+alias unlockref='git remote prune origin'
 alias grbb='git stash && git checkout master && git pull && git branch -D  @{-1} && git checkout -b @{-1} && git rebase master && git stash pop'
 alias grbc='git rebase --continue'
 alias grbs='git rebase --skip'
