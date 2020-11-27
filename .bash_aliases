@@ -306,8 +306,8 @@ alias gbl='git branch-select -l'
 alias gbr='git rev-parse --abbrev-ref --symbolic-full-name @{u}'
 alias gbd='git branch -D'
 alias gbdr='git push -d origin'
-alias gbdd="git branch -r --merged | grep -v master | sed 's/origin\///' | xargs -n 1 git push -dq origin"
-alias gbdl='git branch | grep -v "master\|main\|dev\|develop" | xargs git branch -D'
+alias gbdd="git branch -r | egrep -v -f /dev/fd/0  <(git branch -vv | grep origin | grep -v 'master\|main') | awk '{print \$1}' | xargs -r git branch -D"
+alias gbdc='git branch | egrep -v "(^\*|master|main|dev|develop)" | xargs git branch -D'
 alias gbo='git for-each-ref --sort=committerdate refs/heads/ --format="%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))"'
 alias gc='git checkout --recurse-submodules'
 alias gcm='git checkout --recurse-submodules master'
