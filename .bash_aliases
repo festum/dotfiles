@@ -377,7 +377,10 @@ alias gt='git tag -n'
 alias gta='git tag -a -m'
 alias ghusky='rm -rf .git/hooks/ && npm i -D husky' # https://github.com/typicode/husky/issues/333
 alias gu='git push -f'
-alias gub='git push --set-upstream origin $(git rev-parse --abbrev-ref HEAD)' # git branch --show-current for git 2.22
+alias gus='git push -f -o ci.skip'
+alias gub='git push -u origin $(git rev-parse --abbrev-ref HEAD)' # git branch --show-current for git 2.22
+alias gubs='git push -f -o ci.skip -u origin $(git rev-parse --abbrev-ref HEAD)'
+alias gum='git push -o merge_request.create -o merge_request.target=master -o merge_request.merge_when_pipeline_succeeds'
 alias guo='git push origin'
 function gta2() {
     local date=`date +%Y-%m-%d`

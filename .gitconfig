@@ -8,6 +8,17 @@
 	required = true
 	clean = git-lfs clean -- %f
 
+[pull]
+	rebase = true
+
+[submodule]
+	# Move git pull automatically update submodules to git checkout. Default is `on-demand`.
+	recurse = false
+
+[receive]
+	# Resolving: fatal: the receiving end does not support push options
+	advertisePushOptions = true
+
 [alias]
 
 # View abbreviated SHA, description, and history graph of the latest 20 commits
@@ -75,6 +86,10 @@ dm = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
 
 # List contributors with number of commits
 contributors = shortlog --summary --numbered
+
+# Merge when pipeline succeeds alias.
+# Example: git mwps origin <local-branch-name>
+mwps = push -o merge_request.create -o merge_request.target=master -o merge_request.merge_when_pipeline_succeeds
 
 
 [apply]
@@ -184,10 +199,5 @@ pushInsteadOf = "git://gist.github.com/"
 
 insteadOf = "gist:"
 
-[pull]
-	rebase = true
-
 [includeIf "gitdir:~/Repo/Work/"]
     path = ~/Repo/Work/.gitconfig
-[submodule]
-	recurse = false
