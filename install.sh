@@ -19,4 +19,5 @@ link .gitconfig
 link .gitignore_global
 link .inputrc
 link .wgetrc
+[ ! -d $HOME/.config/kitty ] && mkdir -p $HOME/.config/kitty
 link kitty.conf $HOME/.config/kitty

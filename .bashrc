@@ -34,6 +34,10 @@ shopt -s globstar 2> /dev/null
 # Allows to bookmark favorite places across the file system
 shopt -s cdable_vars
 
+command_exists () {
+    command -v $1 >/dev/null 2>&1;
+}
+
 [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ] && debian_chroot=$(cat /etc/debian_chroot)
 case "$TERM" in
     xterm-color|*-256color) color_prompt=yes;;
@@ -60,7 +64,7 @@ case "$TERM" in
     ;;
 esac
 
-if [ command -v dircolors &> /dev/null ]; then
+if command_exists dircolors; then
     test -r $HOME/.dircolors && eval "$(dircolors -b $HOME/.dircolors)" || eval "$(dircolors -b)"
     alias ls='ls --color=auto'
     alias dir='dir --color=auto'
@@ -72,8 +76,10 @@ fi
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
 [ ! -d $HOME/.autocomplete ] && mkdir -p $HOME/.autocomplete
-if [ command -v kubectl &> /dev/null ]; then
+if command_exists kubectl; then
     source <(kubectl completion bash)
+    alias k8=kubectl
+    complete -F __start_kubectl k8
     [ ! -f $HOME/.autocomplete/fubectl.source ] && curl -L https://rawgit.com/kubermatic/fubectl/master/fubectl.source -o $HOME/.autocomplete/fubectl.source
     source $HOME/.autocomplete/fubectl.source
 fi
@@ -91,7 +97,7 @@ if ! shopt -oq posix; then
 fi
 if ! [ -f /etc/os-release ]; then
     # install sudo for termux
-    if ! [ -x "$(command -v sudo)" ]; then
+    if ! command_exists sudo; then
         pkg install ncurses-utils
         git cone https://gitlab.com/st42/termux-sudo.git
         cat termux-sudo/sudo > /data/data/com.termux/files/usr/bin/sudo
@@ -104,7 +110,7 @@ else  # create folder for non-termux
     [ ! -d /usr/local/include ] && sudo ln -s /usr/include /usr/local/include
 fi
 
-if [ command -v hstr &> /dev/null ]; then
+if command_exists hstr; then
     if [[ $- =~ .*i.* ]]; then bind '"\C-r": "\C-a hstr -- \C-j"'; fi
     if [[ $- =~ .*i.* ]]; then bind '"\C-xk": "\C-a hstr -k \C-j"'; fi
 fi
@@ -163,12 +169,12 @@ export PATH=$BIN:$PATH
 [ -f $HOME/.bashhub/bashhub.sh ] && source $HOME/.bashhub/bashhub.sh
 [ -f $(pwd)/alacritty-completions.bash ] && source $(pwd)/alacritty-completions.bash
 [ -f $HOME/.fzf.bash ] && source $HOME/.fzf.bash
-[ command -v docker-compose &> /dev/null ] && [ "$(uname)" != "Linux" ] && export DMHOST=$(docker-machine ip default) && dmused
-[ command -v direnv &> /dev/null ] && eval "$(direnv hook bash)"
-[ command -v thefuck &> /dev/null ] && eval "$(thefuck --alias)"
-[ command -v pipenv &> /dev/null ] && eval "$(pipenv --completion)"
-[ command -v lesspipe &> /dev/null ] && eval "$(SHELL=/bin/sh lesspipe)"
-[ command -v awless &> /dev/null ] && source <(awless completion bash)
+command_exists docker-compose && [ "$(uname)" != "Linux" ] && export DMHOST=$(docker-machine ip default) && dmused
+command_exists direnv && eval "$(direnv hook bash)"
+command_exists thefuck && eval "$(thefuck --alias)"
+command_exists pipenv && eval "$(pipenv --completion)"
+command_exists lesspipe && eval "$(SHELL=/bin/sh lesspipe)"
+command_exists awless && source <(awless completion bash)
 
 if [ "$(uname)" == "Darwin" ]; then
     [ ! -f $HOME/.bash_profile ] && echo source $HOME/.bashrc >> $HOME/.bash_profile
