@@ -373,6 +373,7 @@ alias gsmr='git submodule foreach --recursive git reset --hard'
 alias gsho='git show --color'
 alias gslc="git shortlog | grep -E '^[ ]+\w+' | wc -l"
 alias gslu="git shortlog | grep -E '^[^ ]'"
+alias gsw='f() { git switch $1 2>/dev/null || git switch -c $1; }; f' # Git 2.23
 alias gt='git tag -n'
 alias gta='git tag -a -m'
 alias ghusky='rm -rf .git/hooks/ && npm i -D husky' # https://github.com/typicode/husky/issues/333

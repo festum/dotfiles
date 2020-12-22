@@ -154,7 +154,7 @@ export GOBIN=$GOPATH/bin #$(go env GOPATH)
 [ ! -d $HOME/.local ] && mkdir -p $HOME/.local
 [ ! -d $HOME/.config ] && mkdir -p $HOME/.config
 [ -f $HOME/.bashrc_local ] && source $HOME/.bashrc_local
-export BIN=$HOME/bin:$HOME/.local/bin:/fe0/bin:$GOROOT/bin:$GOBIN:/fe0/opt/gotools/bin:$JAVA_HOME/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin
+export BIN=$HOME/bin:/snap/bin:$HOME/.local/bin:/fe0/bin:$GOROOT/bin:$GOBIN:/fe0/opt/gotools/bin:$JAVA_HOME/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin
 export PATH=$BIN:$PATH
 [ ! -f $HOME/.bash_it/install.sh ] && git clone --depth=1 https://github.com/Bash-it/bash-it $HOME/.bash_it && $HOME/.bash_it/install.sh -s -n
 [ -f $BASH_IT/bash_it.sh ] && source $BASH_IT/bash_it.sh
