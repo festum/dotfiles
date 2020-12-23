@@ -38,6 +38,10 @@ command_exists () {
     command -v $1 >/dev/null 2>&1;
 }
 
+get_latest_release_tag() {
+    curl --silent "https://github.com/$1/releases/latest" | sed 's#.*tag/\(.*\)\".*#\1#'
+}
+
 [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ] && debian_chroot=$(cat /etc/debian_chroot)
 case "$TERM" in
     xterm-color|*-256color) color_prompt=yes;;
@@ -82,6 +86,8 @@ if command_exists kubectl; then
     complete -F __start_kubectl k8
     [ ! -f $HOME/.autocomplete/fubectl.source ] && curl -L https://rawgit.com/kubermatic/fubectl/master/fubectl.source -o $HOME/.autocomplete/fubectl.source
     source $HOME/.autocomplete/fubectl.source
+    [ ! -f $HOME/.kubectx/completion/kubens.bash ] && git clone https://github.com/ahmetb/kubectx.git ~/.kubectx && COMPDIR=$(pkg-config --variable=completionsdir bash-completion) && sudo ln -sf ~/.kubectx/completion/kubens.bash $COMPDIR/kubens && sudo ln -sf ~/.kubectx/completion/kubectx.bash $COMPDIR/kubectx && sudo ln -sf ~/.kubectx/kubectx /usr/local/bin/kubectx && sudo ln -sf ~/.kubectx/kubens /usr/local/bin/kubens
+    export PATH=~/.kubectx:$PATH
 fi
 if [[ $PS1 && -f /usr/share/bash-completion/bash_completion ]]; then
     . /usr/share/bash-completion/bash_completion
