@@ -119,7 +119,6 @@ alias gpls='cat /etc/group | cut -d: -f1'                  # gpls: List groups
 alias vboxin='usermod -aG vboxsf $USER'                    # vboxin: Allow me to have access for shared folder
 alias chm='find . -type d -exec sudo chmod 755 {} \; && find . -type f -exec sudo chmod 644 {} \;' # normalize permission
 # File and folder
-alias 7za='7z a -t7z -m0=lzma2 -mx=9 -mfb=258 -md=32m -ms=on'
 alias rd='rm -rf'
 alias rmi='rm -i'
 alias rm0='find . -size 0 -print0 |xargs -0 rm --'  # Remove zero size files
@@ -518,6 +517,13 @@ alias surf='sudo surfshark-vpn'
 alias surfa='sudo surfshark-vpn attack'
 alias surfd='sudo surfshark-vpn down'
 
+
+# -------------------------------------------------------------------
+# Converters
+# -------------------------------------------------------------------
+alias 7za='7z a -t7z -m0=lzma2 -mx=9 -mfb=258 -md=32m -ms=on'
+alias i2='convert -density 300 -quality 100'
+
 # -------------------------------------------------------------------
 # Commands mapping
 # -------------------------------------------------------------------
@@ -526,6 +532,7 @@ if [ ! -x "$(command -v code)" ]; then
     [ -x "$(command -v codium)" ] && alias code=codium
 fi
 [ -x "$(command -v hstr)" ] && alias hh=hstr
+
 # -------------------------------------------------------------------
 # UTILITIES
 # -------------------------------------------------------------------
