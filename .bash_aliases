@@ -127,6 +127,7 @@ alias md='mkdir'
 alias mvi='mv -i'
 alias ln="ln -v"
 alias ~='cd ~'
+alias -- -='cd ~-'
 alias d='cd ~/Downloads/'
 alias numFiles='echo $(ls -1 | wc -l)'               # numFiles: Count of non-hidden files in current dir
 alias make1mb='truncate -s 1m ./1MB.dat'             # make1mb:  Creates a file of 1mb size (all zeros)
