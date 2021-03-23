@@ -121,6 +121,30 @@ if command_exists hstr; then
     if [[ $- =~ .*i.* ]]; then bind '"\C-xk": "\C-a hstr -k \C-j"'; fi
 fi
 
+debug_handler() {
+    LAST_COMMAND=$BASH_COMMAND;
+}
+error_handler() {
+    local LAST_HISTORY_ENTRY=$(history | tail -1l)
+
+    # if last command is in history (HISTCONTROL, HISTIGNORE)...
+    if [ "$LAST_COMMAND" == "$(cut -d ' ' -f 2- <<< $LAST_HISTORY_ENTRY)" ]
+    then
+        # ...prepend it's history number into FAILED_COMMANDS,
+        # marking the command for deletion.
+        FAILED_COMMANDS="$(cut -d ' ' -f 1 <<< $LAST_HISTORY_ENTRY) $FAILED_COMMANDS"
+    fi
+}
+exit_handler() {
+    for i in $(echo $FAILED_COMMANDS | tr ' ' '\n' | uniq)
+    do
+        history -d $i
+    done
+    FAILED_COMMANDS=
+}
+trap debug_handler DEBUG
+trap error_handler ERR
+trap exit_handler EXIT
 
 export ME=$(id -u -n)
 export HISTTIMEFORMAT="%F %T "
@@ -181,6 +205,7 @@ command_exists thefuck && eval "$(thefuck --alias)"
 command_exists pipenv && eval "$(pipenv --completion)"
 command_exists lesspipe && eval "$(SHELL=/bin/sh lesspipe)"
 command_exists awless && source <(awless completion bash)
+
 
 if [ "$(uname)" == "Darwin" ]; then
     [ ! -f $HOME/.bash_profile ] && echo source $HOME/.bashrc >> $HOME/.bash_profile
