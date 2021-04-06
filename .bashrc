@@ -6,8 +6,6 @@ case $- in
     *) return;;
 esac
 
-ME=$(id -u -n)
-
 # Perform file completion in a case insensitive fashion
 # bind "set completion-ignore-case on"
 # Treat hyphens and underscores as equivalent
@@ -34,12 +32,8 @@ shopt -s globstar 2> /dev/null
 # Allows to bookmark favorite places across the file system
 shopt -s cdable_vars
 
-command_exists () {
+function command_exists () {
     command -v $1 >/dev/null 2>&1;
-}
-
-get_latest_release_tag() {
-    curl --silent "https://github.com/$1/releases/latest" | sed 's#.*tag/\(.*\)\".*#\1#'
 }
 
 [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ] && debian_chroot=$(cat /etc/debian_chroot)
@@ -68,17 +62,7 @@ case "$TERM" in
     ;;
 esac
 
-if command_exists dircolors; then
-    test -r $HOME/.dircolors && eval "$(dircolors -b $HOME/.dircolors)" || eval "$(dircolors -b)"
-    alias ls='ls --color=auto'
-    alias dir='dir --color=auto'
-    # alias vdir='vdir --color=auto'
-    alias grep='grep --color=auto'
-    alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
-fi
-export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
-
+[ -f $HOME/.bash_keys ] && source $HOME/.bash_keys
 [ ! -d $HOME/.autocomplete ] && mkdir -p $HOME/.autocomplete
 if command_exists kubectl; then
     source <(kubectl completion bash)
@@ -86,8 +70,8 @@ if command_exists kubectl; then
     complete -F __start_kubectl k8
     [ ! -f $HOME/.autocomplete/fubectl.source ] && curl -L https://rawgit.com/kubermatic/fubectl/master/fubectl.source -o $HOME/.autocomplete/fubectl.source
     source $HOME/.autocomplete/fubectl.source
-    [ ! -f $HOME/.kubectx/completion/kubens.bash ] && git clone https://github.com/ahmetb/kubectx.git ~/.kubectx && COMPDIR=$(pkg-config --variable=completionsdir bash-completion) && sudo ln -sf ~/.kubectx/completion/kubens.bash $COMPDIR/kubens && sudo ln -sf ~/.kubectx/completion/kubectx.bash $COMPDIR/kubectx && sudo ln -sf ~/.kubectx/kubectx /usr/local/bin/kubectx && sudo ln -sf ~/.kubectx/kubens /usr/local/bin/kubens
-    export PATH=~/.kubectx:$PATH
+    [ ! -f $HOME/.kubectx/completion/kubens.bash ] && git clone https://github.com/ahmetb/kubectx.git $HOME/.kubectx && COMPDIR=$(pkg-config --variable=completionsdir bash-completion) && sudo ln -sf $HOME/.kubectx/completion/kubens.bash $COMPDIR/kubens && sudo ln -sf $HOME/.kubectx/completion/kubectx.bash $COMPDIR/kubectx && sudo ln -sf $HOME/.kubectx/kubectx /usr/local/bin/kubectx && sudo ln -sf $HOME/.kubectx/kubens /usr/local/bin/kubens
+    export PATH=$HOME/.kubectx:$PATH
 fi
 if [[ $PS1 && -f /usr/share/bash-completion/bash_completion ]]; then
     . /usr/share/bash-completion/bash_completion
@@ -121,10 +105,10 @@ if command_exists hstr; then
     if [[ $- =~ .*i.* ]]; then bind '"\C-xk": "\C-a hstr -k \C-j"'; fi
 fi
 
-debug_handler() {
+function debug_handler() {
     LAST_COMMAND=$BASH_COMMAND;
 }
-error_handler() {
+function error_handler() {
     local LAST_HISTORY_ENTRY=$(history | tail -1l)
 
     # if last command is in history (HISTCONTROL, HISTIGNORE)...
@@ -135,7 +119,7 @@ error_handler() {
         FAILED_COMMANDS="$(cut -d ' ' -f 1 <<< $LAST_HISTORY_ENTRY) $FAILED_COMMANDS"
     fi
 }
-exit_handler() {
+function exit_handler() {
     for i in $(echo $FAILED_COMMANDS | tr ' ' '\n' | uniq)
     do
         history -d $i
@@ -166,9 +150,17 @@ export GIT_EDITOR=$VISUAL
 export VISUAL=vim
 export EDITOR=$VISUAL
 export TODO=t
+export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 export LANG=en_US.UTF-8
 export LANGUAGE=$LANG
 export LC_ALL=$LANG
+export LESS_TERMCAP_mb=$'\E[01;31m'
+export LESS_TERMCAP_md=$'\E[01;31m'
+export LESS_TERMCAP_me=$'\E[0m'
+export LESS_TERMCAP_se=$'\E[0m'
+export LESS_TERMCAP_so=$'\E[01;44;33m'
+export LESS_TERMCAP_ue=$'\E[0m'
+export LESS_TERMCAP_us=$'\E[01;32m'
 export IRC_CLIENT=irssi # Change this to your console based IRC client of choice.
 export SCM_CHECK=true # Version control status checking
 export SHORT_HOSTNAME=$(hostname -s) # Set Xterm/screen/Tmux title with only a short hostname
@@ -191,7 +183,6 @@ export PATH=$BIN:$PATH
 [ ! -d $HOME/.tmux ] && git clone --depth=1 https://github.com/gpakosz/.tmux $HOME/.tmux && ln -s -f $HOME/.tmux/.tmux.conf $HOME && mkdir -p $HOME/.tmux/tmp
 [ ! -d $HOME/.tmux/plugins/tpm ] && git clone https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm
 [ -f $HOME/.bash_aliases ] && source $HOME/.bash_aliases
-[ -f $HOME/.fe0/.bash_aliases ] && source $HOME/.fe0/.bash_aliases && export BASH_IT_THEME=candy
 [ -s $HOME/.sdkman/bin/sdkman-init.sh ] && export SDKMAN_DIR=$HOME/.sdkman && source $HOME/.sdkman/bin/sdkman-init.sh
 [ -s $NVM_DIR/nvm.sh ] && source $NVM_DIR/nvm.sh
 [ -s $NVM_DIR/bash_completion ] && source $NVM_DIR/bash_completion && c
@@ -204,6 +195,7 @@ command_exists direnv && eval "$(direnv hook bash)"
 command_exists thefuck && eval "$(thefuck --alias)"
 command_exists pipenv && eval "$(pipenv --completion)"
 command_exists lesspipe && eval "$(SHELL=/bin/sh lesspipe)"
+command_exists jump && eval "$(jump shell bash --bind=j)"
 command_exists awless && source <(awless completion bash)
 
 

@@ -1,16 +1,17 @@
 #!/bin/bash
 
-[ -f ~/.aliases_local ] && . ~/.aliases_local
-[ -f ~/.aliases.local ] && . ~/.aliases.local
-[ -f ~/configs/custom_aliases ] && . ~/configs/custom_aliases
-
 # -------------------------------------------------------------------
-# Config (set your own personal data in ~/.bashrc_local)
+# Config (set your own in $HOME/.aliases_local)
 # -------------------------------------------------------------------
 GIT_USERNAME='Festum Qin'
 GIT_USEREMAIL='festum@g.pl'
 GIT_LOG_FORMAT="format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ad) %C(bold blue)<%an>%Creset'"
 SSH_PK='/Users/festum/Dropbox/Festum/Archives/AppConf/ssh/f_app'
+
+[ -f $HOME/.aliases_local ] && source $HOME/.aliases_local
+[ -f $HOME/.aliases.local ] && source $HOME/.aliases.local
+[ -f $HOME/configs/custom_aliases ] && source $HOME/configs/custom_aliases
+[ -f $HOME/.fe0/.bash_aliases ] && source $HOME/.fe0/.bash_aliases && export BASH_IT_THEME=candy
 
 # -------------------------------------------------------------------
 # Setup
@@ -28,7 +29,7 @@ function ssh_with_rc(){
         RC_DATA=`cat $HOME/.bashrc | base64 $break_arg`
         AL_DATA=`cat $HOME/.bash_aliases | base64 $break_arg`
     fi
-    ssh -t $@ "mkdir ~/.fe0;echo \"${RC_DATA}\" | base64 --decode > ~/.fe0/.bashrc;echo \"${AL_DATA}\" | base64 --decode > ~/.fe0/.bash_aliases;bash --rcfile ~/.fe0/.bashrc"
+    ssh -t $@ "mkdir $HOME/.fe0;echo \"${RC_DATA}\" | base64 --decode > $HOME/.fe0/.bashrc;echo \"${AL_DATA}\" | base64 --decode > $HOME/.fe0/.bash_aliases;bash --rcfile $HOME/.fe0/.bashrc"
 }
 function exit_and_rm(){
     if [ -f $HOME/.fe0/.bash_aliases ]; then
@@ -40,25 +41,22 @@ alias ssh='ssh_with_rc'
 alias sshf='ssh -i "${SSH_PK}"'
 alias sshr='ssh -R 52698:localhost:52698'
 alias exit=exit_and_rm
-alias init_vim='git clone --depth=1 https://github.com/amix/vimrc.git ~/.vim_runtime; sh ~/.vim_runtime/install_awesome_vimrc.sh'
+alias init_vim='git clone --depth=1 https://github.com/amix/vimrc.git $HOME/.vim_runtime; sh $HOME/.vim_runtime/install_awesome_vimrc.sh'
 function bashrc(){
-    [ -f ~/.bash_keys ] && . ~/.bash_keys
-    [ -f ~/.bash_aliases ] && . ~/.bash_aliases
-    [ -f ~/.bashrc ] && . ~/.bashrc
-    [ -f ~/.bach_profile ] && . ~/.bach_profile
-    [ -f ~/.profile ] && . ~/.profile
-    [ -f ~/.fe0/.bash_aliases ] && . ~/.fe0/.bash_aliases
-    [ -f ~/.fe0/.bashrc ] && . ~/.fe0/.bashrc
+    [ -f $HOME/.bashrc ] && source $HOME/.bashrc
+    [ -f $HOME/.bach_profile ] && source $HOME/.bach_profile
+    [ -f $HOME/.profile ] && source $HOME/.profile
+    [ -f $HOME/.fe0/.bashrc ] && source $HOME/.fe0/.bashrc
 }
 function ttmux(){
-    # echo "set-option -g default-shell \"/bin/bash\"" > ~/.tmux.conf
+    # echo "set-option -g default-shell \"/bin/bash\"" > $HOME/.tmux.conf
     if ([ -z $TMUX ]); then
-        mv ~/.bashrc ~/.tmuxed
-        cp ~/.bash_it/.bashrc ~/.bashrc
-        source  ~/.bashrc
+        mv $HOME/.bashrc $HOME/.tmuxed
+        cp $HOME/.bash_it/.bashrc $HOME/.bashrc
+        source  $HOME/.bashrc
         tmux new-session -A -s main
-        cp -f ~/.tmuxed ~/.bashrc
-        rm -rf ~/.tmuxed
+        cp -f $HOME/.tmuxed $HOME/.bashrc
+        rm -rf $HOME/.tmuxed
     fi
 }
 
@@ -81,8 +79,8 @@ alias path='echo -e ${PATH//:/\\n}'         # path:         Echo all executable 
 alias show_options='shopt'                  # Show_options: display bash options settings
 alias fix_stty='stty sane'                  # fix_stty:     Restore terminal settings when screwed up
 alias cic='set completion-ignore-case On'   # cic:          Make tab-completion case-insensitive
-alias src='source ~/.bashrc'                # src:          Reload .bashrc file
-alias tcn='mv --force -t ~/.local/share/Trash '
+alias src='source $HOME/.bashrc'                # src:          Reload .bashrc file
+alias tcn='mv --force -t $HOME/.local/share/Trash '
 alias h='history | tail'
 alias hg='history | grep'
 alias g='grep'
@@ -128,7 +126,7 @@ alias mvi='mv -i'
 alias ln="ln -v"
 alias ~='cd ~'
 alias -- -='cd ~-'
-alias d='cd ~/Downloads/'
+alias d='cd $HOME/Downloads/'
 alias numFiles='echo $(ls -1 | wc -l)'               # numFiles: Count of non-hidden files in current dir
 alias make1mb='truncate -s 1m ./1MB.dat'             # make1mb:  Creates a file of 1mb size (all zeros)
 alias make5mb='truncate -s 5m ./5MB.dat'             # make5mb:  Creates a file of 5mb size (all zeros)
@@ -239,7 +237,7 @@ pip_install_save() {
     pip install $package_name && pip freeze | grep -i $package_name >> $requirements_file
 }
 alias venv='rm -rf ./venv && virtualenv --no-site-packages venv && source venv/bin/activate'
-alias venv3='rm -rf ./venv && virtualenv -p ~/.pyenv/versions/3.7.0/bin/python3.7 --no-site-packages venv && source venv/bin/activate'
+alias venv3='rm -rf ./venv && virtualenv -p $HOME/.pyenv/versions/3.7.0/bin/python3.7 --no-site-packages venv && source venv/bin/activate'
 alias venvr='source venv/bin/activate'
 alias pipi='pip3 install -U'
 alias pipr='pip3 install -r -U requirements.txt'
@@ -273,7 +271,7 @@ alias api='sudo apt install -y'
 alias apr='f(){ sudo apt -y --purge remove $@;  unset -f f; }; f'
 alias dpi='sudo dpkg -i'
 alias dpf='dpkg --list | grep $1'
-alias init_byb_u='sudo apt-get install byobu; byobu-enable; . ~/.bashrc'
+alias init_byb_u='sudo apt-get install byobu; byobu-enable; . $HOME/.bashrc'
 
 # -------------------------------------------------------------------
 # database
@@ -305,6 +303,7 @@ alias gb='git branch'
 alias gbl='git branch-select -l'
 alias gbr='git rev-parse --abbrev-ref --symbolic-full-name @{u}'
 alias gbd='git branch -D'
+alias gbn='f() { git switch $1 2>/dev/null || git switch -c $1; }; f' # Git 2.23
 alias gbdr='git push -d origin'
 alias gbdd="git fetch --prune && git branch -r | egrep -v -f /dev/fd/0  <(git branch -vv | grep origin | grep -v 'master\|main') | awk '{print \$1}' | xargs -r git branch -D"
 alias gbdc='git branch | egrep -v "(^\*|master|main|dev|develop)" | xargs git branch -D'
@@ -373,7 +372,6 @@ alias gsmr='git submodule foreach --recursive git reset --hard'
 alias gsho='git show --color'
 alias gslc="git shortlog | grep -E '^[ ]+\w+' | wc -l"
 alias gslu="git shortlog | grep -E '^[^ ]'"
-alias gsw='f() { git switch $1 2>/dev/null || git switch -c $1; }; f' # Git 2.23
 alias gt='git tag -n'
 alias gta='git tag -a -m'
 alias ghusky='rm -rf .git/hooks/ && npm i -D husky' # https://github.com/typicode/husky/issues/333
@@ -395,7 +393,7 @@ function gta2() {
         echo -e $C_1"----→ done"$C_0
     fi
 }
-function gitit() {
+function gmeta() {
     url=$(git config --get remote.origin.url)
     re="^(https|git)(:\/\/|@)([^\/:]+)[\/:]([^\/:]+)\/(.+)(.git)?$"
     if [[ $url =~ $re ]]; then
@@ -404,15 +402,22 @@ function gitit() {
         export repo_host=${BASH_REMATCH[3]}
         export repo_user=${BASH_REMATCH[4]}
         export repo_name=`basename -s .git ${BASH_REMATCH[5]}`
+        git remote set-head origin --auto
+        export repo_default_branch=$(git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@')
+        export repo_current_branch=$(git rev-parse --abbrev-ref HEAD)
     fi
 }
 function mr(){
-    gitit
-    link="https://${repo_host}/${repo_user}/${repo_name}/merge_requests/new?merge_request%5Bsource_branch%5D=$(git rev-parse --abbrev-ref HEAD)"
+    gmeta
+    link="https://${repo_host}/${repo_user}/${repo_name}/merge_requests/new?merge_request%5Bsource_branch%5D=${repo_current_branch}"
+    [ $repo_host == "github.com" ] && link="https://${repo_host}/${repo_user}/${repo_name}/compare/${repo_default_branch}...${repo_current_branch}"
     if [ "$(uname)" == "Darwin" ]
     then open $link </dev/null >/dev/null 2>&1 & disown
     else xdg-open $link </dev/null >/dev/null 2>&1 & disown
     fi
+}
+function ltag() {
+    curl --silent "https://github.com/$1/releases/latest" | sed 's#.*tag/\(.*\)\".*#\1#' && echo ''
 }
 
 # ------------------------------------
@@ -421,12 +426,6 @@ function mr(){
 alias dm='docker-machine'
 alias dmip='docker-machine ip'
 alias dme='docker-machine env'
-function dmuse() {
-    if [ "$(docker-machine status ${1})" == "Stopped" ]; then
-        docker-machine start ${1}
-    fi
-    eval $(docker-machine env ${1})
-}
 alias dmused='dmuse default'
 alias dc='docker-compose'
 alias dcb='docker-compose build'
@@ -463,16 +462,6 @@ alias dkirn='docker rmi $(docker images | grep "^<none>" | awk "{ print $3 }")'
 alias dkird='docker rmi $(docker images -f "dangling=true" -q)'
 alias dkire='docker images -q -f dangling=true | xargs --no-run-if-empty docker rmi'
 alias dsh='f(){ docker exec -it "$@" /bin/bash;  unset -f f; }; f'
-random_local_port() {
-    python -c 'import socket; s = socket.socket(); s.bind(("127.0.0.1", 0)); print s.getsockname()[1]; s.close();'
-}
-function dmp() {
-    PORT="$(random_local_port)"
-    ssh -f -o ExitOnForwardFailure=yes \
-    -L "127.0.0.1:$PORT:127.0.0.1:2375" "$PRODSERVER" \
-    sleep 5
-    DOCKER_HOST="127.0.0.1:$PORT" "$@"
-}
 alias k8='kubectl'
 alias k8a='kubectl apply -f'
 alias k8c='kubectl config'
@@ -489,7 +478,22 @@ alias k8x='kubectl exec -it'
 alias kc='kompose'
 alias kcc='kompose convert -f'
 alias mk='minikube'
-
+function dmuse() {
+    if [ "$(docker-machine status ${1})" == "Stopped" ]; then
+        docker-machine start ${1}
+    fi
+    eval $(docker-machine env ${1})
+}
+function random_local_port() {
+    python -c 'import socket; s = socket.socket(); s.bind(("127.0.0.1", 0)); print s.getsockname()[1]; s.close();'
+}
+function dmp() {
+    PORT="$(random_local_port)"
+    ssh -f -o ExitOnForwardFailure=yes \
+    -L "127.0.0.1:$PORT:127.0.0.1:2375" "$PRODSERVER" \
+    sleep 5
+    DOCKER_HOST="127.0.0.1:$PORT" "$@"
+}
 # ------------------------------------
 # Serverless and AWS
 # ------------------------------------
@@ -518,7 +522,6 @@ alias surf='sudo surfshark-vpn'
 alias surfa='sudo surfshark-vpn attack'
 alias surfd='sudo surfshark-vpn down'
 
-
 # -------------------------------------------------------------------
 # Converters
 # -------------------------------------------------------------------
@@ -528,21 +531,27 @@ alias i2='convert -density 300 -quality 100'
 # -------------------------------------------------------------------
 # Commands mapping
 # -------------------------------------------------------------------
-if [ ! -x "$(command -v code)" ]; then
-    [ -x "$(command -v code-oss)" ] && alias code=code-oss
-    [ -x "$(command -v codium)" ] && alias code=codium
+if ! command_exists code; then
+    command_exists code-oss && alias code=code-oss
+    command_exists codium && alias code=codium
 fi
-[ -x "$(command -v hstr)" ] && alias hh=hstr
+alias coded='code .'
+command_exists hstr && alias hh=hstr
 
 # -------------------------------------------------------------------
 # UTILITIES
 # -------------------------------------------------------------------
+# Add an "alert" alias for long running commands.  Use like so:
+#   sleep 10; alert
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+
+# show status
 function swap() {
     local TMPFILE=tmp.$$
     mv "$1" $TMPFILE && mv "$2" "$1" && mv $TMPFILE $2
 }
 function authme() {
-    cat ~/.ssh/id_rsa.pub | ssh $1 'umask 0077; mkdir -p ~/.ssh; cat >> .ssh/authorized_keys && chmod 700 ~/.ssh && chmod 600 ~/.ssh/authorized_keys && echo "Key copied"'
+    cat $HOME/.ssh/id_rsa.pub | ssh $1 'umask 0077; mkdir -p $HOME/.ssh; cat >> .ssh/authorized_keys && chmod 700 $HOME/.ssh && chmod 600 $HOME/.ssh/authorized_keys && echo "Key copied"'
 }
 # ex - archive extractor.
 # Usage: ex <file>.
@@ -570,34 +579,29 @@ function ar(){
     BN=`basename ${1}`
     tar -zcvf ${BN}.tar.gz ${1}
 }
-export LESS_TERMCAP_mb=$'\E[01;31m'
-export LESS_TERMCAP_md=$'\E[01;31m'
-export LESS_TERMCAP_me=$'\E[0m'
-export LESS_TERMCAP_se=$'\E[0m'
-export LESS_TERMCAP_so=$'\E[01;44;33m'
-export LESS_TERMCAP_ue=$'\E[0m'
-export LESS_TERMCAP_us=$'\E[01;32m'
 function ngr() {
     ngrok http $DMHOST:$1
 }
 # search from CLI
 function google {
-    if [ ! -x /usr/local/bin/googler ]; then
-        sudo curl -o /usr/local/bin/googler https://raw.githubusercontent.com/jarun/googler/v4.0/googler && sudo chmod +x /usr/local/bin/googler
+    if ! command_exists googler; then
+        sudo curl -o /usr/local/bin/googler https://raw.githubusercontent.com/jarun/googler/v4.3.2/googler && sudo chmod +x /usr/local/bin/googler
     fi
     googler
 }
 # translate
 function translate() {
-    if [ ! -x /usr/local/bin/googler ]; then
+    if ! command_exists trans; then
         sudo curl -o /usr/local/bin/trans https://git.io/trans && sudo chmod +x /usr/local/bin/trans
     fi
     translate
 }
 # enable color support of ls and also add handy aliases
-if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+if command_exists dircolors; then
+    test -r $HOME/.dircolors && eval "$(dircolors -b $HOME/.dircolors)" || eval "$(dircolors -b)"
     alias ls='ls --color=auto'
+    alias dir='dir --color=auto'
+    # alias vdir='vdir --color=auto'
     alias grep='grep --color=auto'
     alias fgrep='fgrep --color=auto'
     alias egrep='egrep --color=auto'
@@ -608,10 +612,6 @@ if [ "$(uname)" == "Darwin" ]; then
     alias l='ls -CF'
 fi
 
-# Add an "alert" alias for long running commands.  Use like so:
-#   sleep 10; alert
-alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
-# show status
 function getstate(){
     echo "CPU `LC_ALL=C top -bn1 | grep "Cpu(s)" | sed "s/.*, *\([0-9.]*\)%* id.*/\1/" | awk '{print 100 - $1}'`% RAM `free -m | awk '/Mem:/ { printf("%3.1f%%", $3/$2*100) }'` HDD `df -h / | awk '/\// {print $(NF-1)}'`"
 }
