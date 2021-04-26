@@ -498,29 +498,12 @@ function dmp() {
 # Serverless and AWS
 # ------------------------------------
 alias sld='serverless deploy'
-alias sll='serverless deploy list'
+alias sldl='serverless deploy list'
 alias sli='serverless invoke --function'
-alias sli='serverless invoke local --function'
-alias as3c='aws s3api create-bucket --bucket my-bucket'
-alias alac='aws lambda create-function --memory-size 512 --timeout 300 --function-name'
+alias slil='serverless invoke local --function'
+alias fnc='aws lambda create-function --memory-size 512 --timeout 300 --function-name'
 alias login_ecr='$(aws ecr get-login --region eu-central-1 --no-include-email)'
 alias login_ghcr='echo $CR_PAT | docker login ghcr.io -u $(git config user.email) --password-stdin'
-
-# -------------------------------------------------------------------
-# Commands aliases
-# -------------------------------------------------------------------
-alias bws='bw list items --search'
-alias nrc='nrclientcmd -d f0 -u festum'
-alias https='http --default-scheme=https --verify=no'
-alias de=direnv
-alias dea='direnv allow'
-alias det='vim .envrc'
-alias lynx='/Applications/Lynxlet.app/Contents/Resources/lynx/bin/lynx'
-alias eo='sudo eopkg'
-alias zt='zerotier-cli'
-alias surf='sudo surfshark-vpn'
-alias surfa='sudo surfshark-vpn attack'
-alias surfd='sudo surfshark-vpn down'
 
 # -------------------------------------------------------------------
 # Converters
@@ -537,6 +520,13 @@ if ! command_exists code; then
 fi
 alias coded='code .'
 command_exists hstr && alias hh=hstr
+command_exists http && alias https='http --default-scheme=https --verify=no'
+command_exists eopkg && alias eo='sudo eopkg'
+command_exists serverless && alias sls=serverless
+command_exists bw && alias bws='bw list items --search'
+command_exists direnv && alias de=direnv
+command_exists zerotier-one.zerotier-cli && alias zt='sudo zerotier-one.zerotier-cli'
+command_exists surfshark-vpn && alias surf='sudo surfshark-vpn' && alias surfa='sudo surfshark-vpn attack' && alias surfd='sudo surfshark-vpn down'
 
 # -------------------------------------------------------------------
 # UTILITIES
