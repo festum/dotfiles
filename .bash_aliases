@@ -37,7 +37,7 @@ function exit_and_rm(){
     fi
     exit
 }
-alias ssh='ssh_with_rc'
+alias sshz='ssh_with_rc'
 alias sshf='ssh -i "${SSH_PK}"'
 alias sshr='ssh -R 52698:localhost:52698'
 alias exit=exit_and_rm
@@ -455,7 +455,7 @@ alias dkrm='f(){ docker rm $(docker ps -aq -f name="$@"); unset -f f; }; f'
 alias dkrma='docker rm -f $(docker ps -aq)'
 alias dkrme='docker rm $(docker ps -aq -f status=exited)'
 alias dkra='docker ps -qa | xargs --no-run-if-empty docker rm -f'
-alias dkip="docker inspect --format '{{ .NetworkSettings.IPAddress }}'"
+alias dkip="docker ps -q | xargs -n 1 docker inspect --format '{{ .Name }} {{range .NetworkSettings.Networks}} {{.IPAddress}}{{end}}' | sed 's#^/##';"
 alias dki='docker images'
 alias dkir='docker rmi'
 alias dkirn='docker rmi $(docker images | grep "^<none>" | awk "{ print $3 }")'
