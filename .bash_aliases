@@ -29,7 +29,7 @@ function ssh_with_rc(){
         RC_DATA=`cat $HOME/.bashrc | base64 $break_arg`
         AL_DATA=`cat $HOME/.bash_aliases | base64 $break_arg`
     fi
-    ssh -t $@ "mkdir $HOME/.fe0;echo \"${RC_DATA}\" | base64 --decode > $HOME/.fe0/.bashrc;echo \"${AL_DATA}\" | base64 --decode > $HOME/.fe0/.bash_aliases;bash --rcfile $HOME/.fe0/.bashrc"
+    ssh -t $@ "mkdir -p $HOME/.fe0;echo \"${RC_DATA}\" | base64 --decode > $HOME/.fe0/.bashrc;echo \"${AL_DATA}\" | base64 --decode > $HOME/.fe0/.bash_aliases;bash --rcfile $HOME/.fe0/.bashrc"
 }
 function exit_and_rm(){
     if [ -f $HOME/.fe0/.bash_aliases ]; then
@@ -519,9 +519,26 @@ if ! command_exists code; then
     command_exists codium && alias code=codium
 fi
 alias coded='code .'
+if ! command_exists pm; then
+    command_exists homebrew && alias pm='sudo homebrew'
+    command_exists cave && alias pm='sudo cave'
+    command_exists pkgng && alias pm='sudo pkgng'
+    command_exists pkg_tools && alias pm='sudo pkg_tools'
+    command_exists sun_tools && alias pm='sudo sun_tools'
+    command_exists tazpkg && alias pm='sudo tazpkg'
+    command_exists swupd && alias pm='sudo swupd'
+    command_exists tlmgr && alias pm='sudo tlmgr'
+    command_exists conda && alias pm='sudo conda'
+    command_exists portage && alias pm='sudo portage'
+    command_exists eopkg && alias pm='sudo dnf'
+    command_exists pacman && alias pm='sudo pacman'
+    command_exists yum && alias pm='sudo yum'
+    command_exists eopkg && alias pm='sudo eopkg'
+    command_exists apk && alias pm='sudo apk'
+    command_exists apt-get && alias pm='sudo apt-get'
+fi
 command_exists hstr && alias hh=hstr
 command_exists http && alias https='http --default-scheme=https --verify=no'
-command_exists eopkg && alias eo='sudo eopkg'
 command_exists serverless && alias sls=serverless
 command_exists bw && alias bws='bw list items --search'
 command_exists direnv && alias de=direnv
@@ -567,8 +584,9 @@ function ex(){
 }
 function ar(){
     BN=`basename ${1}`
-    tar -zcvf ${BN}.tar.gz ${1}
+    tar -czf ${BN}.tar.gz ${1}
 }
+
 function ngr() {
     ngrok http $DMHOST:$1
 }
