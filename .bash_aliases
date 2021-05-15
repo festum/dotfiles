@@ -51,12 +51,8 @@ function bashrc(){
 function ttmux(){
     # echo "set-option -g default-shell \"/bin/bash\"" > $HOME/.tmux.conf
     if ([ -z $TMUX ]); then
-        mv $HOME/.bashrc $HOME/.tmuxed
-        cp $HOME/.bash_it/.bashrc $HOME/.bashrc
-        source  $HOME/.bashrc
+        source $HOME/.bash_it/.bashrc
         tmux new-session -A -s main
-        cp -f $HOME/.tmuxed $HOME/.bashrc
-        rm -rf $HOME/.tmuxed
     fi
 }
 
@@ -152,6 +148,9 @@ alias daemono='f(){ $@ >> ./out 2>&1 &; unset -f f; }; f'                       
 alias fu='sudo kill -9'      # fu:   Force kill
 alias fuu='sudo killall'     # fuu:  Kill them all
 alias fuuu='sudo killall -9' # fuuu: Force kill them all
+alias setcb="echo -e '\e[6 q'"
+alias setcu="echo -e '\e[4 q'"
+
 # Networking
 alias netCons='lsof -i'                                   # netCons:      Show all open TCP/IP sockets
 alias lsock='sudo /usr/sbin/lsof -i -P'                   # lsock:        Display open sockets
