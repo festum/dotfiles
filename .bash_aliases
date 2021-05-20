@@ -271,18 +271,6 @@ alias api='sudo apt install -y'
 alias apr='f(){ sudo apt -y --purge remove $@;  unset -f f; }; f'
 alias dpi='sudo dpkg -i'
 alias dpf='dpkg --list | grep $1'
-alias init_byb_u='sudo apt-get install byobu; byobu-enable; . $HOME/.bashrc'
-
-# -------------------------------------------------------------------
-# database
-# ------------------------------------------------------------------
-alias 'pgstart=pg_ctl -D /opt/boxen/data/postgresql/ -l logfile start'
-alias 'pgstop=pg_ctl -D /opt/boxen/data/postgresql/ stop'
-alias 'pgrestart=pg_ctl -D /opt/boxen/data/postgresql/ restart'
-# ex: pgrestore db_name file_name
-alias 'pgrestore=pg_restore --verbose --clean --no-acl --no-owner -h localhost -d'
-# Start elasticsearch
-#alias esstart='elasticsearch -f -D es.config=/opt/boxen/homebrew/opt/elasticsearch/config/elasticsearch.yml'
 
 # -------------------------------------------------------------------
 # Git
@@ -514,29 +502,26 @@ alias i2='convert -density 300 -quality 100'
 # -------------------------------------------------------------------
 # Commands mapping
 # -------------------------------------------------------------------
-if ! command_exists code; then
-    command_exists code-oss && alias code=code-oss
-    command_exists codium && alias code=codium
-fi
-alias coded='code .'
-if ! command_exists pm; then
-    command_exists homebrew && alias pm='sudo homebrew'
-    command_exists cave && alias pm='sudo cave'
-    command_exists pkgng && alias pm='sudo pkgng'
-    command_exists pkg_tools && alias pm='sudo pkg_tools'
-    command_exists sun_tools && alias pm='sudo sun_tools'
-    command_exists tazpkg && alias pm='sudo tazpkg'
-    command_exists swupd && alias pm='sudo swupd'
-    command_exists tlmgr && alias pm='sudo tlmgr'
-    command_exists conda && alias pm='sudo conda'
-    command_exists portage && alias pm='sudo portage'
-    command_exists eopkg && alias pm='sudo dnf'
-    command_exists pacman && alias pm='sudo pacman'
-    command_exists yum && alias pm='sudo yum'
-    command_exists eopkg && alias pm='sudo eopkg'
-    command_exists apk && alias pm='sudo apk'
-    command_exists apt-get && alias pm='sudo apt-get'
-fi
+! command_exists code && command_exists code-oss && alias code=code-oss
+! command_exists code && command_exists codium && alias code=codium
+command_exists code && alias ed='code .'
+! command_exists pm && command_exists homebrew && alias pm='sudo homebrew'
+! command_exists pm && command_exists cave && alias pm='sudo cave'
+! command_exists pm && command_exists pkgng && alias pm='sudo pkgng'
+! command_exists pm && command_exists pkg_tools && alias pm='sudo pkg_tools'
+! command_exists pm && command_exists sun_tools && alias pm='sudo sun_tools'
+! command_exists pm && command_exists tazpkg && alias pm='sudo tazpkg'
+! command_exists pm && command_exists swupd && alias pm='sudo swupd'
+! command_exists pm && command_exists tlmgr && alias pm='sudo tlmgr'
+! command_exists pm && command_exists conda && alias pm='sudo conda'
+! command_exists pm && command_exists portage && alias pm='sudo portage'
+! command_exists pm && command_exists dnf && alias pm='sudo dnf'
+! command_exists pm && command_exists pacman && alias pm='sudo pacman'
+! command_exists pm && command_exists yum && alias pm='sudo yum'
+! command_exists pm && command_exists eopkg && alias pm='sudo eopkg'
+! command_exists pm && command_exists apk && alias pm='sudo apk'
+! command_exists pm && command_exists apt-get && alias pm='sudo apt-get'
+! command_exists pm && command_exists pkg && alias pm='sudo pkg'
 command_exists hstr && alias hh=hstr
 command_exists http && alias https='http --default-scheme=https --verify=no'
 command_exists serverless && alias sls=serverless
