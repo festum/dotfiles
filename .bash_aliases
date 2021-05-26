@@ -212,7 +212,7 @@ alias tmns='tmuxinator start'
 # Go
 alias goi='go install'
 alias got='go test ./... -tags test'
-alias go.='go run .'
+alias gor='f() { arg=${*:-.}; go run $arg; }; f'
 alias gom='go mod'
 alias gog='go get -u'
 alias gogg='GO111MODULE=off go get'
