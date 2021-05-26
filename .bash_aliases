@@ -504,7 +504,7 @@ alias i2='convert -density 300 -quality 100'
 # -------------------------------------------------------------------
 ! command_exists code && command_exists code-oss && alias code=code-oss
 ! command_exists code && command_exists codium && alias code=codium
-command_exists code && alias ed='code .'
+command_exists code && alias ed='f() { file=${1:-.}; code $file; }; f'
 ! command_exists pm && command_exists homebrew && alias pm='sudo homebrew'
 ! command_exists pm && command_exists cave && alias pm='sudo cave'
 ! command_exists pm && command_exists pkgng && alias pm='sudo pkgng'
