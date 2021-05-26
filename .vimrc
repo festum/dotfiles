@@ -40,6 +40,8 @@ Plug 'w0rp/ale'
 Plug 'terryma/vim-multiple-cursors'
 " Surround
 Plug 'tpope/vim-surround'
+" Alignment
+Plug 'tommcdo/vim-lion'
 " Autoclose
 Plug 'Townk/vim-autoclose'
 " Indent text object
@@ -137,8 +139,9 @@ Plug 'vim-scripts/IndexedSearch'
 Plug 'vim-scripts/matchit.zip'
 " Yank history navigation
 Plug 'vim-scripts/YankRing.vim'
-" Golang support
-Plug 'fatih/vim-go'
+" Language support
+Plug 'sheerun/vim-polyglot'
+
 
 " Tell vim-plug we finished declaring plugins, so it can load them
 call plug#end()
@@ -380,6 +383,9 @@ imap <M-Down> <ESC><c-w>j
 " FZF
 nmap <C-P> :FZF<CR>
 map ; :Files<CR>
+
+" Lion
+let g:lion_squeeze_spaces = 1
 
 
 " ::Window Chooser::
