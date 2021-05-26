@@ -108,10 +108,12 @@ alias 755='chmod 755'                       # -rwxr-xr-x (user: rwx, group: rx, 
 alias 775='chmod 775'                       # -rwxrwxr-x (user: rwx, group: rwx, other: rx)
 alias mx='chmod a+x'                        # ---x--x--x (user: --x, group: --x, other: --x)
 alias ux='chmod u+x'                        # ---x------ (user: --x, group: -, other: -)
+alias 644f='find . -type f -exec chmod 644 {} \;'
+alias 755d='find . -type d -exec chmod 755 {} \;'
+alias chm='644f && 755d' # normalize permission
 alias gpin='f(){ usermod -a -G $1 $USER; unset -f f; }; f' # gpin: Join group
 alias gpls='cat /etc/group | cut -d: -f1'                  # gpls: List groups
-alias vboxin='usermod -aG vboxsf $USER'                    # vboxin: Allow me to have access for shared folder
-alias chm='find . -type d -exec sudo chmod 755 {} \; && find . -type f -exec sudo chmod 644 {} \;' # normalize permission
+alias vboxin='usermod -aG vboxsf $USER'                    # vboxin: Allow me to have access shared folder
 # File and folder
 alias rd='rm -rf'
 alias rmi='rm -i'
