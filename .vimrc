@@ -28,8 +28,6 @@ call plug#begin('~/.vim/plugged')
 Plug 'tpope/vim-fugitive'
 " Git commit browser
 Plug 'junegunn/gv.vim' " :GV
-" Showing git status flags
-Plug 'Xuyuanp/nerdtree-git-plugin'
 " Rainbow brackets
 Plug 'frazrepo/vim-rainbow'
 " Insert or delete brackets, parens, quotes in pair.
@@ -63,10 +61,8 @@ Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-eunuch'
 
 " ::UI::
-" Better file browser
-Plug 'scrooloose/nerdtree'
-" Code commenter
-Plug 'scrooloose/nerdcommenter'
+" File browser
+Plug 'lambdalisue/fern.vim'
 " Class/module browser
 Plug 'majutsushi/tagbar'
 " Code and files fuzzy finder
@@ -75,10 +71,9 @@ Plug 'ctrlpvim/ctrlp.vim'
 Plug 'fisadev/vim-ctrlp-cmdpalette'
 " Zen coding
 Plug 'mattn/emmet-vim'
-" Git integration
-Plug 'motemen/git-vim'
 " Tab list panel
-Plug 'kien/tabman.vim'
+Plug 'zefei/vim-wintabs'
+Plug 'zefei/vim-wintabs-powerline'
 " Status line
 Plug 'itchyny/lightline.vim'
 Plug 'albertomontesg/lightline-asyncrun'
@@ -355,20 +350,18 @@ map <leader>l :set list!<CR> " Toggle tabs and EOL
 """"""""""""""""""""""""""""""""""""""""""""""""""
 " Formatting
 map <leader>q gqip
-
-" Python beautify
 map <F12> :Autopep8<CR>
 
 " Tab navigation mappings
-map tn :tabn<CR>
-map tp :tabp<CR>
-map tm :tabm
-map tt :tabnew
-map ts :tab split<CR>
-map <C-S-Right> :tabn<CR>
-imap <C-S-Right> <ESC>:tabn<CR>
-map <C-S-Left> :tabp<CR>
-imap <C-S-Left> <ESC>:tabp<CR>
+map <C-H> <Plug>(wintabs_previous)
+map <C-L> <Plug>(wintabs_next)
+map <C-T>c <Plug>(wintabs_close)
+map <C-T>u <Plug>(wintabs_undo)
+map <C-T>o <Plug>(wintabs_only)
+map <C-W>c <Plug>(wintabs_close_window)
+map <C-W>o <Plug>(wintabs_only_window)
+command! Tabc WintabsCloseVimtab
+command! Tabo WintabsOnlyVimtab
 
 " Navigate windows with meta+arrows
 map <M-Right> <c-w>l
@@ -379,6 +372,42 @@ imap <M-Right> <ESC><c-w>l
 imap <M-Left> <ESC><c-w>h
 imap <M-Up> <ESC><c-w>k
 imap <M-Down> <ESC><c-w>j
+
+" fern
+let g:fern#disable_default_mappings   = 1
+let g:fern#disable_drawer_auto_quit   = 1
+let g:fern#disable_viewer_hide_cursor = 1
+noremap <silent> <Leader>d :Fern . -drawer -width=35 -toggle<CR><C-w>=
+noremap <silent> <Leader>f :Fern . -drawer -reveal=% -width=35<CR><C-w>=
+noremap <silent> <Leader>. :Fern %:h -drawer -width=35<CR><C-w>=
+function! FernInit() abort
+  nmap <buffer><expr>
+        \ <Plug>(fern-my-open-expand-collapse)
+        \ fern#smart#leaf(
+        \   "\<Plug>(fern-action-open:select)",
+        \   "\<Plug>(fern-action-expand)",
+        \   "\<Plug>(fern-action-collapse)",
+        \ )
+  nmap <buffer> <CR> <Plug>(fern-my-open-expand-collapse)
+  nmap <buffer> <2-LeftMouse> <Plug>(fern-my-open-expand-collapse)
+  nmap <buffer> m <Plug>(fern-action-mark:toggle)j
+  nmap <buffer> N <Plug>(fern-action-new-file)
+  nmap <buffer> K <Plug>(fern-action-new-dir)
+  nmap <buffer> D <Plug>(fern-action-remove)
+  nmap <buffer> V <Plug>(fern-action-move)
+  nmap <buffer> R <Plug>(fern-action-rename)
+  nmap <buffer> s <Plug>(fern-action-open:split)
+  nmap <buffer> v <Plug>(fern-action-open:vsplit)
+  nmap <buffer> r <Plug>(fern-action-reload)
+  nmap <buffer> <nowait> d <Plug>(fern-action-hidden:toggle)
+  nmap <buffer> <nowait> < <Plug>(fern-action-leave)
+  nmap <buffer> <nowait> > <Plug>(fern-action-enter)
+endfunction
+
+augroup FernEvents
+  autocmd!
+  autocmd FileType fern call FernInit()
+augroup END
 
 " FZF
 nmap <C-P> :FZF<CR>
