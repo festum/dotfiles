@@ -67,7 +67,6 @@ Plug 'lambdalisue/fern.vim'
 Plug 'majutsushi/tagbar'
 " Code and files fuzzy finder
 Plug 'ctrlpvim/ctrlp.vim'
-" Extension to ctrlp, for fuzzy command finder
 Plug 'fisadev/vim-ctrlp-cmdpalette'
 " Zen coding
 Plug 'mattn/emmet-vim'
@@ -99,8 +98,6 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'NLKNguyen/papercolor-theme'
 Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'cocopon/iceberg.vim'
-" Gvim colorscheme
-Plug 'vim-scripts/Wombat'
 
 " ::Python::
 " Automatically sort python imports
@@ -171,17 +168,8 @@ endif
 set background=dark
 colorscheme dracula
 
-" Colorscheme for gVim
-if has('gui_running')
-  colorscheme wombat
-endif
-
-
 " For plugins to load correctly
 filetype plugin indent on
-
-" With a map leader it's possible to do extra key combinations like <leader>w saves the current file
-let mapleader = ","
 
 " Security
 set modelines=0
@@ -295,6 +283,16 @@ set laststatus=2
 set showmode
 set showcmd
 
+" Tab length exceptions on some file types
+autocmd FileType html setlocal shiftwidth=4 tabstop=4 softtabstop=4
+autocmd FileType htmldjango setlocal shiftwidth=4 tabstop=4 softtabstop=4
+autocmd FileType javascript setlocal shiftwidth=4 tabstop=4 softtabstop=4
+autocmd Filetype python setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
+autocmd Filetype go setlocal tabstop=4 shiftwidth=4 softtabstop=4
+
+" With a map leader it's possible to do extra key combinations like <leader>w saves the current file
+let mapleader = ","
+
 " Fast saving
 nmap <leader>w :w!<cr>
 nnoremap <silent> <C-S> :<C-u>w<CR>
@@ -329,13 +327,6 @@ vnoremap <silent> * :<C-u>call <SID>escaped_search()<CR>/<C-R>=@/<CR><CR>N " Sea
 inoremap <F1> <ESC>:set invfullscreen<CR>a
 nnoremap <F1> :set invfullscreen<CR>
 vnoremap <F1> :set invfullscreen<CR>
-
-" Tab length exceptions on some file types
-autocmd FileType html setlocal shiftwidth=4 tabstop=4 softtabstop=4
-autocmd FileType htmldjango setlocal shiftwidth=4 tabstop=4 softtabstop=4
-autocmd FileType javascript setlocal shiftwidth=4 tabstop=4 softtabstop=4
-autocmd Filetype python setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
-autocmd Filetype go setlocal tabstop=4 shiftwidth=4 softtabstop=4
 
 " Visualize tabs and newlines
 set listchars=tab:▸\ ,eol:¬

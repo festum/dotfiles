@@ -10,9 +10,9 @@ GIT_LOG_FORMAT="format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ad) %C(b
 # -------------------------------------------------------------------
 # Setup
 # -------------------------------------------------------------------
-[ -f $HOME/.aliases_local ] && source $HOME/.aliases_local
-[ -f $HOME/.aliases.local ] && source $HOME/.aliases.local
-[ -f $HOME/configs/custom_aliases ] && source $HOME/configs/custom_aliases
+safe_source $HOME/.aliases_local
+safe_source $HOME/.aliases.local
+safe_source $HOME/configs/custom_aliases
 [ -f $HOME/.remote/.bash_aliases ] && source $HOME/.remote/.bash_aliases && export BASH_IT_THEME=candy
 function sshz(){
     if [ "$(uname)" == "Darwin" ]; then
@@ -29,8 +29,12 @@ function sshz(){
     fi
     ssh -t $@ "mkdir -p $HOME/.remote;echo \"${RC_DATA}\" | base64 --decode > $HOME/.remote/.bashrc;echo \"${AL_DATA}\" | base64 --decode > $HOME/.remote/.bash_aliases;bash --rcfile $HOME/.remote/.bashrc"
 }
+function exit_and_rm(){
+    rm -rf $HOME/.fe0/
+    exit
+}
 alias sshr='ssh -R 52698:localhost:52698'
-alias exit='rm -rf $HOME/.remote/ && exit'
+alias exit=exit_and_rm
 function ttmux(){
     # echo "set-option -g default-shell \"/bin/bash\"" > $HOME/.tmux.conf
     if ([ -z $TMUX ]); then
@@ -46,14 +50,14 @@ function ttmux(){
 alias c="clear && printf '\e[3J'"
 alias cls="echo -ne '\033c'"
 alias wget='wget -c' # with resume download
-alias cic='set completion-ignore-case On'           # cic:          Make tab-completion case-insensitive
-alias src='source $HOME/.bashrc'                    # src:          Reload .bashrc file
+alias cic='set completion-ignore-case On' # cic: Make tab-completion case-insensitive
+alias src='unalias -a && source $HOME/.bashrc' # src: Reload .bashrc file
 alias tcn='mv --force -t $HOME/.local/share/Trash '
 alias h='history | tail'
 alias hg='history | grep'
 alias g='grep'
 alias {ack,ak}='ack-grep'
-alias uig='f(){ grep -i --color $@ /etc/group; unset -f f; }; f'  # uig: List file groups
+alias uig='f(){ grep -i --color $@ /etc/group; unset -f f; }; f' # uig: List file groups
 
 # Directory Listing
 alias path='echo -e ${PATH//:/\\n}' # path: Echo all executable Paths
@@ -134,8 +138,7 @@ alias daemono='f(){ $@ >> ./out 2>&1 &; unset -f f; }; f'                       
 alias fu='sudo kill -9'      # fu:   Force kill
 alias fuu='sudo killall'     # fuu:  Kill them all
 alias fuuu='sudo killall -9' # fuuu: Force kill them all
-alias setcb="echo -e '\e[6 q'" # setcb: set cursor as block
-alias setcu="echo -e '\e[4 q'" # setcu: set cursor as underline
+alias setcur='f(){ echo -e -n "\x1b[\x3${1:-3} q"; unset -f f; }; f' # setcur: set cursor 0-6
 
 # Networking
 alias netCons='lsof -i'                                   # netCons:      Show all open TCP/IP sockets
@@ -214,10 +217,7 @@ alias ktl="ktlint -F '**/*.kt'"
 pip_install_save() {
     package_name=$1
     requirements_file=$2
-    if [[ -z $requirements_file ]]
-    then
-        requirements_file='./requirements.txt'
-    fi
+    [[ -z $requirements_file ]] && requirements_file='./requirements.txt'
     pip install $package_name && pip freeze | grep -i $package_name >> $requirements_file
 }
 alias pipi='pip3 install -U'
@@ -459,33 +459,33 @@ alias i2='convert -density 300 -quality 100'
 # -------------------------------------------------------------------
 # Commands mapping
 # -------------------------------------------------------------------
-! command_exists code && command_exists code-oss && alias code=code-oss
-! command_exists code && command_exists codium && alias code=codium
-command_exists code && alias ed='f() { file=${1:-.}; code $file; unset -f f;}; f'
-! command_exists pm && command_exists homebrew && alias pm='sudo homebrew'
-! command_exists pm && command_exists cave && alias pm='sudo cave'
-! command_exists pm && command_exists pkgng && alias pm='sudo pkgng'
-! command_exists pm && command_exists pkg_tools && alias pm='sudo pkg_tools'
-! command_exists pm && command_exists sun_tools && alias pm='sudo sun_tools'
-! command_exists pm && command_exists tazpkg && alias pm='sudo tazpkg'
-! command_exists pm && command_exists swupd && alias pm='sudo swupd'
-! command_exists pm && command_exists tlmgr && alias pm='sudo tlmgr'
-! command_exists pm && command_exists conda && alias pm='sudo conda'
-! command_exists pm && command_exists portage && alias pm='sudo portage'
-! command_exists pm && command_exists dnf && alias pm='sudo dnf'
-! command_exists pm && command_exists pacman && alias pm='sudo pacman'
-! command_exists pm && command_exists yum && alias pm='sudo yum'
-! command_exists pm && command_exists eopkg && alias pm='sudo eopkg'
-! command_exists pm && command_exists apk && alias pm='sudo apk'
-! command_exists pm && command_exists apt-get && alias pm='sudo apt-get'
-! command_exists pm && command_exists pkg && alias pm='sudo pkg'
-command_exists hstr && alias hh=hstr
-command_exists http && alias https='http --default-scheme=https --verify=no'
-command_exists serverless && alias sls=serverless
-command_exists bw && alias bws='bw list items --search'
-command_exists direnv && alias de=direnv
-command_exists zerotier-one.zerotier-cli && alias zt='sudo zerotier-one.zerotier-cli'
-command_exists surfshark-vpn && alias surf='sudo surfshark-vpn' && alias surfa='sudo surfshark-vpn attack' && alias surfd='sudo surfshark-vpn down'
+! is_runnable code && is_runnable code-oss && alias code=code-oss
+! is_runnable code && is_runnable codium && alias code=codium
+is_runnable code && alias ed='f() { file=${1:-.}; code $file; unset -f f;}; f'
+! is_runnable pm && is_runnable homebrew && alias pm='sudo homebrew'
+! is_runnable pm && is_runnable cave && alias pm='sudo cave'
+! is_runnable pm && is_runnable pkgng && alias pm='sudo pkgng'
+! is_runnable pm && is_runnable pkg_tools && alias pm='sudo pkg_tools'
+! is_runnable pm && is_runnable sun_tools && alias pm='sudo sun_tools'
+! is_runnable pm && is_runnable tazpkg && alias pm='sudo tazpkg'
+! is_runnable pm && is_runnable swupd && alias pm='sudo swupd'
+! is_runnable pm && is_runnable tlmgr && alias pm='sudo tlmgr'
+! is_runnable pm && is_runnable conda && alias pm='sudo conda'
+! is_runnable pm && is_runnable portage && alias pm='sudo portage'
+! is_runnable pm && is_runnable dnf && alias pm='sudo dnf'
+! is_runnable pm && is_runnable pacman && alias pm='sudo pacman'
+! is_runnable pm && is_runnable yum && alias pm='sudo yum'
+! is_runnable pm && is_runnable eopkg && alias pm='sudo eopkg'
+! is_runnable pm && is_runnable apk && alias pm='sudo apk'
+! is_runnable pm && is_runnable apt-get && alias pm='sudo apt-get'
+! is_runnable pm && is_runnable pkg && alias pm='sudo pkg'
+is_runnable hstr && alias hh=hstr
+is_runnable http && alias https='http --default-scheme=https --verify=no'
+is_runnable serverless && alias sls=serverless
+is_runnable bw && alias bws='bw list items --search'
+is_runnable direnv && alias de=direnv
+is_runnable zerotier-one.zerotier-cli && alias zt='sudo zerotier-one.zerotier-cli'
+is_runnable surfshark-vpn && alias surf='sudo surfshark-vpn' && alias surfa='sudo surfshark-vpn attack' && alias surfd='sudo surfshark-vpn down'
 
 # -------------------------------------------------------------------
 # UTILITIES
@@ -529,20 +529,20 @@ function ar(){
 }
 # search from CLI
 function google {
-    if ! command_exists googler; then
+    if ! is_runnable googler; then
         sudo curl -o /usr/local/bin/googler https://raw.githubusercontent.com/jarun/googler/v4.3.2/googler && sudo chmod +x /usr/local/bin/googler
     fi
     googler
 }
 # translate
 function translate() {
-    if ! command_exists trans; then
+    if ! is_runnable trans; then
         sudo curl -o /usr/local/bin/trans https://git.io/trans && sudo chmod +x /usr/local/bin/trans
     fi
     translate
 }
 # enable color support of ls and also add handy aliases
-if command_exists dircolors; then
+if is_runnable dircolors; then
     test -r $HOME/.dircolors && eval "$(dircolors -b $HOME/.dircolors)" || eval "$(dircolors -b)"
     alias ls='ls --color=auto'
     alias dir='dir --color=auto'

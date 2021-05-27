@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# $HOME/.bashrc: executed by Festum-bash(1) for non-login shells.
+# Source https://github.com/festum/dotfiles
 
 case $- in
   *i*) ;;
@@ -31,8 +31,15 @@ shopt -s cdspell 2> /dev/null
 shopt -s globstar 2> /dev/null
 # Allows to bookmark favorite places across the file system
 shopt -s cdable_vars
+# Blinking bar cursor
+echo -e -n "\x1b[\x33 q"
 
-function command_exists () {
+function safe_source () {
+    # Using POSIX [] for compatibility
+    # https://unix.stackexchange.com/questions/306111/what-is-the-difference-between-the-bash-operators-vs-vs-vs
+    [ -f $1 ] || [ -s $1 ]&& source $1;
+}
+function is_runnable () {
     command -v $1 >/dev/null 2>&1;
 }
 
@@ -62,9 +69,9 @@ case "$TERM" in
     ;;
 esac
 
-[ -f $HOME/.bash_keys ] && source $HOME/.bash_keys
-[ ! -d $HOME/.autocomplete ] && mkdir -p $HOME/.autocomplete
-if command_exists kubectl; then
+mkdir -p $HOME/.autocomplete $HOME/.local $HOME/.config
+safe_source $HOME/.bash_keys
+if is_runnable kubectl; then
     source <(kubectl completion bash)
     alias k8=kubectl
     complete -F __start_kubectl k8
@@ -80,14 +87,14 @@ if [[ $PS1 && -f /usr/share/bash-completion/bash_completion ]]; then
 fi
 if ! shopt -oq posix; then
     if [ -f /usr/share/bash-completion/bash_completion ]; then
-        source /usr/share/bash-completion/bash_completion
+        safe_source /usr/share/bash-completion/bash_completion
         elif [ -f /etc/bash_completion ]; then
-        source /etc/bash_completion
+        safe_source /etc/bash_completion
     fi
 fi
 if ! [ -f /etc/os-release ]; then
     # install sudo for termux
-    if ! command_exists sudo; then
+    if ! is_runnable sudo; then
         pkg install ncurses-utils
         git cone https://gitlab.com/st42/termux-sudo.git
         cat termux-sudo/sudo > /data/data/com.termux/files/usr/bin/sudo
@@ -95,12 +102,12 @@ if ! [ -f /etc/os-release ]; then
         rm -rf termux-sudo
     fi
 else  # create folder for non-termux
-    [ ! -d /usr/local ] && sudo mkdir /usr/local
+    [ ! -d /usr/local ] && sudo mkdir -p /usr/local
     [ ! -d /usr/local/bin ] && sudo ln -s /usr/bin /usr/local/bin
     [ ! -d /usr/local/include ] && sudo ln -s /usr/include /usr/local/include
 fi
 
-if command_exists hstr; then
+if is_runnable hstr; then
     if [[ $- =~ .*i.* ]]; then bind '"\C-r": "\C-a hstr -- \C-j"'; fi
     if [[ $- =~ .*i.* ]]; then bind '"\C-xk": "\C-a hstr -k \C-j"'; fi
 fi
@@ -173,34 +180,32 @@ export GOPROXY=direct
 export GOPATH=$HOME/.go
 export GOBIN=$GOPATH/bin #$(go env GOPATH)
 [ -d /usr/local/go ] && export GOROOT=/usr/local/go
-[ ! -d $HOME/.local ] && mkdir -p $HOME/.local
-[ ! -d $HOME/.config ] && mkdir -p $HOME/.config
-[ -f $HOME/.bashrc_local ] && source $HOME/.bashrc_local
+safe_source $HOME/.bashrc_local
 export BIN=$HOME/bin:/snap/bin:$HOME/.local/bin:/fe0/bin:$GOROOT/bin:$GOBIN:/fe0/opt/gotools/bin:$JAVA_HOME/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin
 export PATH=$BIN:$PATH
 [ ! -f $HOME/.bash_it/install.sh ] && git clone --depth=1 https://github.com/Bash-it/bash-it $HOME/.bash_it && $HOME/.bash_it/install.sh -s -n
-[ -f $BASH_IT/bash_it.sh ] && source $BASH_IT/bash_it.sh
+safe_source $BASH_IT/bash_it.sh
 [ ! -d $HOME/.tmux ] && git clone --depth=1 https://github.com/gpakosz/.tmux $HOME/.tmux && ln -s -f $HOME/.tmux/.tmux.conf $HOME && mkdir -p $HOME/.tmux/tmp
 [ ! -d $HOME/.tmux/plugins/tpm ] && git clone https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm
-[ -f $HOME/.bash_aliases ] && source $HOME/.bash_aliases
+safe_source $HOME/.bash_aliases
 [ -s $HOME/.sdkman/bin/sdkman-init.sh ] && export SDKMAN_DIR=$HOME/.sdkman && source $HOME/.sdkman/bin/sdkman-init.sh
-[ -s $NVM_DIR/nvm.sh ] && source $NVM_DIR/nvm.sh
-[ -s $NVM_DIR/bash_completion ] && source $NVM_DIR/bash_completion && c
-[ -f $HOME/.gvm/scripts/gvm ] && source $HOME/.gvm/scripts/gvm
-[ -f $HOME/.bashhub/bashhub.sh ] && source $HOME/.bashhub/bashhub.sh
-[ -f $(pwd)/alacritty-completions.bash ] && source $(pwd)/alacritty-completions.bash
-[ -f $HOME/.fzf.bash ] && source $HOME/.fzf.bash
-command_exists docker-compose && [ "$(uname)" != "Linux" ] && export DMHOST=$(docker-machine ip default) && dmused
-command_exists direnv && eval "$(direnv hook bash)"
-command_exists thefuck && eval "$(thefuck --alias)"
-command_exists pipenv && eval "$(pipenv --completion)"
-command_exists lesspipe && eval "$(SHELL=/bin/sh lesspipe)"
-command_exists jump && eval "$(jump shell bash --bind=j)"
-command_exists awless && source <(awless completion bash)
+safe_source $NVM_DIR/nvm.sh
+safe_source $NVM_DIR/bash_completion
+safe_source $HOME/.gvm/scripts/gvm
+safe_source $HOME/.bashhub/bashhub.sh
+safe_source $(pwd)/alacritty-completions.bash
+safe_source $HOME/.fzf.bash
+is_runnable docker-compose && [ "$(uname)" != "Linux" ] && export DMHOST=$(docker-machine ip default) && dmused
+is_runnable direnv && eval "$(direnv hook bash)"
+is_runnable thefuck && eval "$(thefuck --alias)"
+is_runnable pipenv && eval "$(pipenv --completion)"
+is_runnable lesspipe && eval "$(SHELL=/bin/sh lesspipe)"
+is_runnable jump && eval "$(jump shell bash --bind=j)"
+is_runnable awless && source <(awless completion bash)
 
 
 if [ "$(uname)" == "Darwin" ]; then
-    [ ! -f $HOME/.bash_profile ] && echo source $HOME/.bashrc >> $HOME/.bash_profile
+    [ ! -f $HOME/.bash_profile ] && echo source $HOME/.bashrc > $HOME/.bash_profile
 else
     shopt -s histappend
     shopt -s cdspell
