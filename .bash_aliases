@@ -363,7 +363,7 @@ function ltag() {
 }
 
 # ------------------------------------
-# Docker aliases/functions
+# Docker related
 # ------------------------------------
 alias dk='docker'
 alias dkx='docker exec -it'

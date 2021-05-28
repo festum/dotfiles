@@ -32,24 +32,16 @@ Plug 'junegunn/gv.vim' " :GV
 Plug 'frazrepo/vim-rainbow'
 " Insert or delete brackets, parens, quotes in pair.
 Plug 'jiangmiao/auto-pairs'
-" Asynchronous Lint Engine providing linting
-Plug 'w0rp/ale'
 " Multiple selection
 Plug 'terryma/vim-multiple-cursors'
 " Surround
 Plug 'tpope/vim-surround'
 " Alignment
 Plug 'tommcdo/vim-lion'
-" Autoclose
-Plug 'Townk/vim-autoclose'
-" Indent text object
-Plug 'michaeljsmith/vim-indent-object'
 " Indentation based movements
 Plug 'jeetsukumaran/vim-indentwise'
 " Better autocompletion
 Plug 'Shougo/neocomplcache.vim'
-" Nodejs extension host load extensions like VSCode and host language servers
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " Override configs by directory
 Plug 'arielrossanigo/dir-configs-override.vim'
 " Consoles as buffers
@@ -59,18 +51,23 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 " Fast SudoWrite
 Plug 'tpope/vim-eunuch'
+" Language server host forked from vscode
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" Async linting using language server
+" https://github.com/dense-analysis/ale#5iii-how-can-i-use-ale-and-cocnvim-together
+"Plug 'w0rp/ale'
+" Language aggregator inc vim-go and Java
+Plug 'sheerun/vim-polyglot'
 
 " ::UI::
 " File browser
 Plug 'lambdalisue/fern.vim'
 " Class/module browser
 Plug 'majutsushi/tagbar'
-" Code and files fuzzy finder
-Plug 'ctrlpvim/ctrlp.vim'
-Plug 'fisadev/vim-ctrlp-cmdpalette'
 " Zen coding
 Plug 'mattn/emmet-vim'
-" Tab list panel
+" Tabline
+" vim-buftabline alternative
 Plug 'zefei/vim-wintabs'
 Plug 'zefei/vim-wintabs-powerline'
 " Status line
@@ -94,18 +91,18 @@ Plug 'lilydjwg/colorizer'
 Plug 'mileszs/ack.vim'
 " Filetype glyphs
 Plug 'ryanoasis/vim-devicons'
+" Drag visual blocks arround
+Plug 'fisadev/dragvisuals.vim'
 " Terminal Vim with 256 colors colorscheme
 Plug 'NLKNguyen/papercolor-theme'
 Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'cocopon/iceberg.vim'
 
 " ::Python::
+" Select and operate on indent objects
+Plug 'michaeljsmith/vim-indent-object'
 " Automatically sort python imports
 "Plug 'fisadev/vim-isort'
-" Drag visual blocks arround
-Plug 'fisadev/dragvisuals.vim'
-" Python and other languages code checker
-Plug 'scrooloose/syntastic'
 " Python code folding
 Plug 'tmhedberg/SimpylFold'
 " Python autocompletion, go to definition.
@@ -118,21 +115,11 @@ if has('python')
   Plug 'pignacio/vim-yapf-format'
 endif
 
-" ::Other language support::
-" Relative numbering of lines (0 is the current line)
-" (disabled by default because is very intrusive and can't be easily toggled
-" on/off. When the plugin is present, will always activate the relative
-" numbering every time you go to normal mode. Author refuses to add a setting
-" to avoid that)
-" Plug 'myusuf3/numbers.vim'
+" ::Other language::
 " Search results counter
 Plug 'vim-scripts/IndexedSearch'
 " XML/HTML tags navigation
 Plug 'vim-scripts/matchit.zip'
-" Yank history navigation
-Plug 'vim-scripts/YankRing.vim'
-" Language support
-Plug 'sheerun/vim-polyglot'
 
 
 " Tell vim-plug we finished declaring plugins, so it can load them
@@ -257,7 +244,7 @@ set nowb
 set noswapfile
 
 " Ignore compiled files
-set wildignore=*.o,*~,*.pyc
+set wildignore=*.o,*~,*.pyc,*.tmp,*.out,**/node_modules/**,**/package-lock.json
 if has("win16") || has("win32")
   set wildignore+=.git\*,.hg\*,.svn\*
 else
@@ -400,13 +387,12 @@ augroup FernEvents
   autocmd FileType fern call FernInit()
 augroup END
 
-" FZF
-nmap <C-P> :FZF<CR>
-map ; :Files<CR>
-
 " Lion
 let g:lion_squeeze_spaces = 1
 
+" FZF and CtrlP
+nmap <C-P> :FZF<CR>
+map ; :Files<CR>
 
 " ::Window Chooser::
 " mapping
@@ -491,6 +477,7 @@ autocmd FileType go
 
 " ::Coc::
 " Please follow the instruction to install https://github.com/neoclide/coc.nvim#quick-start
+
 " Use tab for trigger completion with characters ahead and navigate.
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
 " other plugin before putting this into your config.
