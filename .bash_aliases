@@ -3,9 +3,9 @@
 # -------------------------------------------------------------------
 # Config (set your own in $HOME/.aliases_local)
 # -------------------------------------------------------------------
-GIT_USERNAME='Festum Qin'
-GIT_USEREMAIL='festum@g.pl'
-GIT_LOG_FORMAT="format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ad) %C(bold blue)<%an>%Creset'"
+GIT_USERNAME=${GIT_USERNAME:-Festum Qin}
+GIT_USEREMAIL=${GIT_USEREMAIL:-festum@g.pl}
+GIT_LOG_FORMAT=${GIT_LOG_FORMAT:-"format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ad) %C(bold blue)<%an>%Creset'"}
 
 # -------------------------------------------------------------------
 # Setup
@@ -55,6 +55,7 @@ alias src='unalias -a && source $HOME/.bashrc' # src: Reload .bashrc file
 alias tcn='mv --force -t $HOME/.local/share/Trash '
 alias h='history | tail'
 alias hg='history | grep'
+alias hrmdup='nl ~/.bash_history | sort -k 2  -k 1,1nr| uniq -f 1 | sort -n | cut -f 2 > unduped_history && cp -f unduped_history ~/.bash_history'
 alias g='grep'
 alias {ack,ak}='ack-grep'
 alias uig='f(){ grep -i --color $@ /etc/group; unset -f f; }; f' # uig: List file groups
@@ -101,7 +102,6 @@ alias vboxin='usermod -aG vboxsf $USER'                    # vboxin: Allow me to
 alias rd='rm -rf'
 alias rmi='rm -i'
 alias rm0='find . -size 0 -print0 |xargs -0 rm --'  # Remove zero size files
-alias cp='cp -iv'
 alias cpv='rsync -ah --info=progress2' # CP continuously
 alias mv='mv -iv'
 alias mkdir='mkdir -pv'

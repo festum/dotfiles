@@ -139,7 +139,7 @@ trap exit_handler EXIT
 
 export ME=$(id -u -n)
 export HISTTIMEFORMAT="%F %T "
-export HISTCONTROL=ignoreboth:erasedups
+export HISTCONTROL=ignoreboth:erasedups #only ignores consecutive duplicate commands
 export HISTFILESIZE=500000
 export HISTSIZE=${HISTFILESIZE}
 export HSTR_CONFIG=hicolor,keywords,favorites,noconfirm,verbose-kill
@@ -152,9 +152,9 @@ export BASH_IT_RELOAD_LEGACY=0
 export SCM_GIT_SHOW_MINIMAL_INFO=true
 export BYOBU_PREFIX=/usr/local
 export TERM=xterm-256color
-export GIT_HOSTING=git@github.com
+export VISUAL=${VISUAL:-vim}
+export GIT_HOSTING=${GIT_HOSTING:-git@github.com}
 export GIT_EDITOR=$VISUAL
-export VISUAL=vim
 export EDITOR=$VISUAL
 export TODO=t
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
@@ -175,10 +175,10 @@ export SHORT_TERM_LINE=true # Set Xterm/screen/Tmux title with shortened command
 #export SHORT_USER=${USER:0:8} # Trim max len of username
 export TMUX_TMPDIR=$HOME/.tmux/tmp
 export NVM_DIR=$HOME/.nvm
-export GO111MODULE=auto
-export GOPROXY=direct
-export GOPATH=$HOME/.go
-export GOBIN=$GOPATH/bin #$(go env GOPATH)
+export GO111MODULE=${GO111MODULE:-auto}
+export GOPROXY=${GOPROXY:-direct}
+export GOPATH=${GOPATH:-$HOME/.go}
+export GOBIN=${GOBIN:-$GOPATH/bin}
 [ -d /usr/local/go ] && export GOROOT=/usr/local/go
 safe_source $HOME/.bashrc_local
 export BIN=$HOME/bin:/snap/bin:$HOME/.local/bin:/fe0/bin:$GOROOT/bin:$GOBIN:/fe0/opt/gotools/bin:$JAVA_HOME/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin
