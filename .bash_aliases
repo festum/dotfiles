@@ -35,6 +35,7 @@ function exit_and_rm(){
 }
 alias sshr='ssh -R 52698:localhost:52698'
 alias exit=exit_and_rm
+alias bye=exit
 function ttmux(){
     # echo "set-option -g default-shell \"/bin/bash\"" > $HOME/.tmux.conf
     if ([ -z $TMUX ]); then
@@ -55,7 +56,7 @@ alias src='unalias -a && source $HOME/.bashrc' # src: Reload .bashrc file
 alias tcn='mv --force -t $HOME/.local/share/Trash '
 alias h='history | tail'
 alias hg='history | grep'
-alias hrmdup='nl ~/.bash_history | sort -k 2  -k 1,1nr| uniq -f 1 | sort -n | cut -f 2 > unduped_history && cp -f unduped_history ~/.bash_history'
+alias hrmdup='nl ~/.bash_history | sort -k 2  -k 1,1nr| uniq -f 1 | sort -n | cut -f 2 | sed -e "/^#d*/d" > unduped_history && cp -f unduped_history ~/.bash_history'
 alias g='grep'
 alias {ack,ak}='ack-grep'
 alias uig='f(){ grep -i --color $@ /etc/group; unset -f f; }; f' # uig: List file groups
