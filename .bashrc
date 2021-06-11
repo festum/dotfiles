@@ -144,7 +144,7 @@ export HISTFILESIZE=500000
 export HISTSIZE=${HISTFILESIZE}
 export HSTR_CONFIG=hicolor,keywords,favorites,noconfirm,verbose-kill
 export PROMPT_COMMAND="history -a; history -n; ${PROMPT_COMMAND}"
-export HISTIGNORE="&:[ ]*:[ \t]*:l[sla]:[bf]g:clear:cls:c:exit:bye:mount*:umount*:history*:h:hh:ps*:rv*:pwd:l. *:ls*:ll*:la*:cd*:-:~:..*:d:j *:jump*:src:gs:ga *:gaa:gp:gl:glp:gu:gub:grbm:gpush:gps:undo:grs*:gg*:venv:pipi:python:php:go:java:node:dcd:dcu:ed:code"
+export HISTIGNORE="&:[ ]*:[ \t]*:l[sla]:[bf]g:clear:cls:c:exit:bye:mount*:umount*:history*:h:hh:ps*:rv*:pwd:l. *:ls*:ll*:la*:cd*:-:~:..*:d:j *:jump*:src:gs:ga *:gaa:gp:gl:glp:gu:gub:grbm:gpush:gps:undo:grs*:gbd*:gg*:venv:pipi:python:php:go:java:node:dcd:dcu:ed:code"
 export BASH_IT_THEME=minimal
 export BASH_IT=$HOME/.bash_it
 export BASH_IT_AUTOMATIC_RELOAD_AFTER_CONFIG_CHANGE=1 # Bash-it auto reload after enabling or disabling aliases, plugins, and completions
@@ -202,6 +202,7 @@ is_runnable pipenv && eval "$(pipenv --completion)"
 is_runnable lesspipe && eval "$(SHELL=/bin/sh lesspipe)"
 is_runnable jump && eval "$(jump shell bash --bind=j)"
 is_runnable awless && source <(awless completion bash)
+is_runnable kitty && source <(kitty + complete setup bash)
 
 
 if [ "$(uname)" == "Darwin" ]; then

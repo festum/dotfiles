@@ -283,6 +283,7 @@ set -g mouse on
 set -g set-clipboard off #basically disables (broken) automatic copy on selection.
 #set -g status-position top
 #set -g status-keys vi
+set-window-option -g mode-keys vi
 
 # replace C-b by C-a instead of using both prefixes
 # set -gu prefix2
