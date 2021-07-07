@@ -21,6 +21,7 @@ bind Space:magic-space
 shopt -s nocaseglob;
 # Save multi-line commands as one command
 shopt -s cmdhist
+shopt -u lithist
 # Prepend cd to directory names automatically
 shopt -s autocd 2> /dev/null
 # Correct spelling errors during tab-completion
@@ -143,8 +144,8 @@ export HISTCONTROL=ignoreboth:erasedups #only ignores consecutive duplicate comm
 export HISTFILESIZE=500000
 export HISTSIZE=${HISTFILESIZE}
 export HSTR_CONFIG=hicolor,keywords,favorites,noconfirm,verbose-kill
-export PROMPT_COMMAND="history -a; history -n; ${PROMPT_COMMAND}"
-export HISTIGNORE="&:[ ]*:[ \t]*:l[sla]:[bf]g:clear:cls:c:exit:bye:mount*:umount*:history*:h:hh:ps*:rv*:pwd:l. *:ls*:ll*:la*:cd*:-:~:..*:d:j *:jump*:src:gs:ga *:gaa:gp:gl:glp:gu:gub:grbm:gpush:gps:undo:grs*:gbd*:gg*:venv:pipi:python:php:go:java:node:dcd:dcu:ed:code"
+export PROMPT_COMMAND="history -n; history -w; history -c; history -r; $PROMPT_COMMAND"
+export HISTIGNORE="&:[ ]*:[ \t]*:l[sla.]:[bf]g:g[agsplu]:gr[sh]*:clear:cls:c:exit:bye:mount*:umount*:history*:h:hh:ps*:rv*:pwd:cd*:-:~:..*:d:j *:jp:src:gaa:glp:gub:grbm:gpush:gps:undo:gbd*:venv:pipi:python:php:go:java:node:dc[du]:ed:code"
 export BASH_IT_THEME=minimal
 export BASH_IT=$HOME/.bash_it
 export BASH_IT_AUTOMATIC_RELOAD_AFTER_CONFIG_CHANGE=1 # Bash-it auto reload after enabling or disabling aliases, plugins, and completions
@@ -181,7 +182,7 @@ export GOPATH=${GOPATH:-$HOME/.go}
 export GOBIN=${GOBIN:-$GOPATH/bin}
 [ -d /usr/local/go ] && export GOROOT=/usr/local/go
 safe_source $HOME/.bashrc_local
-export BIN=$HOME/bin:/snap/bin:$HOME/.local/bin:/fe0/bin:$GOROOT/bin:$GOBIN:/fe0/opt/gotools/bin:$JAVA_HOME/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin
+export BIN=$HOME/bin:/snap/bin:$HOME/.local/bin:$GOROOT/bin:$GOBIN:$JAVA_HOME/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin
 export PATH=$BIN:$PATH
 [ ! -f $HOME/.bash_it/install.sh ] && git clone --depth=1 https://github.com/Bash-it/bash-it $HOME/.bash_it && $HOME/.bash_it/install.sh -s -n
 safe_source $BASH_IT/bash_it.sh
@@ -200,7 +201,7 @@ is_runnable direnv && eval "$(direnv hook bash)"
 is_runnable thefuck && eval "$(thefuck --alias)"
 is_runnable pipenv && eval "$(pipenv --completion)"
 is_runnable lesspipe && eval "$(SHELL=/bin/sh lesspipe)"
-is_runnable jump && eval "$(jump shell bash --bind=j)"
+is_runnable jump && eval "$(jump shell bash --bind=j)" && alias jp='jump pin .'
 is_runnable awless && source <(awless completion bash)
 is_runnable kitty && source <(kitty + complete setup bash)
 
