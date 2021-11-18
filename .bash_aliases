@@ -252,6 +252,7 @@ alias gbdd="git fetch --prune && git branch -r | egrep -v -f /dev/fd/0  <(git br
 alias gbdc='git branch | egrep -v "(^\*|master|main|dev|develop)" | xargs git branch -D'
 alias gbo='git for-each-ref --sort=committerdate refs/heads/ --format="%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))"'
 alias gc='git checkout --recurse-submodules'
+alias gcat='git cat-file'
 alias gcm='git checkout --recurse-submodules master'
 alias gcp='git cherry-pick'
 alias gcl='f() { git clone "$1" && cd "$(basename "$1" .git)"; unset -f f; }; f'
