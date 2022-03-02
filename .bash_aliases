@@ -101,6 +101,7 @@ alias vboxin='usermod -aG vboxsf $USER'                    # vboxin: Allow me to
 
 # File and folder
 alias rd='rm -rf'
+alias rd.='TMP=`pwd -P` && cd "`dirname $TMP`" && rm -rf "./`basename $TMP`" && unset TMP'
 alias rmi='rm -i'
 alias rm0='find . -size 0 -print0 |xargs -0 rm --'  # Remove zero size files
 alias cpv='rsync -ah --info=progress2' # CP continuously
