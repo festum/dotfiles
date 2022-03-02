@@ -222,7 +222,7 @@ pip_install_save() {
     pip install $package_name && pip freeze | grep -i $package_name >> $requirements_file
 }
 alias pipi='pip3 install -U'
-alias pipr='pip3 install -r -U requirements.txt'
+alias pipr='pip3 install -U -r requirements.txt'
 alias pipu='pip3 install -U $(pip3 freeze | cut -d '=' -f 1)'
 alias pips=pip_install_save
 alias pe='pipenv'
