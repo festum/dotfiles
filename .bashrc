@@ -199,15 +199,15 @@ safe_source $HOME/.gvm/scripts/gvm
 safe_source $HOME/.bashhub/bashhub.sh
 safe_source $(pwd)/alacritty-completions.bash
 safe_source $HOME/.fzf.bash
+safe_source $KITTY_INSTALLATION_DIR/shell-integration/bash/kitty.bash
+[ $TILIX_ID ] && safe_source /etc/profile.d/vte.sh # Ubuntu Budgie
 is_runnable docker-compose && [ "$(uname)" != "Linux" ] && export DMHOST=$(docker-machine ip default) && dmused
 is_runnable direnv && eval "$(direnv hook bash)"
 is_runnable thefuck && eval "$(thefuck --alias)"
-is_runnable pipenv && eval "$(pipenv --completion)"
 is_runnable lesspipe && eval "$(SHELL=/bin/sh lesspipe)"
 is_runnable jump && eval "$(jump shell bash --bind=j)" && alias jp='jump pin .'
 is_runnable awless && source <(awless completion bash)
 is_runnable kitty && source <(kitty + complete setup bash)
-
 
 if [ "$(uname)" == "Darwin" ]; then
     [ ! -f $HOME/.bash_profile ] && echo source $HOME/.bashrc > $HOME/.bash_profile
@@ -218,5 +218,5 @@ else
     shopt -s globstar
     welcome
 fi
-[ $TILIX_ID ] && source /etc/profile.d/vte.sh # Ubuntu Budgie END
+
 
