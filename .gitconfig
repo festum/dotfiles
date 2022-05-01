@@ -13,7 +13,7 @@
 
 [submodule]
 	# Move git pull automatically update submodules to git checkout. Default is `on-demand`.
-	recurse = false
+	recurse = true
 
 [receive]
 	# Resolving: fatal: the receiving end does not support push options

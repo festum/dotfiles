@@ -197,8 +197,9 @@ safe_source $NVM_DIR/nvm.sh
 safe_source $NVM_DIR/bash_completion
 safe_source $HOME/.gvm/scripts/gvm
 safe_source $HOME/.bashhub/bashhub.sh
-safe_source $(pwd)/alacritty-completions.bash
+safe_source $HOME/.cargo/env
 safe_source $HOME/.fzf.bash
+safe_source $(pwd)/alacritty-completions.bash
 safe_source $KITTY_INSTALLATION_DIR/shell-integration/bash/kitty.bash
 [ $TILIX_ID ] && safe_source /etc/profile.d/vte.sh # Ubuntu Budgie
 is_runnable docker-compose && [ "$(uname)" != "Linux" ] && export DMHOST=$(docker-machine ip default) && dmused
@@ -218,5 +219,3 @@ else
     shopt -s globstar
     welcome
 fi
-
-

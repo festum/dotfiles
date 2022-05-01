@@ -25,5 +25,6 @@ link .inputrc
 link .vimrc
 link .wgetrc
 [ ! -d $HOME/.config/kitty ] && mkdir -p $HOME/.config/kitty && link kitty.conf $HOME/.config/kitty
+[ ! -d $HOME/.config/nvim/lua/custom ] && mkdir -p $HOME/.config/nvim/lua && ln -s $DOTFILES_DIR/nvchad/custom $HOME/.config/nvim/lua
 [ -d $HOME/.termux ] && link termux.properties $HOME/.termux && wget -O ~/.termux/colors.properties https://raw.githubusercontent.com/dracula/termux/master/colors.properties
 
