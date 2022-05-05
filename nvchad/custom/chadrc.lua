@@ -27,6 +27,9 @@ M.plugins = {
       ["goolord/alpha-nvim"] = {
          disable = false,
       },
+      ["nvim-telescope/telescope.nvim"] = {
+         file_ignore_patterns = { "node_modules", ".git" },
+      },
    },
 }
 
