@@ -493,6 +493,8 @@ is_runnable bw && alias bws='bw list items --search'
 is_runnable direnv && alias de=direnv
 is_runnable zerotier-one.zerotier-cli && alias zt='sudo zerotier-one.zerotier-cli'
 is_runnable surfshark-vpn && alias surf='sudo surfshark-vpn' && alias surfa='sudo surfshark-vpn attack' && alias surfd='sudo surfshark-vpn down'
+is_runnable kitty && alias icat='kitty +kitten icat'
+
 
 # -------------------------------------------------------------------
 # UTILITIES
