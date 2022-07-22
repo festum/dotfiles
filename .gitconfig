@@ -13,7 +13,7 @@
 
 [submodule]
 	# Move git pull automatically update submodules to git checkout. Default is `on-demand`.
-	recurse = true
+	recurse = false
 
 [receive]
 	# Resolving: fatal: the receiving end does not support push options
@@ -146,6 +146,7 @@ changed = green
 untracked = cyan
 
 [commit]
+	gpgsign = true
 
 # https://help.github.com/articles/signing-commits-using-gpg/
 # gpgsign = true
