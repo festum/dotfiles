@@ -257,6 +257,7 @@ alias gcat='git cat-file'
 alias gcm='git checkout --recurse-submodules master'
 alias gcp='git cherry-pick'
 alias gcl='f() { git clone "$1" && cd "$(basename "$1" .git)"; unset -f f; }; f'
+alias gcln='f() { git clone --filter=blob:none --no-checkout "$1" && cd "$(basename "$1" .git)"; unset -f f; }; f'
 alias gd='git diff --no-renames -b -w --ignore-blank-lines --color'
 alias gda='git diff --shortstat master | sed -E "s/([0-9]+) file.* ([0-9]+) insertion.* ([0-9]+) deletion.*/#\1 +\2 -\3/"'
 alias gdc='git diff --shortstat --cached'
@@ -454,6 +455,8 @@ alias slil='serverless invoke local --function'
 alias fnc='aws lambda create-function --memory-size 512 --timeout 300 --function-name'
 alias login_ecr='$(aws ecr get-login --region eu-central-1 --no-include-email)'
 alias login_ghcr='echo $CR_PAT | docker login ghcr.io -u $(git config user.email) --password-stdin'
+alias tf='terraform'
+alias tfr='terraformer'
 
 # -------------------------------------------------------------------
 # Converters
