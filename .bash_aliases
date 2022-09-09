@@ -469,7 +469,7 @@ alias i2='convert -density 300 -quality 100'
 # -------------------------------------------------------------------
 ! is_runnable code && is_runnable code-oss && alias code=code-oss
 ! is_runnable code && is_runnable codium && alias code=codium
-is_runnable code && alias ed='f() { file=${1:-.}; [ "$file" != "." ] && file="-r ${file}"; code $file; unset -f f;}; f'
+is_runnable code && alias ed='f() { file=${1:-.}; [ "$file" != "." ] && file="-r ${file}"; code $file 2>/dev/null; unset -f f;}; f'
 is_runnable code && alias vc=code
 is_runnable nvim && alias nv=nvim
 ! is_runnable pm && is_runnable homebrew && alias pm='sudo homebrew'
