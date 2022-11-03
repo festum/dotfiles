@@ -249,8 +249,8 @@ alias gbl='git branch-select -l'
 alias gbr='git rev-parse --abbrev-ref --symbolic-full-name @{u}'
 alias gbd='git branch -D'
 alias gbdr='git push -d origin'
-alias gbdd="git fetch --prune && git branch -r | egrep -v -f /dev/fd/0  <(git branch -vv | grep origin | grep -v 'master\|main') | awk '{print \$1}' | xargs -r git branch -D"
-alias gbdc='git branch | egrep -v "(^\*|master|main|dev|develop)" | xargs git branch -D'
+alias gbdd="git fetch --prune && git branch -r | grep -E -v -f /dev/fd/0  <(git branch -vv | grep origin | grep -v 'master\|main') | awk '{print \$1}' | xargs -r git branch -D"
+alias gbdc='git branch | grep -E -v "(^\*|master|main|dev|develop)" | xargs git branch -D'
 alias gbo='git for-each-ref --sort=committerdate refs/heads/ --format="%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))"'
 alias gc='git checkout --recurse-submodules'
 alias gcat='git cat-file'
@@ -561,7 +561,7 @@ if is_runnable dircolors; then
     # alias vdir='vdir --color=auto'
     alias grep='grep --color=auto'
     alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
+    alias egrep='grep -E --color=auto'
 fi
 if [ "$(uname)" == "Darwin" ]; then
     alias ll='ls -alF'
