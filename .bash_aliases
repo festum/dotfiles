@@ -536,8 +536,19 @@ function ex(){
 }
 # ex - archiver
 function ar(){
-    BN=`basename ${1}`
+    local BN=`basename ${1}`
     tar -czf ${BN}.tar.gz ${1}
+}
+# ex - installer
+# Usage: in <app_name> <file>
+function ins(){
+    if [[ "${file}" =~ \.tar.gz$ ]];then
+        echo "Unsupported file type\n"
+        exit 0
+    fi
+    local TARGET_PATH='/usr/local/'
+    [[ -z "${3}" ]] && TARGET_PATH=${3}
+    sudo rm -rf ${TARGET_PATH}/${1} && sudo tar -C ${TARGET_PATH} -xzf ${2}
 }
 # search from CLI
 function google {
