@@ -60,6 +60,7 @@ if [ "$color_prompt" = yes ]; then
 else
     PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 fi
+unset PROMPT_COMMAND
 unset color_prompt force_color_prompt
 unset MAILCHECK # Don't check mail when opening terminal.
 case "$TERM" in
@@ -156,7 +157,7 @@ export BASH_IT_RELOAD_LEGACY=0
 export SCM_GIT_SHOW_MINIMAL_INFO=true
 export BYOBU_PREFIX=/usr/local
 export TERM=xterm-256color
-export VISUAL=${VISUAL:-vim}
+export VISUAL=${VISUAL:-nvim}
 export GIT_HOSTING=${GIT_HOSTING:-git@github.com}
 export GIT_EDITOR=$VISUAL
 export EDITOR=$VISUAL
