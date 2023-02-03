@@ -1,10 +1,15 @@
-local map = require("core.utils").map
+---@type MappingsConfig
+-- check core.mappings for table structure
+-- https://github.com/NvChad/NvChad/blob/main/lua/core/mappings.luaZZ
 
--- telescope
-map("n", "<leader>fp", ":Telescope media_files <CR>")
-map("n", "<leader>te", ":Telescope <CR>")
+local M = {}
 
--- truezen
-map("n", "<leader>ta", ":TZAtaraxis <CR>")
-map("n", "<leader>tm", ":TZMinimalist <CR>")
-map("n", "<leader>tf", ":TZFocus <CR>")
+M.general = {
+	n = {
+		[";"] = { ":", "enter command mode", opts = { nowait = true } },
+	},
+}
+
+-- more keybinds!
+
+return M
