@@ -12,28 +12,25 @@ local M = {}
 local pluginConf = require "custom.plugins.configs"
 
 M.plugins = {
-  options = {
-    lspconfig = {
-      setup_lspconf = "custom.plugins.lspconfig",
+    options = {
+        lspconfig = {
+            setup_lspconf = "custom.plugins.lspconfig",
+        },
     },
-  },
-  override = {
-    ["kyazdani42/nvim-tree.lua"] = pluginConf.nvimtree,
-    ["nvim-treesitter/nvim-treesitter"] = pluginConf.treesitter,
-    ["nvim-telescope/telescope.nvim"] = pluginConf.telescope,
-  },
-  ["goolord/alpha-nvim"] = { disable = false },
-  ["nvim-telescope/telescope.nvim"] = { file_ignore_patterns = { "node_modules", ".git" } },
-
-  install = require "custom.plugins",
+    override = {
+        ["kyazdani42/nvim-tree.lua"] = pluginConf.nvimtree,
+        ["nvim-treesitter/nvim-treesitter"] = pluginConf.treesitter,
+        ["nvim-telescope/telescope.nvim"] = pluginConf.telescope,
+    },
+    ["goolord/alpha-nvim"] = { disable = false },
+    ["nvim-telescope/telescope.nvim"] = { file_ignore_patterns = { "node_modules", ".git" } },
+    install = require "custom.plugins",
 }
 M.ui = {
-  theme_toggle = { "tokyonight", "one_light" },
-  theme = "tokyonight",
-  transparency = false,
+    theme_toggle = { "tokyonight", "one_light" },
+    theme = "tokyonight",
+    transparency = false,
 }
 M.mappings = require "custom.mappings"
 
 return M
-
-
