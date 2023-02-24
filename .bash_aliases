@@ -461,7 +461,7 @@ alias tfr='terraformer'
 # -------------------------------------------------------------------
 # Converters
 # -------------------------------------------------------------------
-alias 7za='7z a -t7z -m0=lzma2 -mx=9 -mfb=258 -md=32m -ms=on'
+alias 7za='7z a -t7z -m0=LZMA2:27 -mx=9 -ms=on -mfb=273 -mtm=- -mmt -mmtf -md=1536m -mmf=bt3 -mmc=10000 -mpb=0 -mlc=0'
 alias i2='convert -density 300 -quality 100'
 
 # -------------------------------------------------------------------
