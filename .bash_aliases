@@ -539,16 +539,15 @@ function ar(){
     local BN=`basename ${1}`
     tar -czf ${BN}.tar.gz ${1}
 }
-# ex - installer
-# Usage: in <app_name> <file>
-function ins(){
-    if [[ "${file}" =~ \.tar.gz$ ]];then
-        echo "Unsupported file type\n"
-        exit 0
-    fi
+# ex - downloaded archive installer
+# Usage: din <app_name> <installation_parent_path> <archive_strip_top_level>
+function din(){
     local TARGET_PATH='/usr/local/'
-    [[ -z "${3}" ]] && TARGET_PATH=${3}
-    sudo rm -rf ${TARGET_PATH}/${1} && sudo tar -C ${TARGET_PATH} -xzf ${2}
+    [[ -n "${2}" ]] && TARGET_PATH=${2}
+    local EX_TYPE=''
+    [[ -n "${3}" ]] && EX_TYPE='--strip-components 1'
+    echo "Extract to ${TARGET_PATH}/${1} ..."
+    sudo rm -rf ${TARGET_PATH}/${1} && sudo mkdir -p $_ && sudo tar -xzf ~/Downloads/${1}*.tar.gz ${EX_TYPE} -C $_
 }
 # search from CLI
 function google {
