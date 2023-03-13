@@ -218,5 +218,5 @@ else
     shopt -s cdspell
     shopt -s checkwinsize
     shopt -s globstar
-    welcome
+    # welcome
 fi

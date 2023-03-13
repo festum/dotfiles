@@ -202,3 +202,5 @@ insteadOf = "gist:"
 
 [includeIf "gitdir:~/Repo/Work/"]
     path = ~/Repo/Work/.gitconfig
+[init]
+	defaultBranch = master
