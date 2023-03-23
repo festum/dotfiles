@@ -38,7 +38,7 @@ echo -e -n "\x1b[\x33 q"
 function safe_source () {
     # Using POSIX [] for compatibility
     # https://unix.stackexchange.com/questions/306111/what-is-the-difference-between-the-bash-operators-vs-vs-vs
-    [ -f $1 ] || [ -s $1 ]&& source $1;
+    [ -f $1 ] || [ -s $1 ] && source $1;
 }
 function is_runnable () {
     command -v $1 >/dev/null 2>&1;
@@ -154,6 +154,15 @@ export BASH_IT_THEME=minimal
 export BASH_IT=$HOME/.bash_it
 export BASH_IT_AUTOMATIC_RELOAD_AFTER_CONFIG_CHANGE=1 # Bash-it auto reload after enabling or disabling aliases, plugins, and completions
 export BASH_IT_RELOAD_LEGACY=0
+export THEME_CHECK_SUDO=true
+export IRC_CLIENT=irssi # Change this to your console based IRC client of choice.
+export SCM_CHECK=true # Version control status checking
+export SHORT_HOSTNAME=$(hostname -s) # Set Xterm/screen/Tmux title with only a short hostname
+export SHORT_TERM_LINE=true # Set Xterm/screen/Tmux title with shortened command and directory
+#export SHORT_USER=${USER:0:8} # Trim max len of username
+export BASH_IT_COMMAND_DURATION=true
+#export COMMAND_DURATION_MIN_SECONDS=1
+#export SHORT_TERM_LINE=true
 export SCM_GIT_SHOW_MINIMAL_INFO=true
 export BYOBU_PREFIX=/usr/local
 export TERM=xterm-256color
@@ -173,11 +182,6 @@ export LESS_TERMCAP_se=$'\E[0m'
 export LESS_TERMCAP_so=$'\E[01;44;33m'
 export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[01;32m'
-export IRC_CLIENT=irssi # Change this to your console based IRC client of choice.
-export SCM_CHECK=true # Version control status checking
-export SHORT_HOSTNAME=$(hostname -s) # Set Xterm/screen/Tmux title with only a short hostname
-export SHORT_TERM_LINE=true # Set Xterm/screen/Tmux title with shortened command and directory
-#export SHORT_USER=${USER:0:8} # Trim max len of username
 export TMUX_TMPDIR=$HOME/.tmux/tmp
 export NVM_DIR=$HOME/.nvm
 export GO111MODULE=${GO111MODULE:-auto}
@@ -188,8 +192,8 @@ export GOBIN=${GOBIN:-$GOPATH/bin}
 safe_source $HOME/.bashrc_local
 export BIN=$HOME/bin:/snap/bin:$HOME/.local/bin:$GOROOT/bin:$GOBIN:$JAVA_HOME/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin
 export PATH=$BIN:$PATH
-[ ! -f $HOME/.bash_it/install.sh ] && git clone --depth=1 https://github.com/Bash-it/bash-it $HOME/.bash_it && $HOME/.bash_it/install.sh -s -n
-safe_source $BASH_IT/bash_it.sh
+[ ! -f $BASH_IT/install.sh ] && git clone --depth=1 https://github.com/Bash-it/bash-it $BASH_IT && $BASH_IT/install.sh -s -n
+safe_source $BASH_IT/bash_it.sh && safe_source $BASH_IT/bash_it.sh
 [ ! -d $HOME/.tmux ] && git clone --depth=1 https://github.com/gpakosz/.tmux $HOME/.tmux && ln -s -f $HOME/.tmux/.tmux.conf $HOME && mkdir -p $HOME/.tmux/tmp
 [ ! -d $HOME/.tmux/plugins/tpm ] && git clone https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm
 safe_source $HOME/.bash_aliases
@@ -220,3 +224,9 @@ else
     shopt -s globstar
     # welcome
 fi
+
+# If not running interactively, don't do anything
+case $- in
+  *i*) ;;
+    *) return;;
+esac
