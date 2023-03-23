@@ -1,13 +1,10 @@
----@type MappingsConfig
--- check core.mappings for table structure
--- https://github.com/NvChad/NvChad/blob/main/lua/core/mappings.luaZZ
-
+---@type MappingsTable
 local M = {}
 
 M.general = {
-		n = {
-				[";"] = { ":", "enter command mode", opts = { nowait = true } },
-		},
+  n = {
+    [";"] = { ":", "enter command mode", opts = { nowait = true } },
+  },
 }
 
 -- more keybinds!
