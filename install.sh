@@ -26,6 +26,5 @@ link .vimrc
 link .wgetrc
 [ ! -d $HOME/.config/kitty ] && mkdir -p $HOME/.config/kitty && link kitty.conf $HOME/.config/kitty
 [ ! -d $HOME/.config/helix ] && mkdir -p $HOME/.config/helix && ln -s helix/config.toml $HOME/.config/helix
-[ ! -d $HOME/.config/nvim ]
-git clone https://github.com/NvChad/NvChad ~/.config/nvim --depth 1 && rm -rf $HOME/.config/nvim/lua/custom && ln -s $DOTFILES_DIR/nvchad/custom $HOME/.config/nvim/lua
+[ ! -d $HOME/.config/nvim ] && rm -rf ~/.local/share/nvim ~/.cache/nvim && git clone https://github.com/NvChad/NvChad ~/.config/nvim --depth 1 && rm -rf $HOME/.config/nvim/lua/custom && ln -s $DOTFILES_DIR/nvchad/custom $HOME/.config/nvim/lua
 [ -d $HOME/.termux ] && link termux.properties $HOME/.termux && wget -O ~/.termux/colors.properties https://raw.githubusercontent.com/dracula/termux/master/colors.properties
