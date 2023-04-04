@@ -204,3 +204,5 @@ insteadOf = "gist:"
     path = ~/Repo/Work/.gitconfig
 [init]
 	defaultBranch = master
+[gpg]
+	program = gpg2
