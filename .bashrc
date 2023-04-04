@@ -1,10 +1,8 @@
 #!/usr/bin/env bash
 # Source https://github.com/festum/dotfiles
 
-case $- in
-  *i*) ;;
-    *) return;;
-esac
+# Skipping non-interactively shell
+[[ $- == *i* ]] || return
 
 # Perform file completion in a case insensitive fashion
 # bind "set completion-ignore-case on"
@@ -122,7 +120,6 @@ function debug_handler() {
 }
 function error_handler() {
     local LAST_HISTORY_ENTRY=$(history | tail -1l)
-
     # if last command is in history (HISTCONTROL, HISTIGNORE)...
     if [ "$LAST_COMMAND" == "$(cut -d ' ' -f 2- <<< $LAST_HISTORY_ENTRY)" ]
     then
@@ -150,20 +147,21 @@ export HISTSIZE=${HISTFILESIZE}
 export HSTR_CONFIG=hicolor,keywords,favorites,noconfirm,verbose-kill
 export PROMPT_COMMAND="history -n; history -w; history -c; history -r; $PROMPT_COMMAND"
 export HISTIGNORE="&[ ]*:l[sla.]:[bf]g:g[agsplu]:gr[sh]*:clear:cls:c:d:exit:bye:mount*:umount*:history*:h:hh:ps*:rv*:pwd:cd*:-:~:..*:d:j *:jp:src:gaa:glp:gub:grbm:gpush:gps:save:undo:redo:fresh:gbd*:venv:pipi:python:php:go:java:node:dc[du]:ed:code"
-export BASH_IT_THEME=minimal
-export BASH_IT=$HOME/.bash_it
+safe_source $HOME/.bashrc_local
+export BASH_IT=${BASH_IT:-$HOME/.bash_it}
+export BASH_IT_THEME=${BASH_IT_THEME:-minimal}
 export BASH_IT_AUTOMATIC_RELOAD_AFTER_CONFIG_CHANGE=1 # Bash-it auto reload after enabling or disabling aliases, plugins, and completions
 export BASH_IT_RELOAD_LEGACY=0
+export BASH_IT_COMMAND_DURATION=true
+#export COMMAND_DURATION_MIN_SECONDS=1
 export THEME_CHECK_SUDO=true
 export IRC_CLIENT=irssi # Change this to your console based IRC client of choice.
 export SCM_CHECK=true # Version control status checking
+export SCM_GIT_SHOW_MINIMAL_INFO=true
 export SHORT_HOSTNAME=$(hostname -s) # Set Xterm/screen/Tmux title with only a short hostname
 export SHORT_TERM_LINE=true # Set Xterm/screen/Tmux title with shortened command and directory
 #export SHORT_USER=${USER:0:8} # Trim max len of username
-export BASH_IT_COMMAND_DURATION=true
-#export COMMAND_DURATION_MIN_SECONDS=1
 #export SHORT_TERM_LINE=true
-export SCM_GIT_SHOW_MINIMAL_INFO=true
 export BYOBU_PREFIX=/usr/local
 export TERM=xterm-256color
 export VISUAL=${VISUAL:-nvim}
@@ -172,7 +170,7 @@ export GIT_EDITOR=$VISUAL
 export EDITOR=$VISUAL
 export TODO=t
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
-export LANG=en_US.UTF-8
+export LANG=${LANG:-en_US.UTF-8}
 export LANGUAGE=$LANG
 export LC_ALL=$LANG
 export LESS_TERMCAP_mb=$'\E[01;31m'
@@ -182,15 +180,14 @@ export LESS_TERMCAP_se=$'\E[0m'
 export LESS_TERMCAP_so=$'\E[01;44;33m'
 export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[01;32m'
-export TMUX_TMPDIR=$HOME/.tmux/tmp
-export NVM_DIR=$HOME/.nvm
+export TMUX_TMPDIR=${TMUX_TMPDIR:-$HOME/.tmux/tmp}
+export NVM_DIR=${NVM_DIR:-$HOME/.nvm}
 export GO111MODULE=${GO111MODULE:-auto}
 export GOPROXY=${GOPROXY:-direct}
 export GOPATH=${GOPATH:-$HOME/.go}
 export GOBIN=${GOBIN:-$GOPATH/bin}
 [ -d /usr/local/go ] && export GOROOT=/usr/local/go
-safe_source $HOME/.bashrc_local
-export BIN=$HOME/bin:/snap/bin:$HOME/.local/bin:$GOROOT/bin:$GOBIN:$JAVA_HOME/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin
+export BIN=/bin:/snap/bin:$HOME/bin:$HOME/.local/bin:$GOROOT/bin:$GOBIN:$JAVA_HOME/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin
 export PATH=$BIN:$PATH
 [ ! -f $BASH_IT/install.sh ] && git clone --depth=1 https://github.com/Bash-it/bash-it $BASH_IT && $BASH_IT/install.sh -s -n
 safe_source $BASH_IT/bash_it.sh && safe_source $BASH_IT/bash_it.sh
@@ -204,7 +201,7 @@ safe_source $HOME/.gvm/scripts/gvm
 safe_source $HOME/.bashhub/bashhub.sh
 safe_source $HOME/.cargo/env
 safe_source $HOME/.fzf.bash
-safe_source $(pwd)/alacritty-completions.bash
+safe_source $(pwd)/extra/completions/alacritty.bash
 safe_source $KITTY_INSTALLATION_DIR/shell-integration/bash/kitty.bash
 [ $TILIX_ID ] && safe_source /etc/profile.d/vte.sh # Ubuntu Budgie
 is_runnable docker-compose && [ "$(uname)" != "Linux" ] && export DMHOST=$(docker-machine ip default) && dmused
@@ -224,9 +221,3 @@ else
     shopt -s globstar
     # welcome
 fi
-
-# If not running interactively, don't do anything
-case $- in
-  *i*) ;;
-    *) return;;
-esac

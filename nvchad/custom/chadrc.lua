@@ -1,22 +1,31 @@
 ---@type ChadrcConfig
-local M = {}
+-- !NeoVim level settiongs
+local g = vim.g
+g.mapleader = ","
 
--- Path to overriding theme and highlights files
+-- !NvChad
 local highlights = require "custom.highlights"
-
-M.ui = {
-  theme = "tokyonight",
-  theme_toggle = { "tokyonight", "one_light" },
-  transparency = false,
-  hl_override = highlights.override,
-  hl_add = highlights.add,
+local M = {
+  plugins = "custom.plugins",
+  -- check core.mappings for table structure
+  mappings = require "custom.mappings",
+  ui = {
+    theme = "palenight",
+    theme_toggle = { "palenight", "blossom_light" },
+    hl_override = highlights.override,
+    hl_add = highlights.add,
+    nvdash = {
+      load_on_startup = true,
+      header = {
+        "   ╔═╗┌─┐┌─┐┌┬┐┬ ┬┌┬┐   ",
+        "   ╠╣ ├┤ └─┐ │ │ ││││   ",
+        "   ╚  └─┘└─┘ ┴ └─┘┴ ┴   ",
+        "   ╔╗╔┌─┐┌─┐ ╦  ╦┬┌┬┐   ",
+        "   ║║║├┤ │ │ ╚╗╔╝││││   ",
+        "   ╝╚╝└─┘└─┘  ╚╝ ┴┴ ┴   ",
+      },
+    },
+  },
 }
-
-
-
-M.plugins = "custom.plugins"
-
--- check core.mappings for table structure
-M.mappings = require "custom.mappings"
 
 return M
