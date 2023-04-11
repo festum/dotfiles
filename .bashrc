@@ -219,5 +219,5 @@ else
     shopt -s cdspell
     shopt -s checkwinsize
     shopt -s globstar
-    # welcome
+    [ ! -f $HOME/.hushlogin ] && welcome
 fi
