@@ -303,11 +303,11 @@ alias grmau='git remote add upstream'
 alias grmsu='git remote set-url --add --push origin'
 alias grmr='git remote rm'
 alias grs='git reset'
-alias grs0='git reset --soft HEAD^1 && git add . && git commit -C HEAD@{1}'
-alias grs1='git reset --soft HEAD^1'
-alias grh1='git reset --hard HEAD^1'
-alias grhh='git update-ref -d HEAD'
-alias gru="git status -su | cut -d' ' -f2- | tr '\n' '\0' | xargs -0 rm"
+alias checkCommitter='export IAM_COMMITTER=false && [ $(git log -1 --pretty=format:"%ae") = $(git config user.email) ] && export IAM_COMMITTER=true'
+alias grs0='checkCommitter && [ $IAM_COMMITTER = true ] && grs --soft HEAD^1 && git add . && git commit -C HEAD@{1}'
+alias grs1='checkCommitter && [ $IAM_COMMITTER = true ] && grs --soft HEAD^1'
+alias grh1='checkCommitter && [ $IAM_COMMITTER = true ] && grs --hard HEAD^1'
+alias grhh='git update-ref -d HEAD' # Git reset first commit
 alias gs='git status -sb'
 alias gmod="git status --porcelain | sed -ne 's/^ M //p'"
 alias gsm='git submodule'
