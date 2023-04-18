@@ -1,77 +1,163 @@
 # git config --global core.excludesfile ~/.gitignore_global
-# Compiled source
-*.com
-*.class
-*.dll
-*.exe*
-*.o
-*.so
-**/*.py[oc]
-.gradle
-*.dylib
+# OS and app cashes
+._*
+.apdisk
+.AppleDB
+.AppleDesktop
+.AppleDouble
+.com.apple.timemachine.donotpresent
+.DocumentRevisions-V100
+.dropbox
+.dropbox.attr
+.dropbox.cache
+.DS_Store
+.DS_Store?
+.fseventsd
+.LSOverride
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+[Dd]esktop.ini
+*.cab
+*.lnk
+*.msi
+*.msix
+*.msm
+*.msp
+*.stackdump
+$RECYCLE.BIN/
+ehthumbs_vista.db
+ehthumbs.db
+Network Trash Folder
+Temporary Items
+Thumbs.db
+Thumbs.db:encryptable
 
 # Packages
 # it's better to unpack these files and commit the raw source
 # git has its own built in compression methods
 *.7z
 *.dmg
+*.ear
 *.gz
 *.iso
 *.jar
+*.nar
 *.rar
 *.tar
+*.war
 *.zip
 
-# Logs and databases
-**/*.log*
-*.sqlite
-
-# OS generated files
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
-
-# IDE
+# Configs
 .classpath
+.code
+.gitconfig
+.history
+.idea
+.metadata
 .project
 .settings
-.idea
 .vscode
-.vscode/settings.json
-.code
-.metadata
 *.iml
 *.ipr
-**/*~
+*.vsix
 **/*.bak
 **/*.sw[abcdefghijklmnop]
+**/*~
 **/launch.json
+go.work
 
-# Test binary, build with `go test -c`
-*.test
-
-# Output of the go coverage tool, specifically when used with LiteIDE
-*.out
-**/envsubst_result
-
-# Python virtual environment
-.virtualenvs
-.virenv
-.venv
-*-venv
+# Artifacts
+__pycache__/
+__pypackages__/
+.cache
+.coverage
+.coverage.*
+.dmypy.json
+.env
+.gradle
+.hypothesis/
+.ipynb_checkpoints
 .local.env
+.mtj.tmp/
+.mypy_cache/
+.nox/
+.pdm.toml
+.pybuilder/
+.pyre/
+.pytest_cache/
+.Python
+.pytype/
+.ropeproject
+.scrapy
+.spyderproject
+.spyproject
+.terraformrc
+.tox/
+.venv
+.virenv
+.virtualenvs
+.webassets-cache
+*_override.tf
+*_override.tf.json
+*-venv
+*.class
+*.com
+*.cover
+*.ctxt
+*.dll
+*.dylib
+*.exe
+*.exe~
+*.log
+*.manifest
+*.mo
+*.o
+*.pot
+*.py,cover
+*.py[cod]
+*.sage.py
+*.so
+*.spec
+*.sqlite
+*.tfstate
+*.tfstate.*
+**/_build
+**/.terraform
+**/*.log*
+**/*.out
+**/*.pb.go
+**/*.py[oc]
+**/*.test
+**/envsubst_result
+*$py.class
+bin/
+celerybeat-schedule
+celerybeat.pid
+coverage.xml
+cython_debug/
+db.sqlite3
+db.sqlite3-journal
+dmypy.json
+env.bak/
+env/
+ENV/
+hs_err_pid*
+ipython_config.py
+local_settings.py
+node_modules
+nosetests.xml
+override.tf
+override.tf.json
+pip-delete-this-directory.txt
+pip-log.txt
+replay_pid*
+terraform.rc
+venv.bak/
+venv/
 
-# My files
-**/.dev
-*.dev.*
-*.dev
+# Dev
+**/*.dev.*
+**/*.dev
 
-# Generated files
-*.pb.go
-
-# Git
-.gitconfig
