@@ -371,6 +371,7 @@ set -g @plugin 'tmux-plugins/tmux-copycat'
 set -g @plugin 'tmux-plugins/tmux-yank'
 set -g @plugin 'tmux-plugins/tmux-open'
 set -g @plugin 'chriszarate/tmux-tasks'
+set -g @plugin "janoamaral/tokyo-night-tmux"
 
 ## Plugin settings
 set -g @resurrect-capture-pane-contents 'on'
