@@ -85,6 +85,7 @@ alias duf='du -sh *'            # Short and human-readable directory listing
 
 # Permission
 alias sudid='sudo !!'
+alias owned='sudo chown $(id -u -n)'
 alias perm='stat --printf "%a %n \n "'      # perm: Show permission of target in number
 alias 000='chmod 000'                       # ---------- (nobody)
 alias 640='chmod 640'                       # -rw-r----- (user: rw, group: r, other: -)
