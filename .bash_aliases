@@ -84,6 +84,7 @@ alias dud='du -d 1 -h'          # Short and human-readable file listing
 alias duf='du -sh *'            # Short and human-readable directory listing
 
 # Permission
+alias sudid='sudo !!'
 alias perm='stat --printf "%a %n \n "'      # perm: Show permission of target in number
 alias 000='chmod 000'                       # ---------- (nobody)
 alias 640='chmod 640'                       # -rw-r----- (user: rw, group: r, other: -)
@@ -200,6 +201,7 @@ alias tmns='tmuxinator start'
 # -------------------------------------------------------------------
 # Go
 alias goi='go install'
+alias gobin='sudo GO111MODULE=on GOBIN=/usr/local/bin go install'
 alias got='go test ./... -tags test'
 alias gor='f() { arg=${@:-.}; go run $arg; unset -f f; }; f'
 alias gom='go mod'
