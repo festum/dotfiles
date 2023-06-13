@@ -229,7 +229,7 @@ alias pipi='pip3 install -U'
 alias pipr='pip3 install -U -r requirements.txt'
 alias pipu='pip3 install -U $(pip3 freeze | cut -d '=' -f 1)'
 alias pips=pip_install_save
-alias pe='pipenv'
+alias venv='python -m venv'
 
 # -------------------------------------------------------------------
 # Git
