@@ -24,6 +24,7 @@ return {
     -- quick save
     -- ["<C-s>"] = { ":w!<cr>", desc = "Save File" },  -- change description but the same command
     ["<C-\\>"] = { "<cmd>ToggleTerm<cr>", desc = "Toggle terminal" },
+    ["<leader>sr"] = { ":%s/<C-R><C-W>//g<Left><Left>", desc = "Search and replace word under cursor" },
   },
   v = {
 

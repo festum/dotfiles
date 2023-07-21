@@ -18,7 +18,7 @@ return {
   },
 
   -- Set colorscheme to use
-  colorscheme = "astromars",
+  colorscheme = "astrodark",
 
   plugins = {
     {
