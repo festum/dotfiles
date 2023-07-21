@@ -2,7 +2,7 @@ theme = "tokyonight"
 
 [editor]
 line-number = "absolute"
-mouse = false
+mouse = true
 middle-click-paste = false
 true-color = true
 
