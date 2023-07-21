@@ -46,7 +46,8 @@ elif [[ $nvim == "a" ]]; then
   rm -rf ~/.local/share/nvim ~/.local/state/nvim ~/.cache/nvim ; \
   echo "Installing AstroNvim" && \
   git clone --depth 1 https://github.com/AstroNvim/AstroNvim ~/.config/nvim && \
-  ln -s $DOTFILES_DIR/astronvim $XDG_CONFIG_HOME/astronvim/lua/user
+  mkdir -p ~/.config/astronvim/lua/ ; \
+  ln -s $DOTFILES_DIR/astronvim ~/.config/astronvim/lua/user
 fi
 
 [ -d $HOME/.termux ] && link termux.properties $HOME/.termux && wget -O ~/.termux/colors.properties https://raw.githubusercontent.com/dracula/termux/master/colors.properties
