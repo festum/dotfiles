@@ -10,8 +10,8 @@ local M = {
   -- check core.mappings for table structure
   mappings = require "custom.mappings",
   ui = {
-    theme = "palenight",
-    theme_toggle = { "palenight", "blossom_light" },
+    theme = "pastelbeans",
+    theme_toggle = { "pastelbeans", "blossom_light" },
     hl_override = highlights.override,
     hl_add = highlights.add,
     nvdash = {

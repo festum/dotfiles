@@ -187,6 +187,7 @@ export GOPROXY=${GOPROXY:-direct}
 export GOPATH=${GOPATH:-$HOME/.go}
 export GOBIN=${GOBIN:-$GOPATH/bin}
 [ -d /usr/local/go ] && export GOROOT=/usr/local/go
+export XDG_CONFIG_HOME=$HOME/.config
 export BIN=/bin:/snap/bin:$HOME/bin:$HOME/.local/bin:$GOROOT/bin:$GOBIN:$JAVA_HOME/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin
 export PATH=$BIN:$PATH
 [ ! -f $BASH_IT/install.sh ] && git clone --depth=1 https://github.com/Bash-it/bash-it $BASH_IT && $BASH_IT/install.sh -s -n
