@@ -183,13 +183,14 @@ export LESS_TERMCAP_us=$'\E[01;32m'
 export GPG_TTY=$(tty)
 export TMUX_TMPDIR=${TMUX_TMPDIR:-$HOME/.tmux/tmp}
 export NVM_DIR=${NVM_DIR:-$HOME/.nvm}
+export VOLTA_HOME=${NVM_DIR:-$HOME/.volta$}
 export GO111MODULE=${GO111MODULE:-auto}
 export GOPROXY=${GOPROXY:-direct}
 export GOPATH=${GOPATH:-$HOME/.go}
 export GOBIN=${GOBIN:-$GOPATH/bin}
 [ -d /usr/local/go ] && export GOROOT=/usr/local/go
 export XDG_CONFIG_HOME=$HOME/.config
-export BIN=/bin:/snap/bin:$HOME/bin:$HOME/.local/bin:$GOROOT/bin:$GOBIN:$JAVA_HOME/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin
+export BIN=/bin:/snap/bin:$HOME/bin:$HOME/.local/bin:$GOROOT/bin:$GOBIN:$JAVA_HOME/bin:$VOLTA_HOME/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin
 export PATH=$BIN:$PATH
 [ ! -f $BASH_IT/install.sh ] && git clone --depth=1 https://github.com/Bash-it/bash-it $BASH_IT && $BASH_IT/install.sh -s -n
 safe_source $BASH_IT/bash_it.sh && safe_source $BASH_IT/bash_it.sh
@@ -223,3 +224,4 @@ else
     shopt -s globstar
     [ ! -f $HOME/.hushlogin ] && welcome
 fi
+
