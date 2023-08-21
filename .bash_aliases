@@ -258,6 +258,7 @@ alias gbdc='git branch | grep -E -v "(^\*|master|main|dev|develop)" | xargs git 
 alias gbo='git for-each-ref --sort=committerdate refs/heads/ --format="%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))"'
 alias gc='git checkout --recurse-submodules'
 alias gcat='git cat-file'
+alias gcfg='$VISUAL .git/config'
 alias gcm='f(){ git checkout --recurse-submodules $(git-main-branch); unset -f f;}; f'
 alias gcp='git cherry-pick'
 alias gcl='f() { git clone "$1" && cd "$(basename "$1" .git)"; unset -f f; }; f'
@@ -268,12 +269,14 @@ alias gdc='git diff --shortstat --cached'
 alias gdev='git checkout master && git branch -D dev && git pull && git checkout -b dev'
 alias gdm='git diff master...'
 alias gds='gd --stat'
-alias gfa='git fetch --all -p'
-alias gfp='git fetch --progress --prune origin'
+alias gf='git fetch -p'
+alias gfa='gf --progress --all' # Fetch all
+alias gfo='gf --progress origin' # Fetch origin
 alias gm='git commit -m '
-alias gm0='git commit -C HEAD@{1}'
-alias gma='git commit -am'
-alias gmr='git commit --amend -m'
+alias gm0='git commit -C HEAD@{1}' # Reuse last commit message and timestamp to create a commit
+alias gma='git commit -am' # Commit message with auto stage all files
+alias gmm='git commit --amend -m' # Amend message on last commit
+alias gms='git commit --amend --no-edit' # Stage other files on last commit
 alias gmu='git -c user.name="${GIT_USERNAME}" -c user.email="${GIT_USEREMAIL}" commit -m '
 alias gmg='git merge'
 alias gmgp='git merge @{-1}'
@@ -307,9 +310,9 @@ alias grmau='git remote add upstream'
 alias grmsh='git remote set-head origin --auto'
 alias grmsu='git remote set-url --add --push origin'
 alias grmr='git remote rm'
-alias grs='git reset'
 alias checkCommitter='export IAM_COMMITTER=false && [ $(git log -1 --pretty=format:"%ae") = $(git config user.email) ] && export IAM_COMMITTER=true'
-alias grs0='checkCommitter && [ $IAM_COMMITTER = true ] && grs --soft HEAD^1 && git add . && git commit -C HEAD@{1}'
+alias grs='git reset'
+alias grs0='checkCommitter && [ $IAM_COMMITTER = true ] && git add . && git commit --amend --no-edit'
 alias grs1='checkCommitter && [ $IAM_COMMITTER = true ] && grs --soft HEAD^1'
 alias grh1='checkCommitter && [ $IAM_COMMITTER = true ] && grs --hard HEAD^1'
 alias grhh='git update-ref -d HEAD' # Git reset first commit
@@ -325,10 +328,10 @@ alias gslc="git shortlog | grep -E '^[ ]+\w+' | wc -l"
 alias gslu="git shortlog | grep -E '^[^ ]'"
 alias gt='git tag'
 alias ghusky='rm -rf .git/hooks/ && npm i -D husky' # https://github.com/typicode/husky/issues/333
-alias gu='git push -f'
-alias gus='git push -f -o ci.skip'
+alias gu='git push --force-with-lease'
+alias gus='git push --force-with-lease -o ci.skip'
 alias gub='git push -u origin $(git rev-parse --abbrev-ref HEAD)' # git branch --show-current for git 2.22
-alias gubs='git push -f -o ci.skip -u origin $(git rev-parse --abbrev-ref HEAD)'
+alias gubs='git push --force-with-lease -o ci.skip -u origin $(git rev-parse --abbrev-ref HEAD)'
 alias gum='git push -o merge_request.create -o merge_request.target=master -o merge_request.merge_when_pipeline_succeeds'
 alias guo='git push origin'
 function gta2() {
@@ -366,6 +369,7 @@ function mr(){
     else xdg-open $link </dev/null >/dev/null 2>&1 & disown
     fi
 }
+alias pr=mr
 function ltag() {
     curl --silent "https://github.com/$1/releases/latest" | sed 's#.*tag/\(.*\)\".*#\1#' && echo ''
 }
