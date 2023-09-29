@@ -209,7 +209,7 @@
 [init]
 	defaultBranch = master
 [gpg]
-	program = gpg2
+	program = /opt/homebrew/bin/gpg
 [difftool]
     prompt = true
 [diff]

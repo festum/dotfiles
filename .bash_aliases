@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # -------------------------------------------------------------------
 # Config (set your own in $HOME/.aliases_local)
@@ -431,12 +431,6 @@ alias kc='kompose'
 alias kcc='kc convert -f'
 alias mk='minikube'
 
-function dmuse() {
-    if [ "$(docker-machine status ${1})" == "Stopped" ]; then
-        docker-machine start ${1}
-    fi
-    eval $(docker-machine env ${1})
-}
 function random_local_port() {
     python -c 'import socket; s = socket.socket(); s.bind(("127.0.0.1", 0)); print s.getsockname()[1]; s.close();'
 }
