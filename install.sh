@@ -21,8 +21,9 @@ link() {
   fi
 }
 
-link .bash_aliases
+link .aliases
 link .bashrc
+link .zshrc
 link .tmux.conf.local
 link .gitconfig
 link .gitignore_global
