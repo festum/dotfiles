@@ -10,24 +10,35 @@ GIT_LOG_FORMAT=${GIT_LOG_FORMAT:-"format:'%Cred%h%Creset -%C(yellow)%d%Creset %s
 # -------------------------------------------------------------------
 # Setup
 # -------------------------------------------------------------------
+# Import base function since this only exists in bashrc
+if [ "$(echo $0)" != "bash" ]; then
+    function safe_source () {
+        # Using POSIX [] for compatibility
+        # https://unix.stackexchange.com/questions/306111/what-is-the-difference-between-the-bash-operators-vs-vs-vs
+        [ -f $1 ] || [ -s $1 ] && source $1;
+    }
+    function is_runnable () {
+        command -v $1 >/dev/null 2>&1;
+    }
+fi
 safe_source $HOME/.aliases_local
 safe_source $HOME/.aliases.local
 safe_source $HOME/configs/custom_aliases
-[ -f $HOME/.remote/.bash_aliases ] && source $HOME/.remote/.bash_aliases && export BASH_IT_THEME=candy
+[ -f $HOME/.remote/.aliases ] && source $HOME/.remote/.aliases && export BASH_IT_THEME=candy
 function sshz(){
-    if [ "$(uname)" == "Darwin" ]; then
+    if [ "$(uname)" = "Darwin" ]; then
         break_arg='-b 0'
     else
         break_arg='-w0'
     fi
-    if [ -f $HOME/.remote/.bash_aliases ]; then
+    if [ -f $HOME/.remote/.aliases ]; then
         RC_DATA=`cat $HOME/.remote/.bashrc | base64 $break_arg`
-        AL_DATA=`cat $HOME/.remote/.bash_aliases | base64 $break_arg`
+        AL_DATA=`cat $HOME/.remote/.aliases | base64 $break_arg`
     else
         RC_DATA=`cat $HOME/.bashrc | base64 $break_arg`
-        AL_DATA=`cat $HOME/.bash_aliases | base64 $break_arg`
+        AL_DATA=`cat $HOME/.aliases | base64 $break_arg`
     fi
-    ssh -t $@ "mkdir -p $HOME/.remote;echo \"${RC_DATA}\" | base64 --decode > $HOME/.remote/.bashrc;echo \"${AL_DATA}\" | base64 --decode > $HOME/.remote/.bash_aliases;bash --rcfile $HOME/.remote/.bashrc"
+    ssh -t $@ "mkdir -p $HOME/.remote;echo \"${RC_DATA}\" | base64 --decode > $HOME/.remote/.bashrc;echo \"${AL_DATA}\" | base64 --decode > $HOME/.remote/.aliases;bash --rcfile $HOME/.remote/.bashrc"
 }
 function exit_and_rm(){
     rm -rf $HOME/.fe0/
@@ -118,9 +129,11 @@ alias numFiles='echo $(ls -1 | wc -l)'               # numFiles: Count of non-hi
 alias make1mb='truncate -s 1m ./1MB.dat'             # make1mb:  Creates a file of 1mb size (all zeros)
 alias make5mb='truncate -s 5m ./5MB.dat'             # make5mb:  Creates a file of 5mb size (all zeros)
 alias make10mb='truncate -s 10m ./10MB.dat'          # make10mb: Creates a file of 10mb size (all zeros)
-alias ffind='f(){ find . -type f -iname '*'$@'*' -ls | grep -v "Permission denied"; unset -f f; }; f' # Find a file with a pattern in name:
-alias efind='f(){ find . -type f -iname '*'$@'*' -exec "${2:-file}" {} \; unset -f f; }; f' # Find a file with pattern $1 in name and Execute $2 on it:
-alias qfind="find . -name "                          # qfind:    Quickly search for file
+if [ "$(echo $0)" = "bash" ]; then
+    alias ffind='f(){ find . -type f -iname '*'$@'*' -ls | grep -v "Permission denied"; unset -f f; }; f' # Find a file with a pattern in name:
+    alias efind='f(){ find . -type f -iname '*'$@'*' -exec "${2:-file}" {} \; unset -f f; }; f' # Find a file with pattern $1 in name and Execute $2 on it:
+    alias qfind="find . -name "                          # qfind:    Quickly search for file
+fi
 alias count='f(){ cat $@ |wc -l; unset -f f; }; f'   # count:    Get the number of files in this folder
 alias rep='find . -type f -print0 | xargs -0 sed -i' # rep:      Find file by string
 
@@ -341,9 +354,9 @@ function gta2() {
         echo -e "it will do: "$C_2"git tag -am\"`date +%Y-%m-%d` \$tagname\" \$tagname"$C_1
         echo -e "example: "$C_2"gt v0.0.1"$C_0
     else
-        echo -e $C_1"----→ git tag -f -am\"${date} $1\" $1"$C_0
+        echo -e $C_1"---- git tag -f -am\"${date} $1\" $1"$C_0
         git tag -f -am"${date} $1" $1
-        echo -e $C_1"----→ done"$C_0
+        echo -e $C_1"---- done"$C_0
     fi
 }
 function gmeta() {
@@ -363,8 +376,8 @@ function gmeta() {
 function mr(){
     gmeta
     link="https://${repo_host}/${repo_user}/${repo_name}/merge_requests/new?merge_request%5Bsource_branch%5D=${repo_current_branch}"
-    [ $repo_host == "github.com" ] && link="https://${repo_host}/${repo_user}/${repo_name}/compare/${repo_default_branch}...${repo_current_branch}"
-    if [ "$(uname)" == "Darwin" ]
+    [ $repo_host = "github.com" ] && link="https://${repo_host}/${repo_user}/${repo_name}/compare/${repo_default_branch}...${repo_current_branch}"
+    if [ "$(uname)" = "Darwin" ]
     then open $link </dev/null >/dev/null 2>&1 & disown
     else xdg-open $link </dev/null >/dev/null 2>&1 & disown
     fi
@@ -458,7 +471,7 @@ alias tfr='terraformer'
 # -------------------------------------------------------------------
 # Converters
 # -------------------------------------------------------------------
-alias 7za='7z a -t7z -m0=LZMA2:27 -mx=9 -ms=on -mfb=273 -mtm=- -mmt -mmtf -md=1536m -mmf=bt3 -mmc=10000 -mpb=0 -mlc=0'
+alias 7za='7z a -t7z -m0=LZMA2:27 -mx=9 -ms=on -mfb=273 -mtm=- -mmt -mmtf -md=1536m -mmf=bt3 -mmc=10000 -mpb=0 -mlc=0 -mhe=on'
 alias i2='convert -density 300 -quality 100'
 
 # -------------------------------------------------------------------
@@ -570,7 +583,7 @@ if is_runnable dircolors; then
     alias fgrep='fgrep --color=auto'
     alias egrep='grep -E --color=auto'
 fi
-if [ "$(uname)" == "Darwin" ]; then
+if [[ "$(echo $0)" = "bash" && "$(uname)" = "Darwin" ]]; then
     alias ll='ls -alF'
     alias la='ls -A'
     alias l='ls -CF'

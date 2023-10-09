@@ -148,6 +148,7 @@ export HSTR_CONFIG=hicolor,keywords,favorites,noconfirm,verbose-kill
 export PROMPT_COMMAND="history -n; history -w; history -c; history -r; $PROMPT_COMMAND"
 export HISTIGNORE="&[ ]*:l[sla.]:[bf]g:g[agsplu]:gr[sh]*:clear:cls:c:d:exit:bye:mount*:umount*:history*:h:hh:ps*:rv*:pwd:cd*:-:~:..*:d:j *:jp:src:gaa:glp:gub:grbm:gpush:gps:save:undo:redo:fresh:gbd*:venv:pipi:python:php:go:java:node:dc[du]:ed:code"
 safe_source $HOME/.bashrc_local
+safe_source $HOME/.rc_local
 export BASH_IT=${BASH_IT:-$HOME/.bash_it}
 export BASH_IT_THEME=${BASH_IT_THEME:-minimal}
 export BASH_IT_AUTOMATIC_RELOAD_AFTER_CONFIG_CHANGE=1 # Bash-it auto reload after enabling or disabling aliases, plugins, and completions
@@ -196,7 +197,7 @@ export PATH=$BIN:$PATH
 safe_source $BASH_IT/bash_it.sh && safe_source $BASH_IT/bash_it.sh
 [ ! -d $HOME/.tmux ] && git clone --depth=1 https://github.com/gpakosz/.tmux $HOME/.tmux && ln -s -f $HOME/.tmux/.tmux.conf $HOME && mkdir -p $HOME/.tmux/tmp
 [ ! -d $HOME/.tmux/plugins/tpm ] && git clone https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm
-safe_source $HOME/.bash_aliases
+safe_source $HOME/.aliases
 [ -s $HOME/.sdkman/bin/sdkman-init.sh ] && export SDKMAN_DIR=$HOME/.sdkman && source $HOME/.sdkman/bin/sdkman-init.sh
 safe_source $NVM_DIR/nvm.sh
 safe_source $NVM_DIR/bash_completion
