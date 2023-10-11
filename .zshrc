@@ -28,7 +28,20 @@ if [[ -n $SSH_CONNECTION ]]; then
 else
   export EDITOR='hx'
 fi
+export SCM_CHECK=true # Version control status checking
+export SCM_GIT_SHOW_MINIMAL_INFO=true
+export SHORT_HOSTNAME=$(hostname -s) # Set Xterm/screen/Tmux title with only a short hostname
+export SHORT_TERM_LINE=true # Set Xterm/screen/Tmux title with shortened command and directory
+export GPG_TTY=$(tty)
+export TMUX_TMPDIR=${TMUX_TMPDIR:-$HOME/.tmux/tmp}
+export NVM_DIR=${NVM_DIR:-$HOME/.nvm}
+export VOLTA_HOME=${NVM_DIR:-$HOME/.volta$}
+export GO111MODULE=${GO111MODULE:-auto}
+export GOPROXY=${GOPROXY:-direct}
+export GOPATH=${GOPATH:-$HOME/.go}
+export GOBIN=${GOBIN:-$GOPATH/bin}
 
+[ -d /usr/local/go ] && export GOROOT=/usr/local/go
 export BIN=$HOME/.local/bin:/opt/homebrew/bin:$GOROOT/bin:$GOBIN:$JAVA_HOME/bin:$VOLTA_HOME/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin
 export PATH=$HOME/bin:/usr/local/bin:$PATH:$BIN
 # export ARCHFLAGS="-arch x86_64"
