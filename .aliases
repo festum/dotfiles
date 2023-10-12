@@ -63,7 +63,7 @@ alias c="clear && printf '\e[3J'"
 alias cls="echo -ne '\033c'"
 alias wget='wget -c' # with resume download
 alias cic='set completion-ignore-case On' # cic: Make tab-completion case-insensitive
-alias src='unalias -a && source $HOME/.bashrc' # src: Reload .bashrc file
+alias src='unalias -a && source $HOME/.aliases' # src: Reload .bashrc file
 alias tcn='mv --force -t $HOME/.local/share/Trash '
 alias h='history | tail'
 alias hg='history | grep'
@@ -382,7 +382,7 @@ function mr(){
     else xdg-open $link </dev/null >/dev/null 2>&1 & disown
     fi
 }
-alias pr=mr
+alias pr='f() { open "$(git ls-remote --get-url $(git config --get branch.$(git rev-parse --abbrev-ref HEAD).remote) | sed '"'"'s|git@github.com:\(.*\)$|https://github.com/\1|'"'"' | sed '"'"'s|\.git$||'"'"')/compare/$(git config --get branch.$(git rev-parse --abbrev-ref HEAD).merge | cut -d '/' -f 3-)?expand=1"; unset -f f; }; f'
 function ltag() {
     curl --silent "https://github.com/$1/releases/latest" | sed 's#.*tag/\(.*\)\".*#\1#' && echo ''
 }
