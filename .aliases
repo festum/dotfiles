@@ -12,20 +12,14 @@ GIT_LOG_FORMAT=${GIT_LOG_FORMAT:-"format:'%Cred%h%Creset -%C(yellow)%d%Creset %s
 # -------------------------------------------------------------------
 # Import base function since this only exists in bashrc
 if [ "$(echo $0)" != "bash" ]; then
-    function safe_source () {
-        # Using POSIX [] for compatibility
-        # https://unix.stackexchange.com/questions/306111/what-is-the-difference-between-the-bash-operators-vs-vs-vs
-        [ -f $1 ] || [ -s $1 ] && source $1;
-    }
-    function is_runnable () {
-        command -v $1 >/dev/null 2>&1;
-    }
+    safe_source() { [[ -f $1 ]] || [[ -s $1 ]] && source $1; }
+    is_runnable() { command -v $1 >/dev/null 2>&1; }
 fi
 safe_source $HOME/.aliases_local
 safe_source $HOME/.aliases.local
 safe_source $HOME/configs/custom_aliases
 [ -f $HOME/.remote/.aliases ] && source $HOME/.remote/.aliases && export BASH_IT_THEME=candy
-function sshz(){
+sshz(){
     if [ "$(uname)" = "Darwin" ]; then
         break_arg='-b 0'
     else
@@ -38,22 +32,13 @@ function sshz(){
         RC_DATA=`cat $HOME/.bashrc | base64 $break_arg`
         AL_DATA=`cat $HOME/.aliases | base64 $break_arg`
     fi
-    ssh -t $@ "mkdir -p $HOME/.remote;echo \"${RC_DATA}\" | base64 --decode > $HOME/.remote/.bashrc;echo \"${AL_DATA}\" | base64 --decode > $HOME/.remote/.aliases;bash --rcfile $HOME/.remote/.bashrc"
+    ssh -t $@ "mkdir -p $HOME/.remote;echo \"${RC_DATA}\" | base64 --decode > $HOME/.remote/.bashrc;echo \"${AL_DATA}\" | base64 --decode > $HOME/.remote/.aliases;bash --rcfile $HOME/.remote/.bashrc";
 }
-function exit_and_rm(){
-    rm -rf $HOME/.fe0/
-    exit
-}
+exit_and_rm(){ rm -rf $HOME/.fe0/ && exit; }
 alias sshr='ssh -R 52698:localhost:52698'
 alias exit=exit_and_rm
 alias bye=exit
-function ttmux(){
-    # echo "set-option -g default-shell \"/bin/bash\"" > $HOME/.tmux.conf
-    if ([ -z $TMUX ]); then
-        source $HOME/.bash_it/.bashrc
-        tmux new-session -A -s main
-    fi
-}
+ttmux() { [ -z $TMUX ] && source $HOME/.bash_it/.bashrc && tmux new-session -A -s main; }
 
 # -------------------------------------------------------------------
 # Aliases
@@ -232,12 +217,7 @@ alias node='node --harmony'
 alias ktl="ktlint -F '**/*.kt'"
 
 # Python
-pip_install_save() {
-    package_name=$1
-    requirements_file=$2
-    [[ -z $requirements_file ]] && requirements_file='./requirements.txt'
-    pip install $package_name && pip freeze | grep -i $package_name >> $requirements_file
-}
+pip_install_save() { package_name=$1; requirements_file=$2; [[ -z $requirements_file ]] && requirements_file='./requirements.txt'; pip install $package_name && pip freeze | grep -i $package_name >> $requirements_file; }
 alias pipi='pip3 install -U'
 alias pipr='pip3 install -U -r requirements.txt'
 alias pipu='pip3 install -U $(pip3 freeze | cut -d '=' -f 1)'
@@ -347,45 +327,11 @@ alias gub='git push -u origin $(git rev-parse --abbrev-ref HEAD)' # git branch -
 alias gubs='git push --force-with-lease -o ci.skip -u origin $(git rev-parse --abbrev-ref HEAD)'
 alias gum='git push -o merge_request.create -o merge_request.target=master -o merge_request.merge_when_pipeline_succeeds'
 alias guo='git push origin'
-function gta2() {
-    local date=`date +%Y-%m-%d`
-    if test -z $1; then
-        echo -e $C_1"use it like that: "$C_2"gt \$tagname"$C_1
-        echo -e "it will do: "$C_2"git tag -am\"`date +%Y-%m-%d` \$tagname\" \$tagname"$C_1
-        echo -e "example: "$C_2"gt v0.0.1"$C_0
-    else
-        echo -e $C_1"---- git tag -f -am\"${date} $1\" $1"$C_0
-        git tag -f -am"${date} $1" $1
-        echo -e $C_1"---- done"$C_0
-    fi
-}
-function gmeta() {
-    url=$(git config --get remote.origin.url)
-    re="^(https|git)(:\/\/|@)([^\/:]+)[\/:]([^\/:]+)\/(.+)(.git)?$"
-    if [[ $url =~ $re ]]; then
-        export repo_proto=${BASH_REMATCH[1]}
-        export repo_sepa=${BASH_REMATCH[2]}
-        export repo_host=${BASH_REMATCH[3]}
-        export repo_user=${BASH_REMATCH[4]}
-        export repo_name=`basename -s .git ${BASH_REMATCH[5]}`
-        git remote set-head origin --auto
-        export repo_default_branch=$(git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@')
-        export repo_current_branch=$(git rev-parse --abbrev-ref HEAD)
-    fi
-}
-function mr(){
-    gmeta
-    link="https://${repo_host}/${repo_user}/${repo_name}/merge_requests/new?merge_request%5Bsource_branch%5D=${repo_current_branch}"
-    [ $repo_host = "github.com" ] && link="https://${repo_host}/${repo_user}/${repo_name}/compare/${repo_default_branch}...${repo_current_branch}"
-    if [ "$(uname)" = "Darwin" ]
-    then open $link </dev/null >/dev/null 2>&1 & disown
-    else xdg-open $link </dev/null >/dev/null 2>&1 & disown
-    fi
-}
+gta2() { [[ -z $1 ]] && echo -e "use it like that: $gt \$tagname\nit will do: git tag -am\"$(date +%Y-%m-%d) \$tagname\" \$tagname\nexample: $gt v0.0.1" || printf "---- git tag -f -am\"$(date +%Y-%m-%d) $1\" $1\n" && git tag -f -am"$(date +%Y-%m-%d) $1" $1 && printf "---- done\n"; }
+gmeta() { url=$(git config --get remote.origin.url); re="^(https|git)(:\/\/|@)([^\/:]+)[\/:]([^\/:]+)\/(.+)(.git)?$"; if [[ $url =~ $re ]]; then export repo_proto=${BASH_REMATCH[1]}; export repo_sepa=${BASH_REMATCH[2]}; export repo_host=${BASH_REMATCH[3]}; export repo_user=${BASH_REMATCH[4]}; export repo_name=`basename -s .git ${BASH_REMATCH[5]}` ; git remote set-head origin --auto; export repo_default_branch=$(git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@'); export repo_current_branch=$(git rev-parse --abbrev-ref HEAD); fi; }
+mr() { gmeta; link="https://${repo_host}/${repo_user}/${repo_name}/merge_requests/new?merge_request%5Bsource_branch%5D=${repo_current_branch}"; [ $repo_host = "github.com" ] && link="https://${repo_host}/${repo_user}/${repo_name}/compare/${repo_default_branch}...${repo_current_branch}"; [[ "$(uname)" = "Darwin" ]] && open $link </dev/null >/dev/null 2>&1 & disown || xdg-open $link </dev/null >/dev/null 2>&1 & disown; }
 alias pr='f() { open "$(git ls-remote --get-url $(git config --get branch.$(git rev-parse --abbrev-ref HEAD).remote) | sed '"'"'s|git@github.com:\(.*\)$|https://github.com/\1|'"'"' | sed '"'"'s|\.git$||'"'"')/compare/$(git config --get branch.$(git rev-parse --abbrev-ref HEAD).merge | cut -d '/' -f 3-)?expand=1"; unset -f f; }; f'
-function ltag() {
-    curl --silent "https://github.com/$1/releases/latest" | sed 's#.*tag/\(.*\)\".*#\1#' && echo ''
-}
+ltag() { curl --silent "https://github.com/$1/releases/latest" | sed 's#.*tag/\(.*\)\".*#\1#' && echo ''; }
 
 # ------------------------------------
 # Docker related
@@ -443,17 +389,7 @@ alias k8x='kubectl exec -it'
 alias kc='kompose'
 alias kcc='kc convert -f'
 alias mk='minikube'
-
-function random_local_port() {
-    python -c 'import socket; s = socket.socket(); s.bind(("127.0.0.1", 0)); print s.getsockname()[1]; s.close();'
-}
-function dmp() {
-    PORT="$(random_local_port)"
-    ssh -f -o ExitOnForwardFailure=yes \
-    -L "127.0.0.1:$PORT:127.0.0.1:2375" "$PRODSERVER" \
-    sleep 5
-    DOCKER_HOST="127.0.0.1:$PORT" "$@"
-}
+dmp() { PORT=$(python -c 'import socket; s = socket.socket(); s.bind(("127.0.0.1", 0)); print s.getsockname()[1]; s.close();'); ssh -f -o ExitOnForwardFailure=yes -L "127.0.0.1:$PORT:127.0.0.1:2375" "$PRODSERVER" ; sleep 5; DOCKER_HOST="127.0.0.1:$PORT" "$@"; }
 
 # ------------------------------------
 # Serverless and AWS
@@ -515,64 +451,21 @@ is_runnable kitty && alias icat='kitty +kitten icat'
 # alert - long running commands
 # Usage: sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
-function swap() {
-    local TMPFILE=tmp.$$
-    mv "$1" $TMPFILE && mv "$2" "$1" && mv $TMPFILE $2
-}
-function authadd() {
-    cat $HOME/.ssh/id_rsa.pub | ssh $1 'umask 0077; mkdir -p $HOME/.ssh; cat >> .ssh/authorized_keys && chmod 700 $HOME/.ssh && chmod 600 $HOME/.ssh/authorized_keys && echo "Key copied"'
-}
+swap() { local TMPFILE=tmp.$$ && mv "$1" $TMPFILE && mv "$2" "$1" && mv $TMPFILE $2; }
+authadd() { cat $HOME/.ssh/id_rsa.pub | ssh $1 'umask 0077; mkdir -p $HOME/.ssh; cat >> .ssh/authorized_keys && chmod 700 $HOME/.ssh && chmod 600 $HOME/.ssh/authorized_keys && echo "Key copied"'; }
 # ex - archive extractor
 # Usage: ex <file>.
-function ex(){
-    if [ -f $1 ] ; then
-        case $1 in
-            *.tar.bz2)   tar xjf $1   ;;
-            *.tar.gz)    tar xzf $1   ;;
-            *.bz2)       bunzip2 $1   ;;
-            *.rar)       unrar e $1   ;;
-            *.gz)        gunzip $1    ;;
-            *.tar)       tar xf $1    ;;
-            *.tbz2)      tar xjf $1   ;;
-            *.tgz)       tar xzf $1   ;;
-            *.zip)       unzip $1     ;;
-            *.Z)         uncompress $1;;
-            *.7z)        7z x $1      ;;
-            *)           echo "'$1' cannot be extracted via ex()" ;;
-        esac
-    else
-        echo "'$1' is not a valid file"
-    fi
-}
+ex() { if [ -f $1 ] ; then case $1 in *.tar.bz2)  tar xjf $1  ;; *.tar.gz)   tar xzf $1  ;; *.bz2)      bunzip2 $1  ;; *.rar)      unrar e $1  ;; *.gz)       gunzip $1   ;; *.tar)      tar xf $1   ;; *.tbz2)     tar xjf $1  ;; *.tgz)      tar xzf $1  ;; *.zip)      unzip $1    ;; *.Z)        uncompress $1;; *.7z)       7z x $1     ;; *)          echo "'$1' cannot be extracted via ex()" ;; esac ; else echo "'$1' is not a valid file" ; fi; }
 # ex - archiver
-function ar(){
-    local BN=`basename ${1}`
-    tar -czf ${BN}.tar.gz ${1}
-}
+ar() { local BN=`basename ${1}`; tar -czf ${BN}.tar.gz ${1}; }
 # ex - downloaded archive installer
 # Usage: din <app_name> <installation_parent_path> <archive_strip_top_level>
-function din(){
-    local TARGET_PATH='/usr/local/'
-    [[ -n "${2}" ]] && TARGET_PATH=${2}
-    local EX_TYPE=''
-    [[ -n "${3}" ]] && EX_TYPE='--strip-components 1'
-    echo "Extract to ${TARGET_PATH}/${1} ..."
-    sudo rm -rf ${TARGET_PATH}/${1} && sudo mkdir -p $_ && sudo tar -xzf ~/Downloads/${1}*.tar.gz ${EX_TYPE} -C $_
-}
+din() { local TARGET_PATH='/usr/local/'; [[ -n "${2}" ]] && TARGET_PATH=${2}; local EX_TYPE=''; [[ -n "${3}" ]] && EX_TYPE='--strip-components 1'; echo "Extract to ${TARGET_PATH}/${1} ..."; sudo rm -rf ${TARGET_PATH}/${1} && sudo mkdir -p $_ && sudo tar -xzf ~/Downloads/${1}*.tar.gz ${EX_TYPE} -C $_ ; }
 # search from CLI
-function google {
-    if ! is_runnable googler; then
-        sudo curl -o /usr/local/bin/googler https://raw.githubusercontent.com/jarun/googler/v4.3.2/googler && sudo chmod +x /usr/local/bin/googler
-    fi
-    googler
-}
+goo() { if ! is_runnable googler; then sudo curl -o /usr/local/bin/googler https://raw.githubusercontent.com/jarun/googler/v4.3.2/googler && sudo chmod +x /usr/local/bin/googler; fi; googler $@; }
 # translate
-function translate() {
-    if ! is_runnable trans; then
-        sudo curl -o /usr/local/bin/trans https://git.io/trans && sudo chmod +x /usr/local/bin/trans
-    fi
-    translate
-}
+translate() { if ! is_runnable trans; then sudo curl -o /usr/local/bin/trans https://git.io/trans && sudo chmod +x /usr/local/bin/trans; fi; translate $@; }
+
 # enable color support of ls and also add handy aliases
 if is_runnable dircolors; then
     test -r $HOME/.dircolors && eval "$(dircolors -b $HOME/.dircolors)" || eval "$(dircolors -b)"
@@ -589,10 +482,8 @@ if [[ "$(echo $0)" = "bash" && "$(uname)" = "Darwin" ]]; then
     alias l='ls -CF'
 fi
 
-function getstate(){
-    echo "CPU `LC_ALL=C top -bn1 | grep "Cpu(s)" | sed "s/.*, *\([0-9.]*\)%* id.*/\1/" | awk '{print 100 - $1}'`% RAM `free -m | awk '/Mem:/ { printf("%3.1f%%", $3/$2*100) }'` HDD `df -h / | awk '/\// {print $(NF-1)}'`"
-}
-function update_terminal_cwd() {
+getstate(){ echo "CPU `LC_ALL=C top -bn1 | grep "Cpu(s)" | sed "s/.*, *\([0-9.]*\)%* id.*/\1/" | awk '{print 100 - $1}'`% RAM `free -m | awk '/Mem:/ { printf("%3.1f%%", $3/$2*100) }'` HDD `df -h / | awk '/\// {print $(NF-1)}'`"; }
+update_terminal_cwd() {
     # Identify the directory using a "file:" scheme URL,
     # including the host name to disambiguate local vs.
     # remote connections. Percent-escape spaces.
@@ -601,8 +492,7 @@ function update_terminal_cwd() {
     local PWD_URL="file://$HOSTNAME${PWD//$SEARCH/$REPLACE}"
     printf '\e]7;%s\a' "$PWD_URL"
 }
-
-function welcome(){
+welcome(){
     # Basic info
     HOSTNAME=`uname -n`
     ROOT=`df -h 2>/dev/null | awk '$NF=="/"{printf "%s", $5}'`
@@ -629,5 +519,5 @@ function welcome(){
  - CPU usage...........: $LOAD1, $LOAD5, $LOAD15 (1, 5, 15 min)
  - Memory used.........: $MEMORY1 / $MEMORY2
  - Swap in use.........: `free | tail -n 1 | awk '{print $3}'` MB
-==============================================="
+===============================================";
 }
