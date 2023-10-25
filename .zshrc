@@ -16,7 +16,7 @@ ZSH_THEME="fwalch"  # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 # ZSH_CUSTOM=/path/to/new-custom-folder # ZSH custom folder rather than $ZSH/custom
 
 export ZSH="$HOME/.oh-my-zsh"
-[ ! -f $ZSH/oh-my-zsh.sh ] && curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh && sh install.sh
+[ ! -f $ZSH/oh-my-zsh.sh ] && sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" && sh install.sh && mv -f ~/.zshrc.pre-oh-my-zsh ~/.zshrc
 source $ZSH/oh-my-zsh.sh
 source $HOME/.aliases
 safe_source $HOME/.rc_local
