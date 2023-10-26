@@ -286,6 +286,7 @@ alias glp='git log --pretty="${GIT_LOG_FORMAT}" --abbrev-commit --no-merges --da
 alias glg='git log --graph --topo-order --decorate --oneline --all'
 alias glc='git log --pretty=format:'%s' | cut -d " " -f 1 | sort | uniq -c | sort -nr' # get counts
 alias gld='rm -f .git/index.lock'
+alias grp='git rev-parse'
 alias grb='git rebase'
 alias grba='git rebase --abort'
 alias unlockref='git remote prune origin'
