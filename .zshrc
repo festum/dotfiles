@@ -36,11 +36,13 @@ export GPG_TTY=$(tty)
 export TMUX_TMPDIR=${TMUX_TMPDIR:-$HOME/.tmux/tmp}
 export NVM_DIR=${NVM_DIR:-$HOME/.nvm}
 export VOLTA_HOME=${NVM_DIR:-$HOME/.volta$}
+export COMPOSE_DOCKER_CLI_BUILD=0
+export DOCKER_BUILDKIT=0
+export DOCKER_DEFAULT_PLATFORM=linux/amd64
 export GO111MODULE=${GO111MODULE:-auto}
 export GOPROXY=${GOPROXY:-direct}
 export GOPATH=${GOPATH:-$HOME/.go}
 export GOBIN=${GOBIN:-$GOPATH/bin}
-
 [ -d /usr/local/go ] && export GOROOT=/usr/local/go
 export BIN=$HOME/.local/bin:/opt/homebrew/bin:$GOROOT/bin:$GOBIN:$JAVA_HOME/bin:$VOLTA_HOME/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin
 export PATH=$HOME/bin:/usr/local/bin:$PATH:$BIN
