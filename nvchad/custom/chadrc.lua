@@ -25,6 +25,15 @@ local M = {
         "   ╝╚╝└─┘└─┘  ╚╝ ┴┴ ┴   ",
       },
     },
+    statusline = {
+      theme = "vscode_colored", -- default/vscode/vscode_colored/minimal
+      separator_style = "block", -- default/round/block/arrow (separators work only for "default" statusline theme; round and block will work for the minimal theme only)
+      overriden_modules = nil,
+    },
+    tabufline = {
+      lazyload = true,
+      overriden_modules = nil,
+    },
   },
 }
 
