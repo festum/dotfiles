@@ -80,6 +80,7 @@ alias dud='du -d 1 -h'          # Short and human-readable file listing
 alias duf='du -sh *'            # Short and human-readable directory listing
 
 # Permission
+alias sui='sudo -s'
 alias sudid='sudo !!'
 alias owned='sudo chown $(id -u -n)'
 alias perm='stat --printf "%a %n \n "'      # perm: Show permission of target in number
