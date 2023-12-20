@@ -55,7 +55,7 @@ alias hg='history | grep'
 alias hrmdup='nl ~/.bash_history | sort -k 2  -k 1,1nr| uniq -f 1 | sort -n | cut -f 2 | sed -e "/^#d*/d" > unduped_history && cp -f unduped_history ~/.bash_history'
 alias g='grep'
 alias {ack,ak}='ack-grep'
-alias uig='f(){ grep -i --color $@ /etc/group; unset -f f; }; f' # uig: List file groups
+alias uig='f(){ grep -i --color $@ /etc/group; unset -f f >/dev/null 2>&1; }; f' # uig: List file groups
 
 # Directory Listing
 alias path='echo -e ${PATH//:/\\n}' # path: Echo all executable Paths
@@ -94,7 +94,7 @@ alias ux='chmod u+x'                        # ---x------ (user: --x, group: -, o
 alias 644f='find . -type f -exec chmod 644 {} \;'
 alias 755d='find . -type d -exec chmod 755 {} \;'
 alias chm='644f && 755d' # normalize permission
-alias gpin='f(){ usermod -a -G $1 $USER; unset -f f; }; f' # gpin: Join group
+alias gpin='f(){ usermod -a -G $1 $USER; unset -f f >/dev/null 2>&1; }; f' # gpin: Join group
 alias gpls='cat /etc/group | cut -d: -f1'                  # gpls: List groups
 alias vboxin='usermod -aG vboxsf $USER'                    # vboxin: Allow me to have access shared folder
 
@@ -106,7 +106,7 @@ alias rm0='find . -size 0 -print0 |xargs -0 rm --'  # Remove zero size files
 alias cpv='rsync -ah --info=progress2' # CP continuously
 alias mv='mv -iv'
 alias mkdir='mkdir -pv'
-alias md='f(){ mkdir -p $1 && cd $1; unset -f f; unset -f f; }; f' # Create folder and goto
+alias md='f(){ mkdir -p $1 && cd $1; unset -f f >/dev/null 2>&1; }; f' # Create folder and goto
 alias ln="ln -v"
 alias ~='cd ~'
 alias -- -='cd ~-'
@@ -116,11 +116,11 @@ alias make1mb='truncate -s 1m ./1MB.dat'             # make1mb:  Creates a file 
 alias make5mb='truncate -s 5m ./5MB.dat'             # make5mb:  Creates a file of 5mb size (all zeros)
 alias make10mb='truncate -s 10m ./10MB.dat'          # make10mb: Creates a file of 10mb size (all zeros)
 if [ "$(echo $0)" = "bash" ]; then
-    alias ffind='f(){ find . -type f -iname '*'$@'*' -ls | grep -v "Permission denied"; unset -f f; }; f' # Find a file with a pattern in name:
-    alias efind='f(){ find . -type f -iname '*'$@'*' -exec "${2:-file}" {} \; unset -f f; }; f' # Find a file with pattern $1 in name and Execute $2 on it:
+    alias ffind='f(){ find . -type f -iname '*'$@'*' -ls | grep -v "Permission denied"; unset -f f >/dev/null 2>&1; }; f' # Find a file with a pattern in name:
+    alias efind='f(){ find . -type f -iname '*'$@'*' -exec "${2:-file}" {} \; unset -f f >/dev/null 2>&1; }; f' # Find a file with pattern $1 in name and Execute $2 on it:
     alias qfind="find . -name "                          # qfind:    Quickly search for file
 fi
-alias count='f(){ cat $@ |wc -l; unset -f f; }; f'   # count:    Get the number of files in this folder
+alias count='f(){ cat $@ |wc -l; unset -f f >/dev/null 2>&1; }; f'   # count:    Get the number of files in this folder
 alias rep='find . -type f -print0 | xargs -0 sed -i' # rep:      Find file by string
 
 # Process
@@ -134,14 +134,14 @@ alias psls='ps auxf'
 alias psa='ps -Ao pid,comm,pcpu,pmem --sort=-pcpu | head -11'                      # psa:     List processes with minimal info
 alias psc='ps -ax -opid,lstart,pcpu,cputime,comm --sort=-%cpu,-cputime | head -11' # psc:     List processes by CPU
 alias psm='ps -ax -opid,lstart,pmem,rss,comm --sort=-pmem,-rss | head -11'         # psm:     List processes by memory
-alias psp='f(){ sudo netstat -nlp | grep $@; unset -f f; }; f'                     # psp:     Get process by port
+alias psp='f(){ sudo netstat -nlp | grep $@; unset -f f >/dev/null 2>&1; }; f'                     # psp:     Get process by port
 alias psg='ps aux | grep -v grep | grep -i -e VSZ -e'                              # psg:     Search process
-alias daemon='f(){ $@ > /dev/null 2>&1 &; unset -f f; }; f'                        # daemon:  Run in background
-alias daemono='f(){ $@ >> ./out 2>&1 &; unset -f f; }; f'                          # daemono: Run in background with output
+alias daemon='f(){ $@ > /dev/null 2>&1 &; unset -f f >/dev/null 2>&1; }; f'                        # daemon:  Run in background
+alias daemono='f(){ $@ >> ./out 2>&1 &; unset -f f >/dev/null 2>&1; }; f'                          # daemono: Run in background with output
 alias fu='sudo kill -9'      # fu:   Force kill
 alias fuu='sudo killall'     # fuu:  Kill them all
 alias fuuu='sudo killall -9' # fuuu: Force kill them all
-alias setcur='f(){ echo -e -n "\x1b[\x3${1:-3} q"; unset -f f; }; f' # setcur: set cursor 0-6
+alias setcur='f(){ echo -e -n "\x1b[\x3${1:-3} q"; unset -f f >/dev/null 2>&1; }; f' # setcur: set cursor 0-6
 
 # Networking
 alias netCons='lsof -i'                                   # netCons:      Show all open TCP/IP sockets
@@ -155,13 +155,13 @@ alias showBlocked='sudo ipfw list'                        # showBlocked:  All ip
 alias myip='curl ifconfig.me'                             # myip:         Show my external IP
 alias myips="ifconfig | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p'"
 alias newip='sudo ipconfig set en0 BOOTP ; ipconfig set en0 DHCP'     # Request a new DHCP lease for a new IP address
-alias portf='f(){ kill "$(lsof -t -i :$1)"; unset -f f; }; f'         # portf: Free occupied process for certain port
-alias portt='f(){ kill -kill "$(lsof -t -i :$1)"; unset -f f; }; f'   # portt: Kill occupied process for certain port
-alias dl='f(){ curl -OJ $@; unset -f f; }; f'                         # dl:    Download
-alias dlb='f(){ sudo curl -o "/usr/local/bin/${1##*/}" $1 && sudo sudo chmod +x "/usr/local/bin/${1##*/}"; unset -f f; }; f' # dlb: Download binary and move as executable
-alias transfer='f(){  curl --progress-bar --upload-file $1 https://transfer.sh/$(basename $1) | tee /dev/null; unset -f f; }; f' # transfer: Upload to public
-alias serveo='f(){ ssh -R 80:$1 serveo.net; unset -f f; }; f'           # dl: Expose local port
-alias serveop='f(){ autossh -M 0 -R 80:$1 serveo.net; unset -f f; }; f' # dl: Expose local port as daemon
+alias portf='f(){ kill "$(lsof -t -i :$1)"; unset -f f >/dev/null 2>&1; }; f'         # portf: Free occupied process for certain port
+alias portt='f(){ kill -kill "$(lsof -t -i :$1)"; unset -f f >/dev/null 2>&1; }; f'   # portt: Kill occupied process for certain port
+alias dl='f(){ curl -OJ $@; unset -f f >/dev/null 2>&1; }; f'                         # dl:    Download
+alias dlb='f(){ sudo curl -o "/usr/local/bin/${1##*/}" $1 && sudo sudo chmod +x "/usr/local/bin/${1##*/}"; unset -f f >/dev/null 2>&1; }; f' # dlb: Download binary and move as executable
+alias transfer='f(){  curl --progress-bar --upload-file $1 https://transfer.sh/$(basename $1) | tee /dev/null; unset -f f >/dev/null 2>&1; }; f' # transfer: Upload to public
+alias serveo='f(){ ssh -R 80:$1 serveo.net; unset -f f >/dev/null 2>&1; }; f'           # dl: Expose local port
+alias serveop='f(){ autossh -M 0 -R 80:$1 serveo.net; unset -f f >/dev/null 2>&1; }; f' # dl: Expose local port as daemon
 
 # Date
 alias bdate="date '+%a, %b %d %Y %T %Z'"
@@ -203,7 +203,7 @@ alias tmns='tmuxinator start'
 alias goi='go install'
 alias gobin='sudo GO111MODULE=on GOBIN=/usr/local/bin go install'
 alias got='go test ./... -tags test'
-alias gor='f() { arg=${@:-.}; go run $arg; unset -f f; }; f'
+alias gor='f() { arg=${@:-.}; go run $arg; unset -f f >/dev/null 2>&1; }; f'
 alias gom='go mod'
 alias gog='go get -u'
 alias gogg='GO111MODULE=off go get -u'
@@ -239,12 +239,12 @@ alias stal='git stash list'
 alias stap='git stash pop'
 alias stas='git stash show -p'
 alias diff='git diff --no-index'
-alias git-main-branch='f() { git symbolic-ref refs/remotes/origin/HEAD | cut -d"/" -f4; }; f'
+alias git-main-branch='f() { git symbolic-ref refs/remotes/origin/HEAD | cut -d"/" -f4; unset -f f >/dev/null 2>&1; }; f'
 alias pname='basename `git rev-parse --show-toplevel`'
 alias ga='git add'
 alias gaa='git add .'
 alias gb='git branch'
-alias gbs='f() { git checkout --recurse-submodules $1 2>/dev/null || git checkout -b $1; unset -f f; }; f'
+alias gbs='f() { git checkout --recurse-submodules $1 2>/dev/null || git checkout -b $1; unset -f f >/dev/null 2>&1; }; f'
 alias gbl='git branch-select -l'
 alias gbr='git rev-parse --abbrev-ref --symbolic-full-name @{u}'
 alias gbd='git branch -D'
@@ -255,11 +255,11 @@ alias gbo='git for-each-ref --sort=committerdate refs/heads/ --format="%(HEAD) %
 alias gc='git checkout --recurse-submodules'
 alias gcat='git cat-file'
 alias gcfg='$VISUAL .git/config'
-alias gcm='f(){ git checkout --recurse-submodules $(git-main-branch); unset -f f;}; f'
+alias gcm='f(){ git checkout --recurse-submodules $(git-main-branch); unset -f f >/dev/null 2>&1; }; f'
 alias gcp='git cherry-pick'
 alias gc1='git clone --depth=1'
-alias gcl='f() { git clone "$1" && cd "$(basename "$1" .git)"; unset -f f; }; f'
-alias gcln='f() { git clone --filter=blob:none --no-checkout "$1" && cd "$(basename "$1" .git)"; unset -f f; }; f'
+alias gcl='f() { git clone "$1" && cd "$(basename "$1" .git)"; unset -f f >/dev/null 2>&1; }; f'
+alias gcln='f() { git clone --filter=blob:none --no-checkout "$1" && cd "$(basename "$1" .git)"; unset -f f >/dev/null 2>&1; }; f'
 alias gd='git diff --no-renames -b -w --ignore-blank-lines --color'
 alias gda='git diff --shortstat master | sed -E "s/([0-9]+) file.* ([0-9]+) insertion.* ([0-9]+) deletion.*/#\1 +\2 -\3/"'
 alias gdc='git diff --shortstat --cached'
@@ -282,7 +282,7 @@ alias gmv='git mv'
 alias gp='git pull'
 alias gpa='git pull --all'
 alias gpf='git pull --all --rebase --autostash'
-alias gpm='f(){ git pull --rebase --autostash origin $(git-main-branch; unset -f f;}; f'
+alias gpm='f(){ git pull --rebase --autostash origin $(git-main-branch; unset -f f >/dev/null 2>&1; }; f'
 alias gpu='git fetch upstream && git rebase upstream/master'
 alias gpush=gu
 alias gl='git log --date=iso --name-status'
@@ -297,7 +297,7 @@ alias unlockref='git remote prune origin'
 alias grbc='git rebase --continue'
 alias grbs='git rebase --skip'
 alias grbi='git rebase --interactive' # merge
-alias grbm='f(){ git rebase -i --autosquash origin/$(git-main-branch) --no-verify; unset -f f;}; f'
+alias grbm='f(){ git rebase -i --autosquash origin/$(git-main-branch) --no-verify; unset -f f >/dev/null 2>&1; }; f'
 alias grbmb='save && gc master && gp && gc - && grbm'
 alias grc='git ls-files --deleted -z | xargs -0 git rm' # clean
 alias grf='git reflog'
@@ -335,7 +335,7 @@ alias guo='git push origin'
 gta2() { [[ -z $1 ]] && echo -e "use it like that: $gt \$tagname\nit will do: git tag -am\"$(date +%Y-%m-%d) \$tagname\" \$tagname\nexample: $gt v0.0.1" || printf "---- git tag -f -am\"$(date +%Y-%m-%d) $1\" $1\n" && git tag -f -am"$(date +%Y-%m-%d) $1" $1 && printf "---- done\n"; }
 gmeta() { url=$(git config --get remote.origin.url); re="^(https|git)(:\/\/|@)([^\/:]+)[\/:]([^\/:]+)\/(.+)(.git)?$"; if [[ $url =~ $re ]]; then export repo_proto=${BASH_REMATCH[1]}; export repo_sepa=${BASH_REMATCH[2]}; export repo_host=${BASH_REMATCH[3]}; export repo_user=${BASH_REMATCH[4]}; export repo_name=`basename -s .git ${BASH_REMATCH[5]}` ; git remote set-head origin --auto; export repo_default_branch=$(git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@'); export repo_current_branch=$(git rev-parse --abbrev-ref HEAD); fi; }
 mr() { gmeta; link="https://${repo_host}/${repo_user}/${repo_name}/merge_requests/new?merge_request%5Bsource_branch%5D=${repo_current_branch}"; [ $repo_host = "github.com" ] && link="https://${repo_host}/${repo_user}/${repo_name}/compare/${repo_default_branch}...${repo_current_branch}"; [[ "$(uname)" = "Darwin" ]] && open $link </dev/null >/dev/null 2>&1 & disown || xdg-open $link </dev/null >/dev/null 2>&1 & disown; }
-alias pr='f() { open "$(git ls-remote --get-url $(git config --get branch.$(git rev-parse --abbrev-ref HEAD).remote) | sed '"'"'s|git@github.com:\(.*\)$|https://github.com/\1|'"'"' | sed '"'"'s|\.git$||'"'"')/compare/$(git config --get branch.$(git rev-parse --abbrev-ref HEAD).merge | cut -d '/' -f 3-)?expand=1"; unset -f f; }; f'
+alias pr='f() { open "$(git ls-remote --get-url $(git config --get branch.$(git rev-parse --abbrev-ref HEAD).remote) | sed '"'"'s|git@github.com:\(.*\)$|https://github.com/\1|'"'"' | sed '"'"'s|\.git$||'"'"')/compare/$(git config --get branch.$(git rev-parse --abbrev-ref HEAD).merge | cut -d '/' -f 3-)?expand=1"; unset -f f >/dev/null 2>&1; }; f'
 ltag() { curl --silent "https://github.com/$1/releases/latest" | sed 's#.*tag/\(.*\)\".*#\1#' && echo ''; }
 
 # ------------------------------------
@@ -348,15 +348,15 @@ alias dkl='docker logs'
 alias dpush='docker push'
 alias dkb='docker buildx'
 alias dkr='docker run -it -d -P'
-alias dkup='f(){ dockerfile=${1:-Dockerfile}; docker run -it "$(dkb build -q -f $dockerfile .) $2"; unset -f f; }; f'
-alias dkup1='f(){ dockerfile=${1:-Dockerfile}; docker run -it --rm "$(dkb build -q -f $dockerfile .) $2"; unset -f f; }; f'
+alias dkup='f(){ dockerfile=${1:-Dockerfile}; docker run -it "$(dkb build -q -f $dockerfile .) $2"; unset -f f >/dev/null 2>&1; }; f'
+alias dkup1='f(){ dockerfile=${1:-Dockerfile}; docker run -it --rm "$(dkb build -q -f $dockerfile .) $2"; unset -f f >/dev/null 2>&1; }; f'
 alias dkp='docker ps -a'
 alias dkpl='docker ps -l -q'
 alias dkpf='docker ps --format "table {{.Names}}\t{{.Image}}\t{{.Ports}}\t{{.Command}}\t{{.Status}}\t"'
 alias dkpip="docker ps -q | xargs -n 1 docker inspect --format '{{ .Name }} {{range .NetworkSettings.Networks}} {{.IPAddress}}{{end}}' | sed 's#^/##';"
 alias dks='docker stats --format "table {{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}"'
-alias dkr='f(){ docker ps -ga -f name="$@" | xargs --no-run-if-empty docker rm -f; unset -f f; }; f'
-alias dkrm='f(){ docker rm $(docker ps -aq -f name="$@"); unset -f f; }; f'
+alias dkr='f(){ docker ps -ga -f name="$@" | xargs --no-run-if-empty docker rm -f; unset -f f >/dev/null 2>&1; }; f'
+alias dkrm='f(){ docker rm $(docker ps -aq -f name="$@"); unset -f f >/dev/null 2>&1; }; f'
 alias dkrma='docker rm -f $(docker ps -aq)'
 alias dkrme='docker rm $(docker ps -aq -f status=exited)'
 alias dkrmi='docker rmi'
@@ -364,7 +364,7 @@ alias dkrmin='docker rmi $(docker images | grep "^<none>" | awk "{ print $3 }")'
 alias dkra='docker ps -qa | xargs --no-run-if-empty docker rm -f'
 alias dki='docker images'
 alias dkip='docker image prune'
-alias dsh='f(){ docker exec -it "$@" /bin/bash; unset -f f; }; f'
+alias dsh='f(){ docker exec -it "$@" /bin/bash; unset -f f >/dev/null 2>&1; }; f'
 alias dc='docker compose --compatibility'
 alias dcb='dc build'
 alias dcd='dc down'
@@ -383,12 +383,14 @@ alias k8cc='k8c current-context'
 alias k8s='k8c use-context'
 alias k8cv='kubectl view'
 alias k8d='kubectl describe'
-alias k8g='kubectl get --all-namespaces'
+alias k8ns='f(){ kubectl config set-context --current --namespace=$1; unset -f f >/dev/null 2>&1; }; f'
+alias k8g='kubectl get'
+alias k8gpip='f(){ kubectl get pod $1 -o custom-columns=NAME:metadata.name,IP:status.podIP; unset -f f >/dev/null 2>&1; }; f'
 alias k8ga='kubectl get --all-namespaces'
 alias k8gd='k8g deploy,svc,pods,pvc,rc,rs'
 alias k8l='kubectl logs --all-containers'
-alias k8t='k8l --tail=1 -f'
-alias k8r='kubectl delete -f'
+alias k8t='k8l --tail=1'
+alias k8r='kubectl delete'
 alias k8rp='k8r --grace-period=1 po'
 alias k8x='kubectl exec -it'
 alias kc='kompose'
@@ -420,7 +422,7 @@ alias i2='convert -density 300 -quality 100'
 # -------------------------------------------------------------------
 ! is_runnable code && is_runnable code-oss && alias code=code-oss
 ! is_runnable code && is_runnable codium && alias code=codium
-is_runnable code && alias ed='f() { file=${1:-.}; [ "$file" != "." ] && file="-r ${file}"; code $file 2>/dev/null; unset -f f;}; f'
+is_runnable code && alias ed='f() { file=${1:-.}; [ "$file" != "." ] && file="-r ${file}"; code $file 2>/dev/null; unset -f f >/dev/null 2>&1; }; f'
 is_runnable code && alias vc=code
 is_runnable nvim && alias nv=nvim
 ! is_runnable pm && is_runnable homebrew && alias pm='sudo homebrew'
