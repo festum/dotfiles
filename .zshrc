@@ -20,7 +20,12 @@ source $ZSH/oh-my-zsh.sh
 source $HOME/.aliases
 safe_source $HOME/.rc_local
 safe_source $HOME/.fzf.zsh
-
+bindkey '^B' backward-word
+bindkey '^F' forward-word
+bindkey "\e[1;3D" backward-word # ⌥←
+bindkey "\e[1;3C" forward-word # ⌥→
+bindkey '^[a' beginning-of-line
+bindkey '^[e' end-of-line
 # export MANPATH="/usr/local/man:$MANPATH"
 export LANG=en_US.UTF-8
 if [[ -n $SSH_CONNECTION ]]; then
