@@ -1,14 +1,12 @@
-# CASE_SENSITIVE="true"
+zstyle ':omz:update' mode auto       # auto/reminder/disabled
+zstyle ':omz:update' frequency 3     # day
+CASE_SENSITIVE="false"
 HYPHEN_INSENSITIVE="true"
-# zstyle ':omz:update' mode disabled  # disable automatic updates
-# zstyle ':omz:update' mode auto      # update automatically without asking
-# zstyle ':omz:update' mode reminder  # just remind me to update when it's time
-# zstyle ':omz:update' frequency 13
 DISABLE_UNTRACKED_FILES_DIRTY="true" # Performance: Disable marking untracked files under VCS as dirty
 # DISABLE_MAGIC_FUNCTIONS="true"
-# DISABLE_AUTO_TITLE="true"
+DISABLE_AUTO_TITLE="true"
 ENABLE_CORRECTION="true"
-# COMPLETION_WAITING_DOTS="true"
+COMPLETION_WAITING_DOTS="true"
 HIST_STAMPS="yyyy-mm-dd"
 plugins=(z fd fzf adb aws kubectl web-search)
 ZSH_THEME="fwalch"  # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
@@ -26,6 +24,7 @@ bindkey "\e[1;3D" backward-word # ⌥←
 bindkey "\e[1;3C" forward-word # ⌥→
 bindkey '^[a' beginning-of-line
 bindkey '^[e' end-of-line
+unsetopt correct
 # export MANPATH="/usr/local/man:$MANPATH"
 export LANG=en_US.UTF-8
 if [[ -n $SSH_CONNECTION ]]; then
