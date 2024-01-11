@@ -15,6 +15,7 @@ if [ "$(echo $0)" != "bash" ]; then
     safe_source() { [[ -f $1 ]] || [[ -s $1 ]] && source $1; }
     is_runnable() { command -v $1 >/dev/null 2>&1; }
 fi
+git_install(){ [ ! -d $2/.git ] && git clone --depth 1 $1 $2; }
 safe_source $HOME/.aliases_local
 safe_source $HOME/.aliases.local
 safe_source $HOME/configs/custom_aliases
