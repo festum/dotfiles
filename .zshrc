@@ -46,8 +46,9 @@ source $HOME/.aliases
 git_install https://github.com/zsh-users/zsh-syntax-highlighting ${ZSH_CUSTOM:-$ZSH/custom}/plugins/zsh-syntax-highlighting
 git_install https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-$ZSH/custom}/plugins/zsh-autosuggestions
 git_install https://github.com/romkatv/powerlevel10k ${ZSH_CUSTOM:-$ZSH/custom}/themes/powerlevel10k
-source $ZSH/oh-my-zsh.sh
+safe_source $ZSH/oh-my-zsh.sh
 safe_source $HOME/.p10k.zsh # run `p10k configure`
+safe_source $HOME/.cargo/env
 safe_source $HOME/.rc_local
 safe_source $HOME/.fzf.zsh
 bindkey '^B' backward-word
@@ -80,6 +81,7 @@ export GOPROXY=${GOPROXY:-direct}
 export GOPATH=${GOPATH:-$HOME/.go}
 export GOBIN=${GOBIN:-$GOPATH/bin}
 [ -d /usr/local/go ] && export GOROOT=/usr/local/go
+[ -f $HOME/.cargo/env ] && source $HOME/.cargo/env && export CARGO_HOME=$HOME/.cargo/env
 export BIN=$HOME/.local/bin:/opt/homebrew/bin:$GOROOT/bin:$GOBIN:$JAVA_HOME/bin:$VOLTA_HOME/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin
 export PATH=$HOME/bin:/usr/local/bin:$PATH:$BIN
 # export ARCHFLAGS="-arch x86_64"

@@ -232,3 +232,4 @@ else
     shopt -s globstar
     [ ! -f $HOME/.hushlogin ] && welcome
 fi
+

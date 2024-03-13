@@ -412,6 +412,7 @@ alias login_ecr='$(aws ecr get-login --region eu-central-1 --no-include-email)'
 alias login_ghcr='echo $CR_PAT | docker login ghcr.io -u $(git config user.email) --password-stdin'
 alias tf='terraform'
 alias tfr='terraformer'
+alias tco='PYTHONUNBUFFERED=1 LOG_LEVEL=ERROR checkov --quiet --skip-check CKV_TF_1 -d .'
 
 # -------------------------------------------------------------------
 # Converters
