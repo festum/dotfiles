@@ -1,19 +1,19 @@
 [user]
-	email = festum@g.pl
-	name = Festum Qin
+    email = festum@g.pl
+    name = Festum Qin
 [filter "lfs"]
-	smudge = git-lfs smudge -- %f
-	process = git-lfs filter-process
-	required = true
-	clean = git-lfs clean -- %f
+    smudge = git-lfs smudge -- %f
+    process = git-lfs filter-process
+    required = true
+    clean = git-lfs clean -- %f
 [pull]
-	rebase = true
+    rebase = true
 [submodule]
-	# Move git pull automatically update submodules to git checkout. Default is `on-demand`.
-	recurse = false
+    # Move git pull automatically update submodules to git checkout. Default is `on-demand`.
+    recurse = false
 [receive]
-	# Resolving: fatal: the receiving end does not support push options
-	advertisePushOptions = true
+    # Resolving: fatal: the receiving end does not support push options
+    advertisePushOptions = true
 [alias]
     # View abbreviated SHA, description, and history graph of the latest 20 commits
     l = log --pretty="${GIT_LOG_FORMAT}" --abbrev-commit --no-merges --date=iso
@@ -86,11 +86,11 @@
     mwps = push -o merge_request.create -o merge_request.target=master -o merge_request.merge_when_pipeline_succeeds
 
 [apply]
-    # Detect whitespace errors when applying a patch
+    # Detect white spaces errors when applying a patch
     whitespace = fix
 [core]
     # Use custom `.gitignore` and `.gitattributes`
-	excludesfile = ~/.gitignore_global
+    excludesfile = ~/.gitignore_global
     attributesfile = ~/.gitattributes
 
     # Treat spaces before tabs and all kinds of trailing whitespace as an error
@@ -109,24 +109,24 @@
     # Speed up commands involving untracked files such as `git status`.
     # https://git-scm.com/docs/git-update-index#_untracked_cache
     untrackedCache = true
-	editor = nvim
-	pager = diff-so-fancy | less --tabs=4 -RFX
+    editor = nvim
+    pager = diff-so-fancy | less --tabs=4 -RFX
 [color]
     # Use colors in Git commands that are capable of colored output when
-    # outputting to the terminal. (This is the default setting in Git ≥ 1.8.4.)
-	ui = true
+    # outputting to the terminal. (This is the default setting in Git >= 1.8.4.)
+    ui = true
 [color "branch"]
     current = yellow reverse
     local = yellow
     remote = green
 [color "diff"]
-	meta = 11
-	frag = magenta bold
-	old = red bold
-	new = green bold
-	func = 146 bold
-	commit = yellow bold
-	whitespace = red reverse
+    meta = 11
+    frag = magenta bold
+    old = red bold
+    new = green bold
+    func = 146 bold
+    commit = yellow bold
+    whitespace = red reverse
 [color "status"]
     added = yellow
     changed = green
@@ -138,10 +138,16 @@
 [diff]
     # Detect copies as well as renames
     renames = copies
-	tool = nvimdiff
+    tool = nvimdiff
 [diff "bin"]
     # Use `hexdump` to diff binary files
     textconv = hexdump -v -C
+[difftool]
+    prompt = true
+[difftool "vscode"]
+    cmd = code --wait --diff $LOCAL $REMOTE
+[difftool "nvimdiff"]
+    cmd = nvim -d -O \"$LOCAL\" \"$REMOTE\"
 [help]
     # Automatically correct and execute mistyped commands
     autocorrect = 1
@@ -153,7 +159,7 @@
     default = simple
     # Make `git push` push relevant annotated tags when pushing branches out.
     followTags = true
-	autoSetupRemote = true
+    autoSetupRemote = true
 # URL shorthands
 [url "git@github.com:"]
     insteadOf = "gh:"
@@ -170,21 +176,13 @@
 [includeIf "gitdir:~/Repo/Work/"]
     path = ~/Repo/Work/.gitconfig
 [init]
-	defaultBranch = master
+    defaultBranch = main
 [gpg]
-	program = /opt/homebrew/bin/gpg
-[difftool]
-    prompt = true
-[diff]
-    tool = nvimdiff
-[difftool "vscode"]
-	cmd = code --wait --diff $LOCAL $REMOTE
-[difftool "nvimdiff"]
-	cmd = nvim -d -O \"$LOCAL\" \"$REMOTE\"
+    program = /opt/homebrew/bin/gpg
 [interactive]
-	diffFilter = diff-so-fancy --patch
+    diffFilter = diff-so-fancy --patch
 [color "diff-highlight"]
-	oldNormal = red bold
-	oldHighlight = red bold 52
-	newNormal = green bold
-	newHighlight = green bold 22
+    oldNormal = red bold
+    oldHighlight = red bold 52
+    newNormal = green bold
+    newHighlight = green bold 22

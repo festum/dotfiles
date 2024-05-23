@@ -60,6 +60,7 @@ Thumbs.db*
 .vscode/
 go.work
 launch.json
+gradle.properties
 
 # Artifacts
 *$py.class
