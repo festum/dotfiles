@@ -328,6 +328,7 @@ alias gsho='git show --color'
 alias gslc="git shortlog | grep -E '^[ ]+\w+' | wc -l"
 alias gslu="git shortlog | grep -E '^[^ ]'"
 alias gt='git tag'
+alias gdt='git describe --tags --abbrev=0'
 alias ghusky='rm -rf .git/hooks/ && npm i -D husky' # https://github.com/typicode/husky/issues/333
 alias gu='git push --force-with-lease'
 alias gus='git push --force-with-lease -o ci.skip'
