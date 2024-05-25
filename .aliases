@@ -467,16 +467,14 @@ swap() { local TMPFILE=tmp.$$ && mv "$1" $TMPFILE && mv "$2" "$1" && mv $TMPFILE
 authadd() { cat $HOME/.ssh/id_rsa.pub | ssh $1 'umask 0077; mkdir -p $HOME/.ssh; cat >> .ssh/authorized_keys && chmod 700 $HOME/.ssh && chmod 600 $HOME/.ssh/authorized_keys && echo "Key copied"'; }
 # ex - archive extractor
 # Usage: ex <file>.
-ex() { if [ -f $1 ] ; then case $1 in *.tar.bz2)  tar xjf $1  ;; *.tar.gz)   tar xzf $1  ;; *.bz2)      bunzip2 $1  ;; *.rar)      unrar e $1  ;; *.gz)       gunzip $1   ;; *.tar)      tar xf $1   ;; *.tbz2)     tar xjf $1  ;; *.tgz)      tar xzf $1  ;; *.zip)      unzip $1    ;; *.Z)        uncompress $1;; *.7z)       7z x $1     ;; *)          echo "'$1' cannot be extracted via ex()" ;; esac ; else echo "'$1' is not a valid file" ; fi; }
+ex() { if [ -f $1 ]; then case $1 in *.tar.bz2) tar xjf $1;; *.tar.gz) tar xzf $1;; *.bz2) bunzip2 $1;; *.rar) unrar e $1;; *.gz) gunzip $1;; *.tar) tar xf $1;; *.tbz2) tar xjf $1;; *.tgz) tar xzf $1;; *.zip) unzip $1;; *.Z)uncompress $1;; *.7z) 7z x $1;; *) echo "'$1' cannot be extracted via ex()";; esac; else echo "'$1' is not a valid file"; fi; }
 # ex - archiver
 ar() { local BN=`basename ${1}`; tar -czf ${BN}.tar.gz ${1}; }
 # ex - downloaded archive installer
 # Usage: din <app_name> <installation_parent_path> <archive_strip_top_level>
 din() { local TARGET_PATH='/usr/local/'; [[ -n "${2}" ]] && TARGET_PATH=${2}; local EX_TYPE=''; [[ -n "${3}" ]] && EX_TYPE='--strip-components 1'; echo "Extract to ${TARGET_PATH}/${1} ..."; sudo rm -rf ${TARGET_PATH}/${1} && sudo mkdir -p $_ && sudo tar -xzf ~/Downloads/${1}*.tar.gz ${EX_TYPE} -C $_ ; }
-# search from CLI
-goo() { if ! is_runnable googler; then sudo curl -o /usr/local/bin/googler https://raw.githubusercontent.com/jarun/googler/v4.3.2/googler && sudo chmod +x /usr/local/bin/googler; fi; googler $@; }
 # translate
-translate() { if ! is_runnable trans; then sudo curl -o /usr/local/bin/trans https://git.io/trans && sudo chmod +x /usr/local/bin/trans; fi; translate $@; }
+translate() { if ! is_runnable trans; then sudo curl -o /usr/local/bin/trans https://git.io/trans && sudo chmod +x /usr/local/bin/trans; fi; trans $@; }
 
 # enable color support of ls and also add handy aliases
 if is_runnable dircolors; then
