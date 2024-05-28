@@ -30,6 +30,8 @@ shopt -s cdspell 2> /dev/null
 shopt -s globstar 2> /dev/null
 # Allows to bookmark favorite places across the file system
 shopt -s cdable_vars
+# Enable extra wildcard patterns such as @(foo|bar) to match foo or bar
+shopt -s extglob
 # Blinking bar cursor
 echo -e -n "\x1b[\x33 q"
 

@@ -58,6 +58,7 @@ bindkey "\e[1;3C" forward-word # ⌥→
 bindkey '^[a' beginning-of-line
 bindkey '^[e' end-of-line
 unsetopt correct_all
+setopt ksh_glob
 # export MANPATH="/usr/local/man:$MANPATH"
 export LANG=en_US.UTF-8
 if [[ -n $SSH_CONNECTION ]]; then
