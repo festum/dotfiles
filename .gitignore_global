@@ -53,6 +53,7 @@ Thumbs.db*
 .gitconfig
 .history
 .idea/
+.kotlin/
 .metadata
 .project
 .project

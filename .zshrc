@@ -87,3 +87,7 @@ export BIN=$HOME/.local/bin:/opt/homebrew/bin:$GOROOT/bin:$GOBIN:$JAVA_HOME/bin:
 export PATH=$HOME/bin:/usr/local/bin:$PATH:$BIN
 # export ARCHFLAGS="-arch x86_64"
 
+
+### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
+export PATH="/Users/fqin/.rd/bin:$PATH"
+### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
