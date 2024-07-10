@@ -219,6 +219,7 @@ is_runnable lesspipe && eval "$(SHELL=/bin/sh lesspipe)"
 is_runnable jump && eval "$(jump shell bash --bind=j)" && alias jp='jump pin .'
 is_runnable awless && source <(awless completion bash)
 is_runnable kitty && source <(kitty + complete setup bash)
+is_runnable fox && eval "$(vfox activate bash)"
 
 if [ "$(uname)" == "Darwin" ]; then
     [ ! -f $HOME/.bash_profile ] && echo source $HOME/.bashrc > $HOME/.bash_profile
