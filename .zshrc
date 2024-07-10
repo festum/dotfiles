@@ -51,6 +51,7 @@ safe_source $HOME/.p10k.zsh # run `p10k configure`
 safe_source $HOME/.cargo/env
 safe_source $HOME/.rc_local
 safe_source $HOME/.fzf.zsh
+is_runnable fox && eval "$(vfox activate zsh)"
 bindkey '^B' backward-word
 bindkey '^F' forward-word
 bindkey "\e[1;3D" backward-word # ⌥←
