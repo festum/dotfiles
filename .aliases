@@ -14,7 +14,7 @@ GIT_LOG_FORMAT=${GIT_LOG_FORMAT:-"format:'%Cred%h%Creset -%C(yellow)%d%Creset %s
 if [ "$(echo $0)" != "bash" ]; then
     safe_source() { [[ -f $1 ]] || [[ -s $1 ]] && source $1; }
     is_runnable() { command -v $1 >/dev/null 2>&1; }
-    replace_app() { is_runnable $1 && ! [[ -f ~/.local/bin/$2 ]] && ln -s $(which $1) ~/.local/bin/$2; }
+    replace_app() { is_runnable $1 && ! [[ -f ~/.local/bin/$2 ]] && mkdir -p ~/.local/bin/ && ln -s $(which $1) ~/.local/bin/$2; }
 fi
 git_install(){ [ ! -d $2/.git ] && git clone --depth 1 $1 $2; }
 safe_source $HOME/.aliases_local
