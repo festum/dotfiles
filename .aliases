@@ -178,6 +178,14 @@ alias timestamp='date "+%Y%m%dT%H%M%S"'
 alias today='date +"%A, %B %-d, %Y"'
 alias weeknum='date +%V'
 
+# Encryption
+alias gpgl='gpg --list-options show-unusable-uids --list-keys'
+alias gpga='gpg --default-new-key-algo "ed25519/cert,sign+cv25519/encr" --quick-generate-key'
+alias gpges='gpg --armor --export-secret-key'
+alias gpgep='gpg --armor --export'
+alias gpgek='gpg --edit-key'
+alias gpgd='f(){ gpg --delete-secret-key $1; gpg --delete-key $1 ; unset -f f >/dev/null 2>&1; }; f'
+alias gpgtu='f(){ gpg --edit-key $1 trust 6; unset -f f >/dev/null 2>&1; }; f'
 
 # -------------------------------------------------------------------
 # Tmux
@@ -457,7 +465,7 @@ is_runnable direnv && alias de=direnv
 is_runnable zerotier-one.zerotier-cli && alias zt='sudo zerotier-one.zerotier-cli'
 is_runnable surfshark-vpn && alias surf='sudo surfshark-vpn' && alias surfa='sudo surfshark-vpn attack' && alias surfd='sudo surfshark-vpn down'
 is_runnable kitty && alias icat='kitty +kitten icat'
-replace_app eza ls
+#replace_app eza ls
 
 # -------------------------------------------------------------------
 # UTILITIES
