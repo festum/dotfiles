@@ -158,8 +158,8 @@ alias showBlocked='sudo ipfw list'                        # showBlocked:  All ip
 alias myip='curl ifconfig.me'                             # myip:         Show my external IP
 alias myips="ifconfig | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p'"
 alias newip='sudo ipconfig set en0 BOOTP ; ipconfig set en0 DHCP'     # Request a new DHCP lease for a new IP address
-alias portf='f(){ kill "$(lsof -t -i :$1)"; unset -f f >/dev/null 2>&1; }; f'         # portf: Free occupied process for certain port
-alias portt='f(){ kill -kill "$(lsof -t -i :$1)"; unset -f f >/dev/null 2>&1; }; f'   # portt: Kill occupied process for certain port
+alias portf='f(){ sudo lsof -ti :$1 | xargs sudo kill -15; unset -f f >/dev/null 2>&1; }; f'         # portf: Free occupied process for certain port
+alias portt='f(){ sudo lsof -ti :$1 | xargs sudo kill -9; unset -f f >/dev/null 2>&1; }; f'   # portt: Kill occupied process for certain port
 alias dl='f(){ curl -OJ $@; unset -f f >/dev/null 2>&1; }; f'                         # dl:    Download
 alias dlb='f(){ sudo curl -o "/usr/local/bin/${1##*/}" $1 && sudo sudo chmod +x "/usr/local/bin/${1##*/}"; unset -f f >/dev/null 2>&1; }; f' # dlb: Download binary and move as executable
 alias transfer='f(){  curl --progress-bar --upload-file $1 https://transfer.sh/$(basename $1) | tee /dev/null; unset -f f >/dev/null 2>&1; }; f' # transfer: Upload to public
@@ -269,7 +269,7 @@ alias gcfg='$VISUAL .git/config'
 alias gcm='git checkout --recurse-submodules $(git-main-branch)'
 alias gcp='git cherry-pick'
 alias gc1='git clone --depth=1'
-alias gcl='f() { git clone "$1" && cd "$(basename "$1" .git)"; unset -f f >/dev/null 2>&1; }; f'
+alias gcl='f() { [ -n "$2" ] && git clone "$1" "$2" && cd "$2" || (git clone "$1" && cd "$(basename "$1" .git)"); unset -f f >/dev/null 2>&1; }; f'
 alias gcln='f() { git clone --filter=blob:none --no-checkout "$1" && cd "$(basename "$1" .git)"; unset -f f >/dev/null 2>&1; }; f'
 alias gd='git diff --no-renames -b -w --ignore-blank-lines --color'
 alias gda='git diff --shortstat $(git-main-branch) | sed -E "s/([0-9]+) file.* ([0-9]+) insertion.* ([0-9]+) deletion.*/#\1 +\2 -\3/"'

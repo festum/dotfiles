@@ -20,9 +20,7 @@ ZSH_WEB_SEARCH_ENGINES=(
   soft "https://sanet.st/search/?q="
 )
 plugins=(
-  adb
   aws
-  fd
   fzf
   ipfs
   kubectl
