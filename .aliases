@@ -55,7 +55,7 @@ alias tcn='mv --force -t $HOME/.local/share/Trash '
 alias h='history | tail'
 alias hg='history | grep'
 alias hrmdup='nl ~/.bash_history | sort -k 2  -k 1,1nr| uniq -f 1 | sort -n | cut -f 2 | sed -e "/^#d*/d" > unduped_history && cp -f unduped_history ~/.bash_history'
-alias g='grep'
+alias g='git'
 alias {ack,ak}='ack-grep'
 alias uig='f(){ grep -i --color $@ /etc/group; unset -f f >/dev/null 2>&1; }; f' # uig: List file groups
 
