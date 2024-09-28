@@ -39,7 +39,7 @@ plugins=(
 ZSH_THEME=powerlevel10k/powerlevel10k
 # ZSH_THEME_RANDOM_CANDIDATES=( "fwalch" "robbyrussell" "miloshadzic" "arrow" "simple" "wuffers" "zhann")
 export ZSH=$HOME/.oh-my-zsh
-[ ! -f $ZSH/oh-my-zsh.sh ] && sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" && sh install.sh && mv -f $HOME/.zshrc.pre-oh-my-zsh $HOME/.zshrc
+[[ ! -f $ZSH/oh-my-zsh.sh ]] && sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" && sh install.sh && mv -f $HOME/.zshrc.pre-oh-my-zsh $HOME/.zshrc
 source $HOME/.aliases
 git_install https://github.com/zsh-users/zsh-syntax-highlighting ${ZSH_CUSTOM:-$ZSH/custom}/plugins/zsh-syntax-highlighting
 git_install https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-$ZSH/custom}/plugins/zsh-autosuggestions
@@ -58,13 +58,8 @@ bindkey '^[a' beginning-of-line
 bindkey '^[e' end-of-line
 unsetopt correct_all
 setopt ksh_glob
-# export MANPATH="/usr/local/man:$MANPATH"
 export LANG=en_US.UTF-8
-if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR='nvim'
-else
-  export EDITOR='hx'
-fi
+export EDITOR=$([[ -n $SSH_CONNECTION ]] && echo 'nvim' || echo 'hx')
 export SCM_CHECK=true # Version control status checking
 export SCM_GIT_SHOW_MINIMAL_INFO=true
 export SHORT_HOSTNAME=$(hostname -s) # Set Xterm/screen/Tmux title with only a short hostname
@@ -80,8 +75,8 @@ export GO111MODULE=${GO111MODULE:-auto}
 export GOPROXY=${GOPROXY:-direct}
 export GOPATH=${GOPATH:-$HOME/.go}
 export GOBIN=${GOBIN:-$GOPATH/bin}
-[ -d /usr/local/go ] && export GOROOT=/usr/local/go
-[ -f $HOME/.cargo/env ] && source $HOME/.cargo/env && export CARGO_HOME=$HOME/.cargo/env
+[[ ! -d /usr/local/go ]] || export GOROOT=/usr/local/go
+[[ ! -f $HOME/.cargo/env ]] || source $HOME/.cargo/env && export CARGO_HOME=$HOME/.cargo/env
 export BIN=$HOME/.local/bin:/opt/homebrew/bin:$GOROOT/bin:$GOBIN:$JAVA_HOME/bin:$VOLTA_HOME/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin
 export PATH=$HOME/bin:/usr/local/bin:$PATH:$BIN
 # export ARCHFLAGS="-arch x86_64"
