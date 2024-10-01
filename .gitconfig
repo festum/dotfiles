@@ -156,9 +156,8 @@
     newNormal = green bold
     newHighlight = green bold 22
 [commit]
-    gpgsign = true
     # https://help.github.com/articles/signing-commits-using-gpg/
-    # gpgsign = true
+    gpgsign = true
 [diff]
     # Detect copies as well as renames
     renames = copies
@@ -195,11 +194,7 @@
     pushInsteadOf = "git://gist.github.com/"
 [url "git://gist.github.com/"]
     insteadOf = "gist:"
-[includeIf "gitdir:~/Repo/Work/"]
-    path = ~/Repo/Work/.gitconfig
 [init]
     defaultBranch = main
-[gpg]
-    program = /opt/homebrew/bin/gpg
 [interactive]
     diffFilter = diff-so-fancy --patch
