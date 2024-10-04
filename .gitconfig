@@ -18,19 +18,30 @@
     main = !git symbolic-ref refs/remotes/origin/HEAD | cut -d"/" -f4
 
     # View abbreviated SHA, description, and history graph of the latest 20 commits
-    l = log --pretty="${GIT_LOG_FORMAT}" --abbrev-commit --no-merges --date=iso
+    l = log --pretty="format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ad) %C(bold blue)<%an>(%ae)%Creset'" --abbrev-commit --no-merges --date=iso
 
     # View the current working tree status using the short format
-    s = status -s
+    s = status -sb
 
     # Pull in remote changes for the current repository and all its submodules
-    p = git pull --recurse-submodules
+    p = pull --recurse-submodules
+    pa = pull --all
+    pf = pull --all --rebase --autostash
+    pm = pull --rebase --autostash origin $(git-main-branch)
+    pu = fetch upstream && git rebase upstream/$(git-main-branch)
 
     # Checkout
-    c = checkout
+    c = checkout --recurse-submodules
 
     # Clone a repository including all submodules
     cl = clone --recursive
+    c1 = clone --depth=1
+
+    # Diff
+    d = diff --no-renames -b -w --ignore-blank-lines --color
+    dc = diff --cached
+    dcs = diff --cached --shortstat
+    dm = diff --cached main...
 
     # Print files in the tree that are not under source control
     ignored = clean -ndX
@@ -44,17 +55,49 @@
     # Show status log with changed-files summary
     slog = log --name-status
 
-    # Concise status comment
-    st = status --short --branch
+    # Submodule
+    sm = submodule
+    smi = submodule update --init --recursive
+    smu = submodule update --remote --merge --recursive
+    smp = submodule foreach git pull
+    smr = submodule foreach --recursive git reset --hard
+    
+    # Rebase
+    rb = rebase
+    rbm = rebase -i --autosquash origin/main --no-verify
+    rba = rebase --abort
+    rbc = rebase --continue
+    rbs = rebase --skip
 
+    # Push
+    u = push --force-with-lease
+    us = push --force-with-lease -o ci.skip
+    uo = push --force-with-lease origin
+
+    # Useful when leaving or starting a refactoring or before popping a stash
+    wip = commit --no-verify --message 'wip'
+    rm= rm --ignore-unmatch -f -r --cached
+    a = add
+    aa = add .
+
+    # Branch
+    b = branch
+    bd = branch -D
+    bdr = push -d origin
+
+    # Diff
+    diff = diff --no-index --ignore-blank-lines --color
+    d = diff --no-renames -b -w --ignore-blank-lines --color
+    dc = diff --cached --ignore-blank-lines --color
+    dcs = diff --cached --shortstat --ignore-blank-lines --color
+    # Show the diff between the latest commit and the current state
+    ds = !"git diff-index --quiet HEAD -- || clear; git --no-pager diff --patch-with-stat"
+ 
     # List aliases
     aliases = !git config --get-regexp alias\\. | sed -E "s/alias\\.//"
 
     # Amend the currently staged files to the latest commit
     amend = commit --amend --reuse-message=HEAD
-
-    # Show the diff between the latest commit and the current state
-    d = !"git diff-index --quiet HEAD -- || clear; git --no-pager diff --patch-with-stat"
 
     # `git di $number` shows the diff between the state `$number` revisions ago and the current state
     di = !"d() { git diff --patch-with-stat HEAD~$1; }; git diff-index --quiet HEAD -- || clear; d"
@@ -69,10 +112,17 @@
     go = "!f() { git checkout -b \"$1\" 2> /dev/null || git checkout \"$1\"; }; f"
 
     # Show verbose output about tags, branches or remotes
-    tags = tag -l
+    t = tag -l
+    dt = describe --tags --abbrev=0
     branches = !git branch -a -vv | cut -c -119
     #branches = branch -a
-    remotes = remote -v
+    rmt =remote
+    rmv = remote -v
+    rma = remote add
+    rmau = remote add upstream
+    rmsh = remote set-head origin --auto
+    rmsu = remote set-url --add --push origin
+    rmrm = remote rm
 
     # Credit an author on the latest commit
     credit = "!f() { git commit --amend --author \"$1 <$2>\" -C HEAD; }; f"
@@ -103,8 +153,6 @@
     # Example: git mwps origin <local-branch-name>
     mwps = !git push -o merge_request.create -o merge_request.target=$(git main) -o merge_request.merge_when_pipeline_succeeds
 
-    # Useful when leaving or starting a refactoring or before popping a stash
-    wip = commit --no-verify --message 'wip'
 
 [apply]
     # Detect white spaces errors when applying a patch
