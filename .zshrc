@@ -40,7 +40,7 @@ ZSH_THEME=powerlevel10k/powerlevel10k
 # ZSH_THEME_RANDOM_CANDIDATES=( "fwalch" "robbyrussell" "miloshadzic" "arrow" "simple" "wuffers" "zhann")
 export ZSH=$HOME/.oh-my-zsh
 [[ ! -f $ZSH/oh-my-zsh.sh ]] && sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" && sh install.sh && mv -f $HOME/.zshrc.pre-oh-my-zsh $HOME/.zshrc
-source $HOME/.aliases
+source $HOME/.aliases # preload required commands
 git_install https://github.com/zsh-users/zsh-syntax-highlighting ${ZSH_CUSTOM:-$ZSH/custom}/plugins/zsh-syntax-highlighting
 git_install https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-$ZSH/custom}/plugins/zsh-autosuggestions
 git_install https://github.com/romkatv/powerlevel10k ${ZSH_CUSTOM:-$ZSH/custom}/themes/powerlevel10k
@@ -49,6 +49,7 @@ safe_source $HOME/.p10k.zsh # run `p10k configure`
 safe_source $HOME/.cargo/env
 safe_source $HOME/.rc_local
 safe_source $HOME/.fzf.zsh
+safe_source $HOME/.aliases # in case of some zsh runnables overrites aliases
 is_runnable fox && eval "$(vfox activate zsh)"
 bindkey '^B' backward-word
 bindkey '^F' forward-word
@@ -77,11 +78,7 @@ export GOPATH=${GOPATH:-$HOME/.go}
 export GOBIN=${GOBIN:-$GOPATH/bin}
 [[ ! -d /usr/local/go ]] || export GOROOT=/usr/local/go
 [[ ! -f $HOME/.cargo/env ]] || source $HOME/.cargo/env && export CARGO_HOME=$HOME/.cargo/env
-export BIN=$HOME/.local/bin:/opt/homebrew/bin:$GOROOT/bin:$GOBIN:$JAVA_HOME/bin:$VOLTA_HOME/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin
-export PATH=$HOME/bin:/usr/local/bin:$PATH:$BIN
+export BIN=$HOME/bin:$HOME/.local/bin:/opt/homebrew/bin:$GOROOT/bin:$GOBIN:$JAVA_HOME/bin:$VOLTA_HOME/bin:$HOME/.rd/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:
+export PATH=$PATH:/usr/local/bin:$BIN
 # export ARCHFLAGS="-arch x86_64"
 
-
-### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
-export PATH="/Users/fqin/.rd/bin:$PATH"
-### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
