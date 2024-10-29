@@ -11,36 +11,22 @@ GIT_LOG_FORMAT=${GIT_LOG_FORMAT:-"format:'%Cred%h%Creset -%C(yellow)%d%Creset %s
 # Setup
 # -------------------------------------------------------------------
 # Import base function since this only exists in bashrc
-if [ "$(echo $0)" != "bash" ]; then
+if [[ "$(echo $0)" != "bash" ]]; then
   safe_source() { [[ -f $1 ]] || [[ -s $1 ]] && source $1; }
   is_runnable() { command -v $1 >/dev/null 2>&1; }
   replace_app() { is_runnable $1 && ! [[ -f ~/.local/bin/$2 ]] && mkdir -p ~/.local/bin/ && ln -s $(which $1) ~/.local/bin/$2; }
 fi
-git_install() { [ ! -d $2/.git ] && git clone --depth 1 $1 $2; }
+git_install() { [[ ! -d $2/.git ]] && git clone --depth 1 $1 $2; }
 safe_source $HOME/.aliases_local
 safe_source $HOME/.aliases.local
 safe_source $HOME/configs/custom_aliases
-[ -f $HOME/.remote/.aliases ] && source $HOME/.remote/.aliases && export BASH_IT_THEME=candy
-sshz() {
-  if [ "$(uname)" = "Darwin" ]; then
-    break_arg='-b 0'
-  else
-    break_arg='-w0'
-  fi
-  if [ -f $HOME/.remote/.aliases ]; then
-    RC_DATA=$(cat $HOME/.remote/.bashrc | base64 $break_arg)
-    AL_DATA=$(cat $HOME/.remote/.aliases | base64 $break_arg)
-  else
-    RC_DATA=$(cat $HOME/.bashrc | base64 $break_arg)
-    AL_DATA=$(cat $HOME/.aliases | base64 $break_arg)
-  fi
-  ssh -t $@ "mkdir -p $HOME/.remote;echo \"${RC_DATA}\" | base64 --decode > $HOME/.remote/.bashrc;echo \"${AL_DATA}\" | base64 --decode > $HOME/.remote/.aliases;bash --rcfile $HOME/.remote/.bashrc"
-}
+[[ -f $HOME/.remote/.aliases ]] && source $HOME/.remote/.aliases && export BASH_IT_THEME=candy
+sshz() { [[ "$(uname)" = "Darwin" ]] && break_arg='-b 0' || break_arg='-w0'; [[ -f $HOME/.remote/.aliases ]] && (RC_DATA=$(cat $HOME/.remote/.bashrc | base64 $break_arg); AL_DATA=$(cat $HOME/.remote/.aliases | base64 $break_arg)) || (RC_DATA=$(cat $HOME/.bashrc | base64 $break_arg); AL_DATA=$(cat $HOME/.aliases | base64 $break_arg)); ssh -t $@ "mkdir -p $HOME/.remote;echo \"${RC_DATA}\" | base64 --decode > $HOME/.remote/.bashrc;echo \"${AL_DATA}\" | base64 --decode > $HOME/.remote/.aliases;bash --rcfile $HOME/.remote/.bashrc"; }
 exit_and_rm() { rm -rf $HOME/.fe0/ && exit; }
 alias sshr='ssh -R 52698:localhost:52698'
 alias exit=exit_and_rm
 alias bye=exit
-ttmux() { [ -z $TMUX ] && source $HOME/.bash_it/.bashrc && tmux new-session -A -s main; }
+ttmux() { [[ -z $TMUX ]] && source $HOME/.bash_it/.bashrc && tmux new-session -A -s main; }
 
 # -------------------------------------------------------------------
 # Aliases
@@ -117,7 +103,7 @@ alias numFiles='echo $(ls -1 | wc -l)'      # numFiles: Count of non-hidden file
 alias make1mb='truncate -s 1m ./1MB.dat'    # make1mb:  Creates a file of 1mb size (all zeros)
 alias make5mb='truncate -s 5m ./5MB.dat'    # make5mb:  Creates a file of 5mb size (all zeros)
 alias make10mb='truncate -s 10m ./10MB.dat' # make10mb: Creates a file of 10mb size (all zeros)
-if [ "$(echo $0)" = "bash" ]; then
+if [[ "$(echo $0)" = "bash" ]]; then
   alias ffind='f(){ find . -type f -iname '*'$@'*' -ls | grep -v "Permission denied"; unset -f f >/dev/null 2>&1; }; f' # Find a file with a pattern in name:
   alias efind='f(){ find . -type f -iname '*'$@'*' -exec "${2:-file}" {} \; unset -f f >/dev/null 2>&1; }; f'           # Find a file with pattern $1 in name and Execute $2 on it:
   alias qfind="find . -name "                                                                                           # qfind:    Quickly search for file
@@ -228,16 +214,10 @@ alias node='node --harmony'
 alias ktl="ktlint -F '**/*.kt'"
 
 # Python
-pip_install_save() {
-  package_name=$1
-  requirements_file=$2
-  [[ -z $requirements_file ]] && requirements_file='./requirements.txt'
-  pip install $package_name && pip freeze | grep -i $package_name >>$requirements_file
-}
 alias pipi='pip3 install -U'
 alias pipr='pip3 install -U -r requirements.txt'
 alias pipu='pip3 install -U $(pip3 freeze | cut -d '=' -f 1)'
-alias pips=pip_install_save
+alias pips='f() { package_name=$1; requirements_file=${2:-./requirements.txt}; pip install "$package_name" && pip freeze | grep -i "$package_name" >> "$requirements_file"; unset -f f >/dev/null 2>&1; }; f'
 alias venv='python3 -m venv .venv && source .venv/bin/activate'
 
 # -------------------------------------------------------------------
@@ -352,29 +332,8 @@ alias gum='git push -o merge_request.create -o merge_request.target=$(git-main-b
 alias guo='git push --force-with-lease origin'
 alias ggpg='git config user.signingkey $(gpg --list-secret-keys --keyid-format LONG | grep -B 1 $(git config user.email) | head -n 1 | awk "{print \$1}")'
 gta2() { [[ -z $1 ]] && echo -e "use it like that: $gt \$tagname\nit will do: git tag -am\"$(date +%Y-%m-%d) \$tagname\" \$tagname\nexample: $gt v0.0.1" || printf "---- git tag -f -am\"$(date +%Y-%m-%d) $1\" $1\n" && git tag -f -am"$(date +%Y-%m-%d) $1" $1 && printf "---- done\n"; }
-gmeta() {
-  url=$(git config --get remote.origin.url)
-  re="^(https|git)(:\/\/|@)([^\/:]+)[\/:]([^\/:]+)\/(.+)(.git)?$"
-  if [[ $url =~ $re ]]; then
-    export repo_proto=${BASH_REMATCH[1]}
-    export repo_sepa=${BASH_REMATCH[2]}
-    export repo_host=${BASH_REMATCH[3]}
-    export repo_user=${BASH_REMATCH[4]}
-    export repo_name=$(basename -s .git ${BASH_REMATCH[5]})
-    git remote set-head origin --auto
-    export repo_default_branch=$(git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@')
-    export repo_current_branch=$(git rev-parse --abbrev-ref HEAD)
-  fi
-}
-mr() {
-  gmeta
-  link="https://${repo_host}/${repo_user}/${repo_name}/merge_requests/new?merge_request%5Bsource_branch%5D=${repo_current_branch}"
-  [ $repo_host = "github.com" ] && link="https://${repo_host}/${repo_user}/${repo_name}/compare/${repo_default_branch}...${repo_current_branch}"
-  [[ "$(uname)" = "Darwin" ]] && open $link </dev/null >/dev/null 2>&1 &
-  disown || xdg-open $link </dev/null >/dev/null 2>&1 &
-  disown
-}
-alias pr='f() { open "$(git ls-remote --get-url $(git config --get branch.$(git rev-parse --abbrev-ref HEAD).remote) | sed '"'"'s|git@github.com:\(.*\)$|https://github.com/\1|'"'"' | sed '"'"'s|\.git$||'"'"')/compare/$(git config --get branch.$(git rev-parse --abbrev-ref HEAD).merge | cut -d '/' -f 3-)?expand=1"; unset -f f >/dev/null 2>&1; }; f'
+mr() { local remote_url=$(git config --get remote.origin.url); local current_branch=$(git rev-parse --abbrev-ref HEAD); local default_branch=$(git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@'); [[ $remote_url == *"github.com"* ]] && open "$(echo "$remote_url" | sed 's/git@github.com:/https:\/\/github.com\//' | sed 's/\.git$//')/compare/$default_branch...$current_branch" || [[ $remote_url == *"bitbucket.org"* ]] && open "$(echo "$remote_url" | sed 's/git@bitbucket.org:/https:\/\/bitbucket.org\//' | sed 's/\.git$//')/pull-requests/new?source=$current_branch&t=1" || (local base_url=$(echo "$remote_url" | sed 's/git@\(.*\)\:\(.*\)\.git/https:\/\/\1\/\2/'); open "$base_url/merge_requests/new?merge_request%5Bsource_branch%5D=$current_branch"); }
+pr() { open "$(git ls-remote --get-url $(git config --get branch.$(git rev-parse --abbrev-ref HEAD).remote) | sed 's|git@github.com:\(.*\)$|https://github.com/\1|' | sed 's|\.git$||')/compare/$(git config --get branch.$(git rev-parse --abbrev-ref HEAD).merge | cut -d '/' -f 3-)?expand=1"; }
 ltag() { curl --silent "https://github.com/$1/releases/latest" | sed 's#.*tag/\(.*\)\".*#\1#' && echo ''; }
 
 # ------------------------------------
@@ -507,7 +466,7 @@ swap() { local TMPFILE=tmp.$$ && mv "$1" $TMPFILE && mv "$2" "$1" && mv $TMPFILE
 authadd() { cat $HOME/.ssh/id_rsa.pub | ssh $1 'umask 0077; mkdir -p $HOME/.ssh; cat >> .ssh/authorized_keys && chmod 700 $HOME/.ssh && chmod 600 $HOME/.ssh/authorized_keys && echo "Key copied"'; }
 # ex - archive extractor
 # Usage: ex <file>.
-ex() { if [ -f $1 ]; then case $1 in *.tar.bz2) tar xjf $1 ;; *.tar.gz) tar xzf $1 ;; *.bz2) bunzip2 $1 ;; *.rar) unrar e $1 ;; *.gz) gunzip $1 ;; *.tar) tar xf $1 ;; *.tbz2) tar xjf $1 ;; *.tgz) tar xzf $1 ;; *.zip) unzip $1 ;; *.Z) uncompress $1 ;; *.7z) 7z x $1 ;; *) echo "'$1' cannot be extracted via ex()" ;; esac else echo "'$1' is not a valid file"; fi; }
+ex() { if [[ -f $1 ]]; then case $1 in *.tar.bz2) tar xjf $1 ;; *.tar.gz) tar xzf $1 ;; *.bz2) bunzip2 $1 ;; *.rar) unrar e $1 ;; *.gz) gunzip $1 ;; *.tar) tar xf $1 ;; *.tbz2) tar xjf $1 ;; *.tgz) tar xzf $1 ;; *.zip) unzip $1 ;; *.Z) uncompress $1 ;; *.7z) 7z x $1 ;; *) echo "'$1' cannot be extracted via ex()" ;; esac else echo "'$1' is not a valid file"; fi; }
 # ex - archiver
 ar() {
   local BN=$(basename ${1})
@@ -560,7 +519,7 @@ welcome() {
   HOSTNAME=$(uname -n)
   ROOT=$(df -h 2>/dev/null | awk '$NF=="/"{printf "%s", $5}')
   DF="df -h --total 2>/dev/null"
-  if [ -f /etc/os-release ]; then
+  if [[ -f /etc/os-release ]]; then
     DISTO1=$(awk -F'=' '/PRETTY_NAME/ {print $2}' /etc/os-release)
   else
     DISTO1="Unknown"
@@ -584,3 +543,4 @@ welcome() {
  - Swap in use.........: $(free | tail -n 1 | awk '{print $3}') MB
 ==============================================="
 }
+
