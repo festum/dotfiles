@@ -1,4 +1,4 @@
-[[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]] && source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ] && source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 
 zstyle ':omz:update' mode auto       # auto/reminder/disabled
 zstyle ':omz:update' frequency 3     # day
@@ -34,9 +34,9 @@ plugins=(
 ZSH_THEME=powerlevel10k/powerlevel10k
 # ZSH_THEME_RANDOM_CANDIDATES=( "fwalch" "robbyrussell" "miloshadzic" "arrow" "simple" "wuffers" "zhann")
 ZSH=$HOME/.oh-my-zsh
-[[ ! -f $ZSH/oh-my-zsh.sh ]] && sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" && sh install.sh && mv -f $HOME/.zshrc.pre-oh-my-zsh $HOME/.zshrc && source $HOME/.aliases && git_install https://github.com/zsh-users/zsh-syntax-highlighting ${ZSH_CUSTOM:-$ZSH/custom}/plugins/zsh-syntax-highlighting && git_install https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-$ZSH/custom}/plugins/zsh-autosuggestions && git_install https://github.com/romkatv/powerlevel10k ${ZSH_CUSTOM:-$ZSH/custom}/themes/powerlevel10k
+[ ! -f $ZSH/oh-my-zsh.sh ] && sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" && sh install.sh && mv -f $HOME/.zshrc.pre-oh-my-zsh $HOME/.zshrc && source $HOME/.aliases && git_install https://github.com/zsh-users/zsh-syntax-highlighting ${ZSH_CUSTOM:-$ZSH/custom}/plugins/zsh-syntax-highlighting && git_install https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-$ZSH/custom}/plugins/zsh-autosuggestions && git_install https://github.com/romkatv/powerlevel10k ${ZSH_CUSTOM:-$ZSH/custom}/themes/powerlevel10k
 export LANG=en_US.UTF-8
-export EDITOR=$([[ -n $SSH_CONNECTION ]] && echo 'nvim' || echo 'hx')
+export EDITOR=$([ -n $SSH_CONNECTION ] && echo 'nvim' || echo 'hx')
 export SCM_CHECK=true SCM_GIT_SHOW_MINIMAL_INFO=true
 export SHORT_HOSTNAME=$(hostname -s) # Set Xterm/screen/Tmux title with only a short hostname
 export SHORT_TERM_LINE=true # Set Xterm/screen/Tmux title with shortened command and directory
@@ -45,8 +45,8 @@ export TMUX_TMPDIR=${TMUX_TMPDIR:-$HOME/.tmux/tmp}
 export NVM_DIR=${NVM_DIR:-$HOME/.nvm} VOLTA_HOME=${NVM_DIR:-$HOME/.volta$}
 export DOCKER_BUILDKIT=0 DOCKER_DEFAULT_PLATFORM=linux/amd64 COMPOSE_DOCKER_CLI_BUILD=0
 export GOPATH=${GOPATH:-$HOME/.go} GOBIN=${GOBIN:-$GOPATH/bin} GO111MODULE=${GO111MODULE:-auto} GOPROXY=${GOPROXY:-direct}
-[[ -d /usr/local/go ]] && export GOROOT=/usr/local/go 
-[[ -f $HOME/.cargo/env ]] && source $HOME/.cargo/env && export CARGO_HOME=$HOME/.cargo/env
+[ -d /usr/local/go ] && export GOROOT=/usr/local/go 
+[ -f $HOME/.cargo/env ] && source $HOME/.cargo/env && export CARGO_HOME=$HOME/.cargo/env
 export BIN=$HOME/bin:$HOME/.local/bin:/opt/homebrew/bin:$GOROOT/bin:$GOBIN:$JAVA_HOME/bin:$VOLTA_HOME/bin:$HOME/.rd/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:
 export PATH=$PATH:/usr/local/bin:$BIN
 source $ZSH/oh-my-zsh.sh
