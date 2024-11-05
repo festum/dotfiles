@@ -42,9 +42,13 @@ export SHORT_HOSTNAME=$(hostname -s) # Set Xterm/screen/Tmux title with only a s
 export SHORT_TERM_LINE=true # Set Xterm/screen/Tmux title with shortened command and directory
 export GPG_TTY=$TTY
 export TMUX_TMPDIR=${TMUX_TMPDIR:-$HOME/.tmux/tmp}
-export NVM_DIR=${NVM_DIR:-$HOME/.nvm} VOLTA_HOME=${NVM_DIR:-$HOME/.volta$}
+export NVM_DIR=${NVM_DIR:-$HOME/.nvm}
+export VOLTA_HOME=${NVM_DIR:-$HOME/.volta$}
 export DOCKER_BUILDKIT=0 DOCKER_DEFAULT_PLATFORM=linux/amd64 COMPOSE_DOCKER_CLI_BUILD=0
-export GOPATH=${GOPATH:-$HOME/.go} GOBIN=${GOBIN:-$GOPATH/bin} GO111MODULE=${GO111MODULE:-auto} GOPROXY=${GOPROXY:-direct}
+export GOPATH=${GOPATH:-$HOME/.go} 
+export GOBIN=${GOBIN:-$GOPATH/bin} 
+export GO111MODULE=${GO111MODULE:-auto} 
+export GOPROXY=${GOPROXY:-direct}
 [ -d /usr/local/go ] && export GOROOT=/usr/local/go 
 [ -f $HOME/.cargo/env ] && source $HOME/.cargo/env && export CARGO_HOME=$HOME/.cargo/env
 export BIN=$HOME/bin:$HOME/.local/bin:/opt/homebrew/bin:$GOROOT/bin:$GOBIN:$JAVA_HOME/bin:$VOLTA_HOME/bin:$HOME/.rd/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:

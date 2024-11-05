@@ -138,8 +138,10 @@ export SHORT_TERM_LINE=true # Set Xterm/screen/Tmux title with shortened command
 #export SHORT_TERM_LINE=true
 export BYOBU_PREFIX=/usr/local
 export TERM=xterm-256color
-export VISUAL=${VISUAL:-nvim} EDITOR=$VISUAL
-export GIT_HOSTING=${GIT_HOSTING:-git@github.com} GIT_EDITOR=$VISUAL
+export VISUAL=${VISUAL:-nvim}
+export EDITOR=$VISUAL
+export GIT_HOSTING=${GIT_HOSTING:-git@github.com}
+export GIT_EDITOR=$VISUAL
 export TODO=t
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 export LANG=${LANG:-en_US.UTF-8} LANGUAGE=$LANG LC_ALL=$LANG
@@ -152,9 +154,13 @@ export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[01;32m'
 export GPG_TTY=$(tty)
 export TMUX_TMPDIR=${TMUX_TMPDIR:-$HOME/.tmux/tmp}
-export NVM_DIR=${NVM_DIR:-$HOME/.nvm} VOLTA_HOME=${NVM_DIR:-$HOME/.volta$}
+export NVM_DIR=${NVM_DIR:-$HOME/.nvm}
+export VOLTA_HOME=${NVM_DIR:-$HOME/.volta$}
 export DOCKER_BUILDKIT=0 DOCKER_DEFAULT_PLATFORM=linux/amd64 COMPOSE_DOCKER_CLI_BUILD=0
-export GO111MODULE=${GO111MODULE:-auto} GOPROXY=${GOPROXY:-direct} GOPATH=${GOPATH:-$HOME/.go} GOBIN=${GOBIN:-$GOPATH/bin}
+export GOPATH=${GOPATH:-$HOME/.go} 
+export GOBIN=${GOBIN:-$GOPATH/bin} 
+export GO111MODULE=${GO111MODULE:-auto} 
+export GOPROXY=${GOPROXY:-direct}
 [[ -d /usr/local/go ]] && export GOROOT=/usr/local/go
 export XDG_CONFIG_HOME=$HOME/.config
 export BIN=/bin:/snap/bin:$HOME/bin:$HOME/.local/bin:$GOROOT/bin:$GOBIN:$JAVA_HOME/bin:$VOLTA_HOME/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin
