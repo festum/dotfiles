@@ -30,6 +30,7 @@ plugins=(
   copypath                # copies the absolute path of the current directory
   sudo                    # pressing esc twice, will add sudo to command
   web-search              # google/ddg/sp/github/youtube/image/ducky/map
+  poetry
 )
 ZSH_THEME=powerlevel10k/powerlevel10k
 # ZSH_THEME_RANDOM_CANDIDATES=( "fwalch" "robbyrussell" "miloshadzic" "arrow" "simple" "wuffers" "zhann")
@@ -60,6 +61,7 @@ source $HOME/.fzf.zsh 2>/dev/null
 source $HOME/.aliases
 safe_source $HOME/.rc_local
 is_runnable fox && eval "$(vfox activate zsh)"
+is_runnable poetry && mkdir -p $ZSH_CUSTOM/plugins/poetry && poetry completions zsh > $ZSH_CUSTOM/plugins/poetry/_poetry
 bindkey '^B' backward-word
 bindkey '^F' forward-word
 bindkey "\e[1;3D" backward-word # ⌥←
