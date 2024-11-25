@@ -14,12 +14,30 @@ safe_source() { [ -f $1 ] && [ -s $1 ] && [ -r $1 ] && source "$1"; }
 is_runnable() { command -v $1 >/dev/null 2>&1; }
 app_alias() { is_runnable $1 && ! [ -f ~/.local/bin/$2 ] && mkdir -p ~/.local/bin/ && ln -s $(which $1) ~/.local/bin/$2; }
 git_install() { [ ! -d $2/.git ] && git clone --depth 1 $1 $2; }
-bare_run() { local TARGET_BIN=$(echo "$@" | awk '{print $1}'); alias "$TARGET_BIN" &>/dev/null && { OLD_ALIAS=$(alias "$TARGET_BIN"); unalias "$TARGET_BIN"; eval "$@"; alias "$OLD_ALIAS"; } || eval "$@"; }
+bare_run() {
+  local TARGET_BIN=$(echo "$@" | awk '{print $1}')
+  alias "$TARGET_BIN" &>/dev/null && {
+    OLD_ALIAS=$(alias "$TARGET_BIN")
+    unalias "$TARGET_BIN"
+    eval "$@"
+    alias "$OLD_ALIAS"
+  } || eval "$@"
+}
 safe_source $HOME/.aliases_local
 safe_source $HOME/.aliases.local
 safe_source $HOME/configs/custom_aliases
 [ -f $HOME/.remote/.aliases ] && source $HOME/.remote/.aliases && export BASH_IT_THEME=candy
-sshz() { [ "$(uname)" = "Darwin" ] && break_arg='-b 0' || break_arg='-w0'; [ -f $HOME/.remote/.aliases ] && (RC_DATA=$(cat $HOME/.remote/.bashrc | base64 $break_arg); AL_DATA=$(cat $HOME/.remote/.aliases | base64 $break_arg)) || (RC_DATA=$(cat $HOME/.bashrc | base64 $break_arg); AL_DATA=$(cat $HOME/.aliases | base64 $break_arg)); ssh -t $@ "mkdir -p $HOME/.remote;echo \"${RC_DATA}\" | base64 --decode > $HOME/.remote/.bashrc;echo \"${AL_DATA}\" | base64 --decode > $HOME/.remote/.aliases;bash --rcfile $HOME/.remote/.bashrc"; }
+sshz() {
+  [ "$(uname)" = "Darwin" ] && break_arg='-b 0' || break_arg='-w0'
+  [ -f $HOME/.remote/.aliases ] && (
+    RC_DATA=$(cat $HOME/.remote/.bashrc | base64 $break_arg)
+    AL_DATA=$(cat $HOME/.remote/.aliases | base64 $break_arg)
+  ) || (
+    RC_DATA=$(cat $HOME/.bashrc | base64 $break_arg)
+    AL_DATA=$(cat $HOME/.aliases | base64 $break_arg)
+  )
+  ssh -t $@ "mkdir -p $HOME/.remote;echo \"${RC_DATA}\" | base64 --decode > $HOME/.remote/.bashrc;echo \"${AL_DATA}\" | base64 --decode > $HOME/.remote/.aliases;bash --rcfile $HOME/.remote/.bashrc"
+}
 exit_and_rm() { rm -rf $HOME/.fe0/ && exit; }
 alias sshr='ssh -R 52698:localhost:52698'
 alias exit=exit_and_rm
@@ -330,7 +348,15 @@ alias gum='git push -o merge_request.create -o merge_request.target=$(git-main-b
 alias guo='git push --force-with-lease origin'
 alias ggpg='git config user.signingkey $(gpg --list-secret-keys --keyid-format LONG | grep -B 1 $(git config user.email) | head -n 1 | awk "{print \$1}")'
 gta2() { [ -z $1 ] && echo -e "use it like that: $gt \$tagname\nit will do: git tag -am\"$(date +%Y-%m-%d) \$tagname\" \$tagname\nexample: $gt v0.0.1" || printf "---- git tag -f -am\"$(date +%Y-%m-%d) $1\" $1\n" && git tag -f -am"$(date +%Y-%m-%d) $1" $1 && printf "---- done\n"; }
-mr() { local remote_url=$(git config --get remote.origin.url); local current_branch=$(git rev-parse --abbrev-ref HEAD); local default_branch=$(git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@'); [[ $remote_url == *"github.com"* ]] && open "$(echo "$remote_url" | sed 's/git@github.com:/https:\/\/github.com\//' | sed 's/\.git$//')/compare/$default_branch...$current_branch" || [[ $remote_url == *"bitbucket.org"* ]] && open "$(echo "$remote_url" | sed 's/git@bitbucket.org:/https:\/\/bitbucket.org\//' | sed 's/\.git$//')/pull-requests/new?source=$current_branch&t=1" || (local base_url=$(echo "$remote_url" | sed 's/git@\(.*\)\:\(.*\)\.git/https:\/\/\1\/\2/'); open "$base_url/merge_requests/new?merge_request%5Bsource_branch%5D=$current_branch"); }
+mr() {
+  local remote_url=$(git config --get remote.origin.url)
+  local current_branch=$(git rev-parse --abbrev-ref HEAD)
+  local default_branch=$(git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@')
+  [[ $remote_url == *"github.com"* ]] && open "$(echo "$remote_url" | sed 's/git@github.com:/https:\/\/github.com\//' | sed 's/\.git$//')/compare/$default_branch...$current_branch" || [[ $remote_url == *"bitbucket.org"* ]] && open "$(echo "$remote_url" | sed 's/git@bitbucket.org:/https:\/\/bitbucket.org\//' | sed 's/\.git$//')/pull-requests/new?source=$current_branch&t=1" || (
+    local base_url=$(echo "$remote_url" | sed 's/git@\(.*\)\:\(.*\)\.git/https:\/\/\1\/\2/')
+    open "$base_url/merge_requests/new?merge_request%5Bsource_branch%5D=$current_branch"
+  )
+}
 pr() { open "$(git ls-remote --get-url $(git config --get branch.$(git rev-parse --abbrev-ref HEAD).remote) | sed 's|git@github.com:\(.*\)$|https://github.com/\1|' | sed 's|\.git$||')/compare/$(git config --get branch.$(git rev-parse --abbrev-ref HEAD).merge | cut -d '/' -f 3-)?expand=1"; }
 ltag() { curl --silent "https://github.com/$1/releases/latest" | sed 's#.*tag/\(.*\)\".*#\1#' && echo ''; }
 
@@ -486,9 +512,17 @@ translate() {
   trans $@
 }
 # pdfa - pdf signing
-pdfa() { bare_run "gs -dPDFA=1 -dBATCH -dNOPAUSE -sDEVICE=pdfwrite -sOutputFile=\"${1%.*}_signed.pdf\" \"$1\"" }
+pdfa() { bare_run "gs -dPDFA=1 -dBATCH -dNOPAUSE -sDEVICE=pdfwrite -sOutputFile=\"${1%.*}_signed.pdf\" \"$1\""; }
 # pdfc - pdf compression
-pdfc() { local target=${1:-.}; find "$target" -name "*.pdf" -exec sh -c 'gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/screen -dNOPAUSE -dBATCH -dColorImageResolution=150 -sOutputFile="compressed/$(basename "$1")" "$1"' sh {} \; ; }
+pdfc() {
+  local target=${1:-.}
+  mkdir -p ./compressed
+  find "$target" -name "*.pdf" -exec sh -c 'gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/screen -dNOPAUSE -dBATCH -dColorImageResolution=150 -sOutputFile="compressed/$(basename "$1")" "$1"' sh {} \;
+}
+#pdf2i - convert pdf to 24-bit with alpha png
+pdf2i() { sh -c "gs -sDEVICE=png16m -r300 -o \"${1%.*}_%d.png\" \"$1\""; }
+#2pdf - convert images to pdf
+i2pdf() { sh -c "gs -sDEVICE=pdfwrite -o converted_from_images.pdf \"$argv\""; }
 
 # enable color support of ls and also add handy aliases
 if is_runnable dircolors; then
@@ -545,4 +579,3 @@ welcome() {
  - Swap in use.........: $(free 2>/dev/null | tail -n 1 | awk '{print $3}') MB
 ==============================================="
 }
-
