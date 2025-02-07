@@ -518,12 +518,15 @@ pdfa() { bare_run "gs -dPDFA=1 -dBATCH -dNOPAUSE -sDEVICE=pdfwrite -sOutputFile=
 pdfc() {
   local target=${1:-.}
   mkdir -p ./compressed
-  find "$target" -name "*.pdf" -exec sh -c 'gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/screen -dNOPAUSE -dBATCH -dColorImageResolution=150 -sOutputFile="compressed/$(basename "$1")" "$1"' sh {} \;
+  find "$target" -name "*.pdf" -exec sh -c 'gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook -dNOPAUSE -dBATCH -dColorImageResolution=150 -sOutputFile="compressed/$(basename "$1")" "$1"' sh {} \;
 }
-#pdf2i - convert pdf to 24-bit with alpha png
+# pdf2i - convert pdf to 24-bit with alpha png
 pdf2i() { sh -c "gs -sDEVICE=png16m -r300 -o \"${1%.*}_%d.png\" \"$1\""; }
-#2pdf - convert images to pdf
-i2pdf() { sh -c "gs -sDEVICE=pdfwrite -o converted_from_images.pdf \"$argv\""; }
+# 2pdf - convert images to pdf
+i2pdf() { sh -c "gs -sDEVICE=pdfwrite -dNOPAUSE -dBATCH -o converted_from_images.pdf \"$@\"" _ "$@"; }
+# TODO: pdfocr - first install ocrmypdf tesseract-lang
+# https://ocrmypdf.readthedocs.io/en/latest/cookbook.html
+# ocrmypdf --deskew -l ger+eng -o2 input.pdf output.pdf
 
 # enable color support of ls and also add handy aliases
 if is_runnable dircolors; then
