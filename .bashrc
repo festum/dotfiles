@@ -97,8 +97,8 @@ if ! [[ -f /etc/os-release ]]; then
     fi
 else  # create folder for non-termux
     [[ ! -d /usr/local ]] && sudo mkdir -p /usr/local
-    [[ ! -d /usr/local/bin ]] && sudo ln -s /usr/bin /usr/local/bin
-    [[ ! -d /usr/local/include ]] && sudo ln -s /usr/include /usr/local/include
+    [[ ! -L /usr/local/bin ]] && [[ ! -d /usr/local/bin ]] && echo "Condition true" && sudo ln -s /usr/bin /usr/local/bin
+    [[ ! -L /usr/local/include ]] && [[ ! -d /usr/local/include ]] && echo "Condition true" && sudo ln -s /usr/include /usr/local/include
 fi
 if [[ -x "hstr" ]]; then
     if [[ $- =~ .*i.* ]]; then bind '"\C-r": "\C-a hstr -- \C-j"'; fi
@@ -157,9 +157,9 @@ export TMUX_TMPDIR=${TMUX_TMPDIR:-$HOME/.tmux/tmp}
 export NVM_DIR=${NVM_DIR:-$HOME/.nvm}
 export VOLTA_HOME=${NVM_DIR:-$HOME/.volta$}
 export DOCKER_BUILDKIT=0 DOCKER_DEFAULT_PLATFORM=linux/amd64 COMPOSE_DOCKER_CLI_BUILD=0
-export GOPATH=${GOPATH:-$HOME/.go} 
-export GOBIN=${GOBIN:-$GOPATH/bin} 
-export GO111MODULE=${GO111MODULE:-auto} 
+export GOPATH=${GOPATH:-$HOME/.go}
+export GOBIN=${GOBIN:-$GOPATH/bin}
+export GO111MODULE=${GO111MODULE:-auto}
 export GOPROXY=${GOPROXY:-direct}
 [[ -d /usr/local/go ]] && export GOROOT=/usr/local/go
 export XDG_CONFIG_HOME=$HOME/.config
