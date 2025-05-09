@@ -97,8 +97,8 @@ if ! [[ -f /etc/os-release ]]; then
     fi
 else  # create folder for non-termux
     [[ ! -d /usr/local ]] && sudo mkdir -p /usr/local
-    [[ ! -d /usr/local/bin ]] && sudo ln -s /usr/bin /usr/local/bin
-    [[ ! -d /usr/local/include ]] && sudo ln -s /usr/include /usr/local/include
+    [[ ! -d /usr/local/bin ]] && [[ ! -d /usr/bin ]] && sudo ln -s /usr/bin /usr/local/bin
+    [[ ! -d /usr/local/include ]] && [[ ! -d /usr/include ]] && sudo ln -s /usr/include /usr/local/include
 fi
 if [[ -x "hstr" ]]; then
     if [[ $- =~ .*i.* ]]; then bind '"\C-r": "\C-a hstr -- \C-j"'; fi
