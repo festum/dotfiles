@@ -46,14 +46,14 @@ export TMUX_TMPDIR=${TMUX_TMPDIR:-$HOME/.tmux/tmp}
 export NVM_DIR=${NVM_DIR:-$HOME/.nvm}
 export VOLTA_HOME=${NVM_DIR:-$HOME/.volta$}
 export DOCKER_BUILDKIT=0 DOCKER_DEFAULT_PLATFORM=linux/amd64 COMPOSE_DOCKER_CLI_BUILD=0
-export GOPATH=${GOPATH:-$HOME/.go} 
-export GOBIN=${GOBIN:-$GOPATH/bin} 
-export GO111MODULE=${GO111MODULE:-auto} 
+export GOPATH=${GOPATH:-$HOME/.go}
+export GOBIN=${GOBIN:-$GOPATH/bin}
+export GO111MODULE=${GO111MODULE:-auto}
 export GOPROXY=${GOPROXY:-direct}
-[ -d /usr/local/go ] && export GOROOT=/usr/local/go 
+[ -d /usr/local/go ] && export GOROOT=/usr/local/go
 [ -f $HOME/.cargo/env ] && source $HOME/.cargo/env && export CARGO_HOME=$HOME/.cargo/env
-export BIN=$HOME/bin:$HOME/.local/bin:/opt/homebrew/bin:$GOROOT/bin:$GOBIN:$JAVA_HOME/bin:$VOLTA_HOME/bin:$HOME/.rd/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:
-export PATH=$PATH:/usr/local/bin:$BIN
+export BIN=$GOROOT/bin:$GOBIN:$JAVA_HOME/bin:$VOLTA_HOME/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$HOME/.rd/bin:$HOME/.local/bin:$HOME/bin:/opt/homebrew/bin:/snap/bin:/usr/local/bin:/usr/bin:/bin:$PATH
+export PATH=$BIN:$PATH
 source $ZSH/oh-my-zsh.sh
 source $HOME/.cargo/env 2>/dev/null
 source $HOME/.p10k.zsh # run `p10k configure`

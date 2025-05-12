@@ -163,7 +163,7 @@ export GO111MODULE=${GO111MODULE:-auto}
 export GOPROXY=${GOPROXY:-direct}
 [[ -d /usr/local/go ]] && export GOROOT=/usr/local/go
 export XDG_CONFIG_HOME=$HOME/.config
-export BIN=/bin:/snap/bin:$HOME/bin:$HOME/.local/bin:$GOROOT/bin:$GOBIN:$JAVA_HOME/bin:$VOLTA_HOME/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin
+export BIN=$GOROOT/bin:$GOBIN:$JAVA_HOME/bin:$VOLTA_HOME/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$HOME/.rd/bin:$HOME/.local/bin:$HOME/bin:/snap/bin:/usr/local/bin:/usr/bin:/bin:$PATH
 export PATH=$BIN:$PATH
 [[ ! -f $BASH_IT/install.sh ]] && git clone --depth=1 https://github.com/Bash-it/bash-it $BASH_IT && $BASH_IT/install.sh -s -n
 source $BASH_IT/bash_it.sh 2>/dev/null
@@ -183,7 +183,7 @@ safe_source $KITTY_INSTALLATION_DIR/shell-integration/bash/kitty.bash
 is_runnable direnv && eval "$(direnv hook bash)"
 is_runnable thefuck && eval "$(thefuck --alias)"
 is_runnable lesspipe && eval "$(SHELL=/bin/sh lesspipe)"
-is_runnable jump && eval "$(jump shell bash --bind=j)" && alias jp='jump pin .'
+is_runnable jump && eval "$(jump shell bash --bind=z)" && alias jp='jump pin .'
 is_runnable awless && source <(awless completion bash)
 is_runnable kitty && source <(kitty + complete setup bash)
 is_runnable fox && eval "$(vfox activate bash)"
@@ -203,8 +203,3 @@ else
     shopt -s globstar
     [[ ! -f $HOME/.hushlogin ]] && welcome
 fi
-
-### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
-export PATH="/Users/fqin/.rd/bin:$PATH"
-### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
-
