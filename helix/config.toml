@@ -13,3 +13,67 @@ select = "underline"
 
 [editor.file-picker]
 hidden = false
+
+[editor.statusline]
+left = ["mode","spinner", "file-name"]
+right = [ "diagnostics","selections", "position", "file-encoding",
+         "file-type","total-line-numbers"]
+
+[keys.normal]
+C-s = ":w"
+C-q = ":bclose"
+"C-," = ":config-open"
+"C-r" = ":config-reload"
+V = ["goto_first_nonwhitespace", "extend_to_line_end"]
+D = ["ensure_selections_forward", "extend_to_line_end", "delete_selection"]
+L = "goto_line_end"
+H = "goto_first_nonwhitespace"
+w = "move_line_up"
+"C-j" = ["move_line_down","move_line_down","move_line_down","move_line_down","move_line_down"]
+"C-k" = ["move_line_up","move_line_up","move_line_up","move_line_up","move_line_up"]
+a = ["append_mode", "collapse_selection"]
+x = "extend_line_below"
+X = "select_line_above"
+A-x = "extend_to_line_bounds"    # Alt+x Expend to edge
+"ret" = "goto_word"
+y = ":yank-diagnostic"
+backspace = "suspend" # suspend is used when you want to quickly run something in the same terminal (use "fg" to bring Helix back).
+# "ret" = ["open_below", "normal_mode"]  # Maps the enter key to open_below then re-enter normal mode
+C-space = "signature_help"
+A-down = [ "extend_to_line_bounds", "delete_selection", "paste_after" ]
+A-up = [ "extend_to_line_bounds", "delete_selection", "move_line_up", "paste_before" ]
+A-S-down = [ "extend_to_line_bounds", "yank", "paste_after" ]
+A-S-up = [ "extend_to_line_bounds", "yank", "paste_before" ]
+C-S-h = "jump_view_left"
+C-S-l = "jump_view_right"
+C-S-j = "jump_view_down"
+C-S-k = "jump_view_up"
+
+[keys.normal.g]
+a = "code_action" # Maps `ga` to show possible code actions
+
+[keys.normal.b]
+h = "goto_previous_buffer"
+l = "goto_next_buffer"
+
+[keys.normal.space]
+q = "wclose"
+i = ":toggle lsp.display-inlay-hints"
+"-" = "hsplit"
+"|" = "vsplit"
+
+[keys.normal."+"]
+m = ":run-shell-command make"
+c = ":run-shell-command go build"
+t = ":run-shell-command go test ./..."
+
+[keys.select]
+";" = ["collapse_selection", "normal_mode"]
+x = "extend_line"
+V = "extend_to_line_end"
+
+[keys.insert]
+C-s = ":w"
+C-q = "collapse_selection"
+C-space = "signature_help"
+

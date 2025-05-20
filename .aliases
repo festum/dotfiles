@@ -347,6 +347,7 @@ alias gub='git push -u origin $(git rev-parse --abbrev-ref HEAD)' # git branch -
 alias gubs='git push --force-with-lease -o ci.skip -u origin $(git rev-parse --abbrev-ref HEAD)'
 alias gum='git push -o merge_request.create -o merge_request.target=$(git-main-branch) -o merge_request.merge_when_pipeline_succeeds'
 alias guo='git push --force-with-lease origin'
+alias sshsign='git config gpg.format ssh && git config user.signingkey ~/.ssh/id_ed25519.pub && git config commit.gpgsign true && git config tag.gpgsign true'
 alias ggpg='git config user.signingkey $(gpg --list-secret-keys --keyid-format LONG | grep -B 1 $(git config user.email) | head -n 1 | awk "{print \$1}")'
 gta2() { [ -z $1 ] && echo -e "use it like that: $gt \$tagname\nit will do: git tag -am\"$(date +%Y-%m-%d) \$tagname\" \$tagname\nexample: $gt v0.0.1" || printf "---- git tag -f -am\"$(date +%Y-%m-%d) $1\" $1\n" && git tag -f -am"$(date +%Y-%m-%d) $1" $1 && printf "---- done\n"; }
 mr() {
