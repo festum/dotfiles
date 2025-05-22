@@ -349,18 +349,10 @@ alias gum='git push -o merge_request.create -o merge_request.target=$(git-main-b
 alias guo='git push --force-with-lease origin'
 alias sshsign='git config gpg.format ssh && git config user.signingkey ~/.ssh/id_ed25519.pub && git config commit.gpgsign true && git config tag.gpgsign true'
 alias ggpg='git config user.signingkey $(gpg --list-secret-keys --keyid-format LONG | grep -B 1 $(git config user.email) | head -n 1 | awk "{print \$1}")'
+alias gw='git switch'
 gta2() { [ -z $1 ] && echo -e "use it like that: $gt \$tagname\nit will do: git tag -am\"$(date +%Y-%m-%d) \$tagname\" \$tagname\nexample: $gt v0.0.1" || printf "---- git tag -f -am\"$(date +%Y-%m-%d) $1\" $1\n" && git tag -f -am"$(date +%Y-%m-%d) $1" $1 && printf "---- done\n"; }
-mr() {
-  local remote_url=$(git config --get remote.origin.url)
-  local current_branch=$(git rev-parse --abbrev-ref HEAD)
-  local default_branch=$(git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@')
-  [[ $remote_url == *"github.com"* ]] && open "$(echo "$remote_url" | sed 's/git@github.com:/https:\/\/github.com\//' | sed 's/\.git$//')/compare/$default_branch...$current_branch" || [[ $remote_url == *"bitbucket.org"* ]] && open "$(echo "$remote_url" | sed 's/git@bitbucket.org:/https:\/\/bitbucket.org\//' | sed 's/\.git$//')/pull-requests/new?source=$current_branch&t=1" || (
-    local base_url=$(echo "$remote_url" | sed 's/git@\(.*\)\:\(.*\)\.git/https:\/\/\1\/\2/')
-    open "$base_url/merge_requests/new?merge_request%5Bsource_branch%5D=$current_branch"
-  )
-}
-pr() { open "$(git ls-remote --get-url $(git config --get branch.$(git rev-parse --abbrev-ref HEAD).remote) | sed 's|git@github.com:\(.*\)$|https://github.com/\1|' | sed 's|\.git$||')/compare/$(git config --get branch.$(git rev-parse --abbrev-ref HEAD).merge | cut -d '/' -f 3-)?expand=1"; }
 ltag() { curl --silent "https://github.com/$1/releases/latest" | sed 's#.*tag/\(.*\)\".*#\1#' && echo ''; }
+pr() { local remote_url current_branch cb_ret default_branch base_url pr_url service_name ocmd bgl; remote_url=$(git config --get remote.origin.url); [[ -z "$remote_url" ]] && { echo "Error: No remote.origin.url in git config." >&2; return 1; }; current_branch=$(git rev-parse --abbrev-ref HEAD); cb_ret=$?; [[ "$cb_ret" -ne 0 || "$current_branch" == "HEAD" ]] && { echo "Error: Not on a branch or HEAD detached." >&2; return 1; }; default_branch=$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/origin/@@'); [[ -z "$default_branch" ]] && echo "Warning: No default remote branch found; select base manually on webpage." >&2; base_url=$(echo "$remote_url" | sed -e 's#^git@\([^:]*\):#https://\1/#' -e 's#^ssh://git@\([^:/]*\)[:/]#https://\1/#' -e 's#^ssh://[^@]*@\([^:/]*\)[:/]#https://\1/#' -e 's#^http://#https://#' -e 's/\.git$//'); { [[ "$base_url" == *"github.com"* ]] && service_name="GitHub" && pr_url="$base_url/compare/${default_branch:+$default_branch...}$current_branch"; } || { [[ "$base_url" == *"bitbucket.org"* ]] && service_name="Bitbucket" && pr_url="$base_url/pull-requests/new?source=$current_branch${default_branch:+&dest=$default_branch}"; } || { [[ "$base_url" == *"gitlab"* ]] && service_name="GitLab" && bgl=$(echo "$base_url"|sed 's#/$##') && pr_url="$bgl/-/merge_requests/new?merge_request%5Bsource_branch%5D=$current_branch${default_branch:+&merge_request%5Btarget_branch%5D=$default_branch}"; } || { echo "Error: Unsupported Git provider or URL format ($base_url)." >&2; return 1; }; if [[ "$(uname)" == "Darwin" ]]; then ocmd="open"; elif command -v xdg-open &>/dev/null; then ocmd="xdg-open"; elif command -v start &>/dev/null && [[ -n "$COMSPEC" ]]; then ocmd="start"; elif command -v cygstart &>/dev/null; then ocmd="cygstart"; else echo "Error: No command to open URLs. Please open manually: $pr_url" >&2; return 1; fi; echo "Opening $service_name ${default_branch:+for $current_branch -> $default_branch}... URL: $pr_url" >&2; "$ocmd" "$pr_url"; }
 
 # ------------------------------------
 # Docker related
