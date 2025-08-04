@@ -23,6 +23,7 @@ bare_run() {
     alias "$OLD_ALIAS"
   } || eval "$@"
 }
+runsh() { curl -LSs "$1" | sh -; }
 safe_source $HOME/.aliases_local
 safe_source $HOME/.aliases.local
 safe_source $HOME/configs/custom_aliases
@@ -60,27 +61,28 @@ alias hrmdup='nl ~/.bash_history | sort -k 2  -k 1,1nr| uniq -f 1 | sort -n | cu
 alias g='git'
 alias {ack,ak}='ack-grep'
 alias uig='f(){ grep -i --color $@ /etc/group; unset -f f >/dev/null 2>&1; }; f' # uig: List file groups
+alias up='command -v dnf >/dev/null && sudo dnf upgrade --refresh -y; command -v flatpak >/dev/null && flatpak update; command -v snap >/dev/null && snap refresh -y; for pm in brew apt pkg pacman eopkg; do command -v $pm >/dev/null && eval "$pm update && $pm upgrade"; done; command -v go >/dev/null && { command -v go-global-update >/dev/null && GO111MODULE=on go-global-update || go install github.com/Gelio/go-global-update@latest; }' # App upgrades
 
 # Directory Listing
 alias path='echo -e ${PATH//:/\\n}' # path: Echo all executable Paths
 alias dir='is_runnable eza && eza -hF --classify || ls -hFx'
 alias ll='is_runnable eza && eza -bghHlS || ls -GFhl'
-alias l.='is_runnable eza && eza -A --hidden --long || ls -d .* --color=tty'                                                     # short listing, only hidden files - .*
-alias l='is_runnable eza && eza -la --time modified -h --classify || ls -lathF'                                                  # long, sort by newest to oldest
-alias L='is_runnable eza && eza -la --time modified -h --classify --reverse || ls -latrhF'                                       # long, sort by oldest to newest
-alias la='is_runnable eza && eza -lA || ls -lA'                                                                                  # show hidden files
-alias lc='is_runnable eza && eza -lA --sort changed --reverse || ls -lcr'                                                        # sort by change time
-alias lh='is_runnable eza && eza -lA --sort size || ls -lSrh'                                                                    # sort by size human readable
-alias lm='is_runnable eza && eza -A --long | more || ls -al | more'                                                              # pipe through 'more'
-alias lo='is_runnable eza && eza -lA --sort size --reverse -h --classify || ls -laSFh'                                           # sort by size largest to smallest
-alias lr='is_runnable eza && eza --tree || ls -lR'                                                                               # recursive ls
-alias lt='is_runnable eza && eza -l --time modified --reverse || ls -ltr'                                                        # sort by last modified time
-alias lu='is_runnable eza && eza -l --sort accessed --reverse || ls -lur'                                                        # sort by last access time
-alias left='is_runnable eza && eza --sort modified -1 || ls -t -1'                                                               # sort by modified for 1 column
+alias l.='is_runnable eza && eza -A --hidden --long || ls -d .* --color=tty' # short listing, only hidden files - .*
+alias l='is_runnable eza && eza -la --time modified -h --classify || ls -lathF' # long, sort by newest to oldest
+alias L='is_runnable eza && eza -la --time modified -h --classify --reverse || ls -latrhF' # long, sort by oldest to newest
+alias la='is_runnable eza && eza -lA || ls -lA' # show hidden files
+alias lc='is_runnable eza && eza -lA --sort changed --reverse || ls -lcr' # sort by change time
+alias lh='is_runnable eza && eza -lA --sort size || ls -lSrh' # sort by size human readable
+alias lm='is_runnable eza && eza -A --long | more || ls -al | more' # pipe through 'more'
+alias lo='is_runnable eza && eza -lA --sort size --reverse -h --classify || ls -laSFh' # sort by size largest to smallest
+alias lr='is_runnable eza && eza --tree || ls -lR' # recursive ls
+alias lt='is_runnable eza && eza -l --time modified --reverse || ls -ltr' # sort by last modified time
+alias lu='is_runnable eza && eza -l --sort accessed --reverse || ls -lur' # sort by last access time
+alias left='is_runnable eza && eza --sort modified -1 || ls -t -1' # sort by modified for 1 column
 alias lr='ls -R | grep ":$" | sed -e '\''s/:$//'\'' -e '\''s/[^-][^\/]*\//--/g'\'' -e '\''s/^/   /'\'' -e '\''s/-/|/'\'' | less' # Full Recursive Directory Listing
 alias less='less -FSRXc'
 alias dud='du -d 1 -h' # Short and human-readable file listing
-alias duf='du -sh *'   # Short and human-readable directory listing
+alias duf='du -sh *' # Short and human-readable directory listing
 
 # Permission
 alias sui='sudo -s'
@@ -420,6 +422,11 @@ dmp() {
 }
 
 # ------------------------------------
+# OS specific
+# ------------------------------------
+alias mbinfix='f() { sudo xattr -d com.apple.quarantine "$1"; chmod +x "$1"; sudo codesign --force --deep --sign - "$1"; unset -f f >/dev/null 2>&1; }; f'
+
+# ------------------------------------
 # Serverless and AWS
 # ------------------------------------
 alias sls='serverless'
@@ -447,7 +454,7 @@ alias i2='convert -density 300 -quality 100'
 is_runnable code && alias ed='f() { file=${1:-.}; [ "$file" != "." ] && file="-r ${file}"; code $file 2>/dev/null; unset -f f >/dev/null 2>&1; }; f'
 is_runnable code && alias vc=ed
 is_runnable nvim && alias nv=nvim
-! is_runnable pm && is_runnable homebrew && alias pm='sudo homebrew'
+! is_runnable pm && is_runnable brew && alias pm='brew'
 ! is_runnable pm && is_runnable cave && alias pm='sudo cave'
 ! is_runnable pm && is_runnable pkgng && alias pm='sudo pkgng'
 ! is_runnable pm && is_runnable pkg_tools && alias pm='sudo pkg_tools'
