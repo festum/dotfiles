@@ -1,0 +1,61 @@
+// Zed settings
+//
+// For information on how to configure Zed, see the Zed
+// documentation: https://zed.dev/docs/configuring-zed
+//
+// To see all of Zed's default settings without changing your
+// custom settings, run `zed: open default settings` from the
+// command palette (cmd-shift-p / ctrl-shift-p)
+{
+  "ui_font_size": 14,
+  "buffer_font_size": 13,
+  "buffer_font_family": "FiraCode Nerd Font",
+  "buffer_font_fallbacks": [],
+  "theme": "Warm Perf",
+  "soft_wrap": "editor_width",
+  "edit_predictions_disabled_in": ["comment", "string"],
+  "current_line_highlight": "gutter",
+  "restore_on_startup": "last_session",
+  "centered_layout": {
+    "left_padding": 0,
+    "right_padding": 0
+  },
+  "active_pane_modifiers": {
+    "border_size": 0.0,
+    "inactive_opacity": 1.0
+  },
+  "hide_mouse": "on_typing",
+  "minimap": {
+    "show": "auto",
+    "thumb": "always",
+    "thumb_border": "left_open",
+    "current_line_highlight": "all"
+  },
+  "tabs": {
+    "close_position": "right",
+    "file_icons": true,
+    "git_status": true,
+    "activate_on_close": "left_neighbour",
+    "show_close_button": "hover",
+    "show_diagnostics": "errors"
+  },
+  "inlay_hints": {
+    "enabled": true,
+    "show_background": false,
+    "edit_debounce_ms": 700,
+    "scroll_debounce_ms": 50,
+    "toggle_on_modifiers_press": {
+      "control": true,
+      "shift": true,
+      "alt": true,
+      "platform": true,
+      "function": true
+    }
+  },
+  "use_autoclose": false,
+  "multi_cursor_modifier": "cmd_or_ctrl",
+  "telemetry": {
+    "diagnostics": false,
+    "metrics": false
+  }
+}
