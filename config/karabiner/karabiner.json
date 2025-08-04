@@ -8,7 +8,7 @@
             "complex_modifications": {
                 "rules": [
                     {
-                        "description": "Swap Ctrl+Space and Win+Space (under Command/Control already swapped)",
+                        "description": "Swap Win+Space/Ctrl+Space and map Alt+Tab to Cmd+Tab (for swapped Cmd/Ctrl)",
                         "manipulators": [
                             {
                                 "description": "Physical Windows key -> OS Ctrl+Space",
@@ -58,6 +58,23 @@
                                     {
                                         "key_code": "spacebar",
                                         "modifiers": ["left_control"]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "description": "Map Alt+Tab to Cmd+Tab",
+                                "from": {
+                                    "key_code": "tab",
+                                    "modifiers": {
+                                        "mandatory": ["left_option"],
+                                        "optional": ["any"]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "tab",
+                                        "modifiers": ["left_command"]
                                     }
                                 ],
                                 "type": "basic"
