@@ -61,7 +61,7 @@ alias hrmdup='nl ~/.bash_history | sort -k 2  -k 1,1nr| uniq -f 1 | sort -n | cu
 alias g='git'
 alias {ack,ak}='ack-grep'
 alias uig='f(){ grep -i --color $@ /etc/group; unset -f f >/dev/null 2>&1; }; f' # uig: List file groups
-alias up='command -v dnf >/dev/null && sudo dnf upgrade --refresh -y; command -v flatpak >/dev/null && flatpak update; command -v snap >/dev/null && snap refresh -y; for pm in brew apt pkg pacman eopkg; do command -v $pm >/dev/null && eval "$pm update && $pm upgrade"; done; command -v go >/dev/null && { command -v go-global-update >/dev/null && GO111MODULE=on go-global-update || go install github.com/Gelio/go-global-update@latest; }' # App upgrades
+alias up='command -v dnf >/dev/null && sudo dnf upgrade --refresh -y; command -v flatpak >/dev/null && flatpak update; command -v snap >/dev/null && snap refresh; for pm in brew apt pkg pacman eopkg; do command -v $pm >/dev/null && eval "$pm update && $pm upgrade"; done; command -v go >/dev/null && { command -v go-global-update >/dev/null && GO111MODULE=on go-global-update || go install github.com/Gelio/go-global-update@latest; }' # App upgrades
 
 # Directory Listing
 alias path='echo -e ${PATH//:/\\n}' # path: Echo all executable Paths

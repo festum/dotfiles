@@ -248,3 +248,5 @@
     diffFilter = diff-so-fancy --patch
 [rebase]
 	autoStash = true
+[includeIf "gitdir:~/src/"]
+  path = ~/.gitconfig-local
