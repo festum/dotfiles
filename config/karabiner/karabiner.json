@@ -536,13 +536,6 @@
                                     "modifiers": { "mandatory": ["control"] }
                                 },
                                 "type": "basic"
-                            },
-                            {
-                                "from": {
-                                    "key_code": "h",
-                                    "modifiers": { "mandatory": ["command"] }
-                                },
-                                "type": "basic"
                             }
                         ]
                     }
@@ -566,10 +559,6 @@
                     "manipulate_caps_lock_led": false,
                     "simple_modifications": [
                         {
-                            "from": { "key_code": "fn" },
-                            "to": [{ "key_code": "left_command" }]
-                        },
-                        {
                             "from": { "key_code": "grave_accent_and_tilde" },
                             "to": [{ "key_code": "left_shift" }]
                         },
@@ -579,7 +568,7 @@
                         },
                         {
                             "from": { "key_code": "left_control" },
-                            "to": [{ "key_code": "fn" }]
+                            "to": [{ "key_code": "left_command" }]
                         },
                         {
                             "from": { "key_code": "left_option" },

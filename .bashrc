@@ -188,6 +188,7 @@ is_runnable awless && source <(awless completion bash)
 is_runnable kitty && source <(kitty + complete setup bash)
 is_runnable fox && eval "$(vfox activate bash)"
 is_runnable poetry && mkdir -p ${XDG_DATA_HOME:-~/.local/share}/bash-completion/completions && poetry completions bash > ${XDG_DATA_HOME:-~/.local/share}/bash-completion/completions/poetry
+is_runnable pyenv && { eval "$(pyenv init --path)"; eval "$(pyenv init -)"; if [ -d "$(pyenv root)/plugins/pyenv-virtualenv" ]; then eval "$(pyenv virtualenv-init -)"; else git clone https://github.com/pyenv/pyenv-virtualenv.git "$(pyenv root)/plugins/pyenv-virtualenv" && eval "$(pyenv virtualenv-init -)"; fi; }
 
 if [[ "$(uname)" == "Darwin" ]]; then
     [[ ! -f $HOME/.bash_profile ]] && echo source $HOME/.bashrc > $HOME/.bash_profile
