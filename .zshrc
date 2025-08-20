@@ -56,7 +56,7 @@ export BIN=$GOROOT/bin:$GOBIN:$JAVA_HOME/bin:$VOLTA_HOME/bin:$HOME/.yarn/bin:$HO
 export PATH=$BIN:$PATH
 source $ZSH/oh-my-zsh.sh
 source $HOME/.cargo/env 2>/dev/null
-source $HOME/.p10k.zsh # run `p10k configure`
+[ -f ~/.p10k.zsh ] && source ~/.p10k.zsh # run `p10k configure`
 source $HOME/.fzf.zsh 2>/dev/null
 source $HOME/.aliases
 safe_source $HOME/.rc_local
@@ -71,3 +71,4 @@ bindkey '^[e' end-of-line
 unsetopt correct_all
 setopt ksh_glob
 # export ARCHFLAGS="-arch x86_64"
+is_runnable pyenv && { eval "$(pyenv init --path)"; eval "$(pyenv init -)"; if [ -d "$(pyenv root)/plugins/pyenv-virtualenv" ]; then eval "$(pyenv virtualenv-init -)"; else git clone https://github.com/pyenv/pyenv-virtualenv.git "$(pyenv root)/plugins/pyenv-virtualenv" && eval "$(pyenv virtualenv-init -)"; fi; }

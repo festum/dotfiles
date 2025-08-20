@@ -140,6 +140,8 @@ override.tf*
 pip-delete-this-directory.txt
 replay_pid*
 venv/
+Pipfile.lock
+.python-version
 
 # Dev
 *.dev.*
