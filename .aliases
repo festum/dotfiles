@@ -244,6 +244,8 @@ alias venv='python3 -m venv .venv && source .venv/bin/activate'
 # -------------------------------------------------------------------
 # Git
 # -------------------------------------------------------------------
+alias mbranch='git rev-parse --abbrev-ref HEAD'
+alias pbranch='git rev-parse --abbrev-ref "@{-1}"'
 alias undo='git reset --hard && git clean -fd'
 alias save='git stash push -u'
 alias stash='git stash'
@@ -265,8 +267,8 @@ alias gbl='git branch-select -l'
 alias gbr='git rev-parse --abbrev-ref --symbolic-full-name @{u}'
 alias gbd='git branch -D'
 alias gbdr='git push -d origin'
-alias gbdd="git fetch --prune && git branch -vv | grep ': gone]' | awk '{print \$1}' | xargs -r git branch -D"
-alias gbdc='git branch | grep -E -v "(^\*|master|main|dev|develop)" | xargs git branch -D'
+alias gbdd="git fetch -p && git for-each-ref --format '%(refname:short) %(upstream:track)' refs/heads | awk '\$2 == \"[gone]\" {print \$1}' | xargs -n1 git branch -D"
+alias gbdc='git branch | grep -E -v "^\*|^  (master|main|dev|develop|release)$" | xargs -r git branch -D'
 alias gbo='git for-each-ref --sort=committerdate refs/heads/ --format="%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))"'
 alias gc='git checkout --recurse-submodules'
 alias gcat='git cat-file'
@@ -347,8 +349,8 @@ alias gdt='git describe --tags --abbrev=0'
 alias ghusky='rm -rf .git/hooks/ && npm i -D husky' # https://github.com/typicode/husky/issues/333
 alias gu='git push --force-with-lease'
 alias gus='git push --force-with-lease -o ci.skip'
-alias gub='git push -u origin $(git rev-parse --abbrev-ref HEAD)' # git branch --show-current for git 2.22
-alias gubs='git push --force-with-lease -o ci.skip -u origin $(git rev-parse --abbrev-ref HEAD)'
+alias gub='git push -u origin $(mbranch)' # git branch --show-current for git 2.22
+alias gubs='git push --force-with-lease -o ci.skip -u origin $(mbranch)'
 alias gum='git push -o merge_request.create -o merge_request.target=$(git-main-branch) -o merge_request.merge_when_pipeline_succeeds'
 alias guo='git push --force-with-lease origin'
 alias sshsign='git config gpg.format ssh && git config user.signingkey ~/.ssh/id_ed25519.pub && git config commit.gpgsign true && git config tag.gpgsign true'
@@ -356,7 +358,7 @@ alias ggpg='git config user.signingkey $(gpg --list-secret-keys --keyid-format L
 alias gw='git switch'
 gta2() { [ -z $1 ] && echo -e "use it like that: $gt \$tagname\nit will do: git tag -am\"$(date +%Y-%m-%d) \$tagname\" \$tagname\nexample: $gt v0.0.1" || printf "---- git tag -f -am\"$(date +%Y-%m-%d) $1\" $1\n" && git tag -f -am"$(date +%Y-%m-%d) $1" $1 && printf "---- done\n"; }
 ltag() { curl --silent "https://github.com/$1/releases/latest" | sed 's#.*tag/\(.*\)\".*#\1#' && echo ''; }
-pr() { local remote_url current_branch cb_ret default_branch base_url pr_url service_name ocmd bgl; remote_url=$(git config --get remote.origin.url); [[ -z "$remote_url" ]] && { echo "Error: No remote.origin.url in git config." >&2; return 1; }; current_branch=$(git rev-parse --abbrev-ref HEAD); cb_ret=$?; [[ "$cb_ret" -ne 0 || "$current_branch" == "HEAD" ]] && { echo "Error: Not on a branch or HEAD detached." >&2; return 1; }; default_branch=$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/origin/@@'); [[ -z "$default_branch" ]] && echo "Warning: No default remote branch found; select base manually on webpage." >&2; base_url=$(echo "$remote_url" | sed -e 's#^git@\([^:]*\):#https://\1/#' -e 's#^ssh://git@\([^:/]*\)[:/]#https://\1/#' -e 's#^ssh://[^@]*@\([^:/]*\)[:/]#https://\1/#' -e 's#^http://#https://#' -e 's/\.git$//'); { [[ "$base_url" == *"github.com"* ]] && service_name="GitHub" && pr_url="$base_url/compare/${default_branch:+$default_branch...}$current_branch"; } || { [[ "$base_url" == *"bitbucket.org"* ]] && service_name="Bitbucket" && pr_url="$base_url/pull-requests/new?source=$current_branch${default_branch:+&dest=$default_branch}"; } || { [[ "$base_url" == *"gitlab"* ]] && service_name="GitLab" && bgl=$(echo "$base_url"|sed 's#/$##') && pr_url="$bgl/-/merge_requests/new?merge_request%5Bsource_branch%5D=$current_branch${default_branch:+&merge_request%5Btarget_branch%5D=$default_branch}"; } || { echo "Error: Unsupported Git provider or URL format ($base_url)." >&2; return 1; }; if [[ "$(uname)" == "Darwin" ]]; then ocmd="open"; elif command -v xdg-open &>/dev/null; then ocmd="xdg-open"; elif command -v start &>/dev/null && [[ -n "$COMSPEC" ]]; then ocmd="start"; elif command -v cygstart &>/dev/null; then ocmd="cygstart"; else echo "Error: No command to open URLs. Please open manually: $pr_url" >&2; return 1; fi; echo "Opening $service_name ${default_branch:+for $current_branch -> $default_branch}... URL: $pr_url" >&2; "$ocmd" "$pr_url"; }
+pr() { local remote_url current_branch cb_ret default_branch base_url pr_url service_name ocmd bgl; remote_url=$(git config --get remote.origin.url); [[ -z "$remote_url" ]] && { echo "Error: No remote.origin.url in git config." >&2; return 1; }; current_branch=$(mbranch); cb_ret=$?; [[ "$cb_ret" -ne 0 || "$current_branch" == "HEAD" ]] && { echo "Error: Not on a branch or HEAD detached." >&2; return 1; }; default_branch=$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/origin/@@'); [[ -z "$default_branch" ]] && echo "Warning: No default remote branch found; select base manually on webpage." >&2; base_url=$(echo "$remote_url" | sed -e 's#^git@\([^:]*\):#https://\1/#' -e 's#^ssh://git@\([^:/]*\)[:/]#https://\1/#' -e 's#^ssh://[^@]*@\([^:/]*\)[:/]#https://\1/#' -e 's#^http://#https://#' -e 's/\.git$//'); { [[ "$base_url" == *"github.com"* ]] && service_name="GitHub" && pr_url="$base_url/compare/${default_branch:+$default_branch...}$current_branch"; } || { [[ "$base_url" == *"bitbucket.org"* ]] && service_name="Bitbucket" && pr_url="$base_url/pull-requests/new?source=$current_branch${default_branch:+&dest=$default_branch}"; } || { [[ "$base_url" == *"gitlab"* ]] && service_name="GitLab" && bgl=$(echo "$base_url"|sed 's#/$##') && pr_url="$bgl/-/merge_requests/new?merge_request%5Bsource_branch%5D=$current_branch${default_branch:+&merge_request%5Btarget_branch%5D=$default_branch}"; } || { echo "Error: Unsupported Git provider or URL format ($base_url)." >&2; return 1; }; if [[ "$(uname)" == "Darwin" ]]; then ocmd="open"; elif command -v xdg-open &>/dev/null; then ocmd="xdg-open"; elif command -v start &>/dev/null && [[ -n "$COMSPEC" ]]; then ocmd="start"; elif command -v cygstart &>/dev/null; then ocmd="cygstart"; else echo "Error: No command to open URLs. Please open manually: $pr_url" >&2; return 1; fi; echo "Opening $service_name ${default_branch:+for $current_branch -> $default_branch}... URL: $pr_url" >&2; "$ocmd" "$pr_url"; }
 
 # ------------------------------------
 # Docker related
