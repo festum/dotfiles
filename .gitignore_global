@@ -1,74 +1,88 @@
+# This is a global .gitignore file. To use it, run this command:
 # git config --global core.excludesfile ~/.gitignore_global
-# OS and app cashes
+
+### Operating System Files ###
 $RECYCLE.BIN/
 *.cab
 *.lnk
 *.ms[imp]
 *.msix
 *.stackdump
-._*
-.apdisk
-.AppleDB
-.AppleDesktop
 .AppleDouble
-.com.apple.timemachine.donotpresent
+.DS_Store*
 .DocumentRevisions-V100
-.dropbox
-.dropbox.attr
-.dropbox.cache
-.DS_Store
-.DS_Store?
-.fseventsd
 .LSOverride
 .Spotlight-V100
-.swp
 .TemporaryItems
 .Trashes
 .VolumeIcon.icns
+._*
+.apdisk
+.com.apple.timemachine.donotpresent
+.fseventsd
+Thumbs.db*
 [Dd]esktop.ini
 ehthumbs*.db
-Icon
-Network Trash Folder
-Temporary Items
-Thumbs.db*
 
-# Packages
-# it's better to unpack these files and commit the raw source
-# git has its own built in compression methods
-*.[7g]z
-*.dmg
-*.iso
-*.[ejnrtw]ar
-*.zip
-
-# Configs
-*.bak
+### IDE & Editor Config ###
 *.iml
 *.ipr
-*.sw[abcdefghijklmnop]
-*.vsix
-*~
+.buildpath
 .classpath
 .code/
-.gitconfig
-.history
+.history/
 .idea/
-.kotlin/
 .metadata
 .project
-.project
-.settings
+.settings/
+.spyderproject
+.spyproject
 .vscode/
-go.work
-launch.json
-gradle.properties
+.vsix
 
-# Artifacts
+### Temporary & Backup Files ###
+*~
+*.bak
+*.sw[a-p]
+*.tmp
+*.swo
+*.swn
+
+### Dependencies & Environment Config ###
+*-venv/
+*.dev
+*.dev.*
+.env
+.gradle/
+.hypothesis/
+.local.env
+.nox/
+.pybuilder/
+.pyre/
+.python-version
+.pytype/
+.ropeproject
+.tox/
+.venv/
+.virtualenvs/
+ENV/
+Pipfile.lock
+__pycache__/
+__pypackages__/
+env.bak/
+env/
+envsubst_result
+go.work
+gradle.properties
+local_settings.py
+venv/
+
+### Build Artifacts, Logs & Compiled Code ###
 *$py.class
-*-venv
+*.a
 *.class
 *.com
-*.cover
+*.coverage
 *.ctxt
 *.dll
 *.dylib
@@ -81,68 +95,43 @@ gradle.properties
 *.out
 *.pb.go
 *.pot
-*.py,cover
-*.py[coc]
-*.sage.py
+*.py[co]
 *.so
 *.spec
-*.sqlite
 *.test
-*.tfstate*
-*.tmp
-*_override.tf
-*_override.tf.json
-*debug/
-*log.txt
 .*cache
-.coverage
 .coverage.*
 .dmypy.json
-.env
-.gradle/
-.hypothesis/
-.ipynb_checkpoints
-.local.env
-.nox/
-.pdm.toml
-.pybuilder/
-.pyre/
-.Python
-.pytype/
-.ropeproject
+.ipynb_checkpoints/
 .scrapy
-.spyderproject
-.spyproject
-.terraform*
-.tox/
-.venv
-.virenv
-.virtualenvs
-__pycache__/
-__pypackages__/
-_build
+_build/
 bin/
 celerybeat-schedule
 celerybeat.pid
 coverage.xml
-db.sqlite3*
 dmypy.json
-env.bak/
-env/
-ENV/
-envsubst_result
 hs_err_pid*
-ipython_config.py
-local_settings.py
-node_modules
 nosetests.xml
-override.tf*
 pip-delete-this-directory.txt
 replay_pid*
-venv/
-Pipfile.lock
-.python-version
 
-# Dev
-*.dev.*
-*.dev
+### Terraform ###
+*.tfstate*
+*_override.tf
+*_override.tf.json
+.terraform*
+override.tf*
+
+### Databases ###
+*.sqlite
+db.sqlite3*
+
+### Compressed Archives ###
+*.zip
+*.[7g]z
+*.[ejnrtw]ar
+*.iso
+*.dmg
+
+### Project-Specific ###
+.github/git-commit-instructions.md
