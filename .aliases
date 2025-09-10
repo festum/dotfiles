@@ -10,37 +10,21 @@ GIT_LOG_FORMAT=${GIT_LOG_FORMAT:-"format:'%Cred%h%Creset -%C(yellow)%d%Creset %s
 # -------------------------------------------------------------------
 # Setup
 # -------------------------------------------------------------------
+PLATFORM=$(u=$(uname -s 2>/dev/null); if [[ "$u" =~ ^Darwin ]]; then echo macos; elif [[ "$u" =~ ^(MINGW|MSYS|CYGWIN) ]]; then echo windows; elif [[ -n "$TERMUX_VERSION" ]]; then echo termux; elif [[ -n "$WSL_DISTRO_NAME" || -f /proc/sys/fs/binfmt_misc/WSLInterop ]]; then echo wsl; else echo linux; fi)
+SHELL_TYPE=$(if [[ -n "$BASH_VERSION" ]]; then echo bash; elif [[ -n "$ZSH_VERSION" ]]; then echo zsh; elif [[ -n "$PSModulePath" ]]; then echo powershell; elif [[ -n "$COMSPEC" && "$COMSPEC" == *"cmd.exe" ]]; then echo cmd; else echo sh; fi)
 qrun() { "$@" &>/dev/null; }
 unset_func() { unset -f f >/dev/null 2>&1; }
 safe_source() { [ -f $1 ] && [ -s $1 ] && [ -r $1 ] && source "$1"; }
 is_runnable() { command -v $1 >/dev/null 2>&1; }
 app_alias() { is_runnable $1 && ! [ -f ~/.local/bin/$2 ] && mkdir -p ~/.local/bin/ && ln -s $(which $1) ~/.local/bin/$2; }
 git_install() { [ ! -d $2/.git ] && git clone --depth 1 $1 $2; }
-bare_run() {
-  local TARGET_BIN=$(echo "$@" | awk '{print $1}')
-  alias "$TARGET_BIN" &>/dev/null && {
-    OLD_ALIAS=$(alias "$TARGET_BIN")
-    unalias "$TARGET_BIN"
-    eval "$@"
-    alias "$OLD_ALIAS"
-  } || eval "$@"
-}
+bare_run() { local a=$(alias "${1%% *}" 2>&1) && unalias "${1%% *}" || a=; eval "$@"; [[ $a ]] && eval "$a"; }
 runsh() { curl -LSs "$1" | sh -; }
 safe_source $HOME/.aliases_local
 safe_source $HOME/.aliases.local
 safe_source $HOME/configs/custom_aliases
 [ -f $HOME/.remote/.aliases ] && source $HOME/.remote/.aliases && export BASH_IT_THEME=candy
-sshz() {
-  [ "$(uname)" = "Darwin" ] && break_arg='-b 0' || break_arg='-w0'
-  [ -f $HOME/.remote/.aliases ] && (
-    RC_DATA=$(cat $HOME/.remote/.bashrc | base64 $break_arg)
-    AL_DATA=$(cat $HOME/.remote/.aliases | base64 $break_arg)
-  ) || (
-    RC_DATA=$(cat $HOME/.bashrc | base64 $break_arg)
-    AL_DATA=$(cat $HOME/.aliases | base64 $break_arg)
-  )
-  ssh -t $@ "mkdir -p $HOME/.remote;echo \"${RC_DATA}\" | base64 --decode > $HOME/.remote/.bashrc;echo \"${AL_DATA}\" | base64 --decode > $HOME/.remote/.aliases;bash --rcfile $HOME/.remote/.bashrc"
-}
+sshz() { local b=$([[ "$PLATFORM" = "macos" ]] && echo '-b 0' || echo '-w0') p=$([[ -f $HOME/.remote/.aliases ]] && echo "$HOME/.remote" || echo "$HOME"); ssh -t "$@" "mkdir -p \$HOME/.remote; echo '$(base64 $b < "$p/.bashrc")' | base64 -d > \$HOME/.remote/.bashrc; echo '$(base64 $b < "$p/.aliases")' | base64 -d > \$HOME/.remote/.aliases; bash --rcfile \$HOME/.remote/.bashrc"; }
 exit_and_rm() { rm -rf $HOME/.fe0/ && exit; }
 alias sshr='ssh -R 52698:localhost:52698'
 alias exit=exit_and_rm
@@ -91,16 +75,10 @@ alias sui='sudo -s'
 alias sudid='sudo !!'
 alias owned='sudo chown $(id -u -n)'
 alias perm='stat --printf "%a %n \n "' # perm: Show permission of target in number
-alias 000='chmod 000'                  # ---------- (nobody)
-alias 640='chmod 640'                  # -rw-r----- (user: rw, group: r, other: -)
-alias 644='chmod 644'                  # -rw-r--r-- (user: rw, group: r, other: -)
-alias 755='chmod 755'                  # -rwxr-xr-x (user: rwx, group: rx, other: x)
-alias 775='chmod 775'                  # -rwxrwxr-x (user: rwx, group: rwx, other: rx)
-alias mx='chmod a+x'                   # ---x--x--x (user: --x, group: --x, other: --x)
+for p in 000 400 440 444 600 640 644 660 664 700 740 744 750 754 755 770 774 775 776 777; do alias $p="chmod $p"; done
+alias mx='chmod +x'                    # ---x--x--x (user: --x, group: --x, other: --x)
 alias ux='chmod u+x'                   # ---x------ (user: --x, group: -, other: -)
-alias 644f='find . -type f -exec chmod 644 {} \;'
-alias 755d='find . -type d -exec chmod 755 {} \;'
-alias chm='644f && 755d'                                                   # normalize permission
+alias chm='find . -type f -print0 | xargs -0 -P4 chmod 644; find . -type d -print0 | xargs -0 -P4 chmod 755'
 
  # gpin: Join group
 alias gpls='cat /etc/group | cut -d: -f1'                                  # gpls: List groups
@@ -168,7 +146,6 @@ alias portf='f(){ sudo lsof -ti :$1 | xargs sudo kill -15; unset_func; }; f'    
 alias portt='f(){ sudo lsof -ti :$1 | xargs sudo kill -9; unset_func; }; f'                                                      # portt: Kill occupied process for certain port
 alias dl='f(){ curl -OJ $@; unset_func; }; f'                                                                                    # dl:    Download
 alias dlb='f(){ sudo curl -o "/usr/local/bin/${1##*/}" $1 && sudo sudo chmod +x "/usr/local/bin/${1##*/}"; unset_func; }; f'     # dlb: Download binary and move as executable
-alias transfer='f(){  curl --progress-bar --upload-file $1 https://transfer.sh/$(basename $1) | tee /dev/null; unset_func; }; f' # transfer: Upload to public
 alias serveo='f(){ ssh -R 80:$1 serveo.net; unset_func; }; f'                                                                    # dl: Expose local port
 alias serveop='f(){ autossh -M 0 -R 80:$1 serveo.net; unset_func; }; f'                                                          # dl: Expose local port as daemon
 
@@ -353,12 +330,12 @@ alias gub='git push -u origin $(mbranch)' # git branch --show-current for git 2.
 alias gubs='git push --force-with-lease -o ci.skip -u origin $(mbranch)'
 alias gum='git push -o merge_request.create -o merge_request.target=$(git-main-branch) -o merge_request.merge_when_pipeline_succeeds'
 alias guo='git push --force-with-lease origin'
-alias sshsign='git config gpg.format ssh && git config user.signingkey ~/.ssh/id_ed25519.pub && git config commit.gpgsign true && git config tag.gpgsign true'
-alias ggpg='git config user.signingkey $(gpg --list-secret-keys --keyid-format LONG | grep -B 1 $(git config user.email) | head -n 1 | awk "{print \$1}")'
+alias sshsign='git config gpg.format ssh user.signingkey ~/.ssh/id_ed25519.pub commit.gpgsign true tag.gpgsign true'
+alias ggpg='git config user.signingkey $(gpg --list-secret-keys --keyid-format LONG | grep -A1 $(git config user.email) | tail -1 | awk "{print \$2}")'
 alias gw='git switch'
-gta2() { [ -z $1 ] && echo -e "use it like that: $gt \$tagname\nit will do: git tag -am\"$(date +%Y-%m-%d) \$tagname\" \$tagname\nexample: $gt v0.0.1" || printf "---- git tag -f -am\"$(date +%Y-%m-%d) $1\" $1\n" && git tag -f -am"$(date +%Y-%m-%d) $1" $1 && printf "---- done\n"; }
-ltag() { curl --silent "https://github.com/$1/releases/latest" | sed 's#.*tag/\(.*\)\".*#\1#' && echo ''; }
-pr() { local remote_url current_branch cb_ret default_branch base_url pr_url service_name ocmd bgl; remote_url=$(git config --get remote.origin.url); [[ -z "$remote_url" ]] && { echo "Error: No remote.origin.url in git config." >&2; return 1; }; current_branch=$(mbranch); cb_ret=$?; [[ "$cb_ret" -ne 0 || "$current_branch" == "HEAD" ]] && { echo "Error: Not on a branch or HEAD detached." >&2; return 1; }; default_branch=$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/origin/@@'); [[ -z "$default_branch" ]] && echo "Warning: No default remote branch found; select base manually on webpage." >&2; base_url=$(echo "$remote_url" | sed -e 's#^git@\([^:]*\):#https://\1/#' -e 's#^ssh://git@\([^:/]*\)[:/]#https://\1/#' -e 's#^ssh://[^@]*@\([^:/]*\)[:/]#https://\1/#' -e 's#^http://#https://#' -e 's/\.git$//'); { [[ "$base_url" == *"github.com"* ]] && service_name="GitHub" && pr_url="$base_url/compare/${default_branch:+$default_branch...}$current_branch"; } || { [[ "$base_url" == *"bitbucket.org"* ]] && service_name="Bitbucket" && pr_url="$base_url/pull-requests/new?source=$current_branch${default_branch:+&dest=$default_branch}"; } || { [[ "$base_url" == *"gitlab"* ]] && service_name="GitLab" && bgl=$(echo "$base_url"|sed 's#/$##') && pr_url="$bgl/-/merge_requests/new?merge_request%5Bsource_branch%5D=$current_branch${default_branch:+&merge_request%5Btarget_branch%5D=$default_branch}"; } || { echo "Error: Unsupported Git provider or URL format ($base_url)." >&2; return 1; }; if [[ "$(uname)" == "Darwin" ]]; then ocmd="open"; elif command -v xdg-open &>/dev/null; then ocmd="xdg-open"; elif command -v start &>/dev/null && [[ -n "$COMSPEC" ]]; then ocmd="start"; elif command -v cygstart &>/dev/null; then ocmd="cygstart"; else echo "Error: No command to open URLs. Please open manually: $pr_url" >&2; return 1; fi; echo "Opening $service_name ${default_branch:+for $current_branch -> $default_branch}... URL: $pr_url" >&2; "$ocmd" "$pr_url"; }
+gta() { [ "$1" ] && git tag -f -am"$(date +%Y-%m-%d) $1" "$1" && echo "Tagged: $1" || echo "Usage: gta <tagname>"; }
+ltag() { curl -sL "https://api.github.com/repos/$1/releases/latest" | grep -Po '"tag_name": "\K[^"]*' || echo "No release found"; }
+pr() { local u=$(git remote get-url origin | sed -e 's#git@\(.*\):#https://\1/#' -e 's#ssh://git@#https://#' -e 's#\.git$##') b=$(git branch --show-current) o=$(command -v open || command -v xdg-open || echo start); ([[ "$u" =~ github ]] && $o "$u/pull/new/$b") || ([[ "$u" =~ gitlab ]] && $o "$u/-/merge_requests/new?merge_request[source_branch]=$b") || ([[ "$u" =~ bitbucket ]] && $o "$u/pull-requests/new?source=$b"); }
 
 # ------------------------------------
 # Docker related
@@ -447,7 +424,8 @@ alias tco='PYTHONUNBUFFERED=1 LOG_LEVEL=ERROR checkov --quiet --skip-check CKV_T
 # -------------------------------------------------------------------
 # Converters
 # -------------------------------------------------------------------
-alias 7za='7z a -t7z -m0=LZMA2:27 -mx=9 -ms=on -mfb=273 -mtm=- -mmt -mmtf -md=1536m -mmf=bt3 -mmc=10000 -mpb=0 -mlc=0 -mhe=on'
+alias 7za='7z a -t7z -m0=lzma2:d=1536m:fb=273 -mx=9 -myx=9 -ms=on -mmt=on -mmtf=on -mhc=on -mmc=10000 -md=1536m -mfb=273'
+alias 7zb='7z a -t7z -m0=lzma2 -mx=9 -myx=9 -ms=on -md=1536m -mfb=273 -mmc=1000000 -mhc=on -mmt=on -mmtf=on -mtm=- -mhe=on'
 alias i2='convert -density 300 -quality 100'
 
 # -------------------------------------------------------------------
@@ -488,34 +466,20 @@ is_runnable kitty && alias icat='kitty +kitten icat'
 # -------------------------------------------------------------------
 # UTILITIES
 # -------------------------------------------------------------------
-# alert - long running commands
-# Usage: sleep 10; alert
+# alert - notify when command completes
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
-swap() { local TMPFILE=tmp.$$ && mv "$1" $TMPFILE && mv "$2" "$1" && mv $TMPFILE $2; }
-authadd() { cat $HOME/.ssh/id_rsa.pub | ssh $1 'umask 0077; mkdir -p $HOME/.ssh; cat >> .ssh/authorized_keys && chmod 700 $HOME/.ssh && chmod 600 $HOME/.ssh/authorized_keys && echo "Key copied"'; }
-# ex - archive extractor
-# Usage: ex <file>.
-ex() { if [ -f $1 ]; then case $1 in *.tar.bz2) tar xjf $1 ;; *.tar.gz) tar xzf $1 ;; *.bz2) bunzip2 $1 ;; *.rar) unrar e $1 ;; *.gz) gunzip $1 ;; *.tar) tar xf $1 ;; *.tbz2) tar xjf $1 ;; *.tgz) tar xzf $1 ;; *.zip) unzip $1 ;; *.Z) uncompress $1 ;; *.7z) 7z x $1 ;; *) echo "'$1' cannot be extracted via ex()" ;; esac else echo "'$1' is not a valid file"; fi; }
-# ex - archiver
-ar() {
-  local BN=$(basename ${1})
-  tar -czf ${BN}.tar.gz ${1}
-}
-# ex - downloaded archive installer
+# swap - safely swap two files
+swap() { local T=$(mktemp) && mv "$1" "$T" && mv "$2" "$1" && mv "$T" "$2"; }
+# authadd - add SSH key to remote host
+authadd() { ssh-copy-id "$1" 2>/dev/null || { [ -f ~/.ssh/id_ed25519.pub ] && cat ~/.ssh/id_ed25519.pub || cat ~/.ssh/id_rsa.pub; } | ssh "$1" 'mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys && chmod 700 ~/.ssh && chmod 600 ~/.ssh/authorized_keys'; }
+# ex - universal archive extractor
+ex() { [ -f "$1" ] && case "$1" in *.tar.bz2|*.tbz2) tar xjf "$1";; *.tar.gz|*.tgz) tar xzf "$1";; *.tar) tar xf "$1";; *.bz2) bunzip2 "$1";; *.gz) gunzip "$1";; *.zip) unzip "$1";; *.rar) unrar e "$1";; *.7z) 7z x "$1";; *.Z) uncompress "$1";; *) echo "'$1' cannot be extracted">&2; return 1;; esac || echo "'$1' is not a valid file">&2; }
+# ar - create tar.gz archive
+ar() { tar -czf "${1##*/}.tar.gz" "$1"; }
+# din - downloaded archive installer
 # Usage: din <app_name> <installation_parent_path> <archive_strip_top_level>
-din() {
-  local TARGET_PATH='/usr/local/'
-  [ -n "${2}" ] && TARGET_PATH=${2}
-  local EX_TYPE=''
-  [ -n "${3}" ] && EX_TYPE='--strip-components 1'
-  echo "Extract to ${TARGET_PATH}/${1} ..."
-  sudo rm -rf ${TARGET_PATH}/${1} && sudo mkdir -p $_ && sudo tar -xzf ~/Downloads/${1}*.tar.gz ${EX_TYPE} -C $_
-}
-# translate
-translate() {
-  if ! is_runnable trans; then sudo curl -o /usr/local/bin/trans https://git.io/trans && sudo chmod +x /usr/local/bin/trans; fi
-  trans $@
-}
+din() { sudo rm -rf "${2:-/usr/local}/$1"&&sudo mkdir -p "$_"&&sudo tar -xzf ~/Downloads/"$1"*.tar.gz ${3:+--strip-components 1} -C "$_"; }
+trans() { is_runnable trans || (sudo curl -sLo /usr/local/bin/trans https://git.io/trans && sudo chmod +x /usr/local/bin/trans); command trans "$@"; }
 # pdfa - pdf signing
 pdfa() { bare_run "gs -dPDFA=1 -dBATCH -dNOPAUSE -sDEVICE=pdfwrite -sOutputFile=\"${1%.*}_signed.pdf\" \"$1\""; }
 # pdfc - pdf compression
@@ -542,48 +506,7 @@ if is_runnable dircolors; then
   alias fgrep='fgrep --color=auto'
   alias egrep='grep -E --color=auto'
 fi
-if [[ "$(echo $0)" = "bash" && "$(uname)" = "Darwin" ]]; then
-  alias ll='is_runnable eza && eza -bghHlS || ls -alF'
-  alias la='is_runnable eza && eza -lA || ls -A'
-  alias l='is_runnable eza && eza -la --time modified -h --classify || ls -CF'
-fi
 
-getstate() { echo "CPU $(LC_ALL=C top -bn1 | grep "Cpu(s)" | sed "s/.*, *\([0-9.]*\)%* id.*/\1/" | awk '{print 100 - $1}')% RAM $(free -m | awk '/Mem:/ { printf("%3.1f%%", $3/$2*100) }') HDD $(df -h / | awk '/\// {print $(NF-1)}')"; }
-update_terminal_cwd() {
-  # Identify the directory using a "file:" scheme URL,
-  # including the host name to disambiguate local vs.
-  # remote connections. Percent-escape spaces.
-  local SEARCH=' '
-  local REPLACE='%20'
-  local PWD_URL="file://$HOSTNAME${PWD//$SEARCH/$REPLACE}"
-  printf '\e]7;%s\a' "$PWD_URL"
-}
-welcome() {
-  # Basic info
-  HOSTNAME=$(uname -n)
-  ROOT=$(df -h 2>/dev/null | awk '$NF=="/"{printf "%s", $5}')
-  DF='df -h --total 2>/dev/null'
-  if [ -f /etc/os-release ]; then
-    DISTO1=$(awk -F'=' '/PRETTY_NAME/ {print $2}' /etc/os-release)
-  else
-    DISTO1='Unknown'
-    DF='df -ha 2>/dev/null'
-  fi
-  # System load
-  MEMORY1=$(free 2>/dev/null | grep Total | awk '{print $3" MB";}')
-  MEMORY2=$(free 2>/dev/null | grep "Mem" | awk '{print $2" MB";}')
-  DISK_TOTAL=$(eval $DF | awk 'END {print $2}')
-  DISK_USED=$(eval $DF | awk 'END {print $3}')
-  DISK_USAGE=$(eval $DF | awk 'END {print $5}')
-  LOAD1=$(cat /proc/loadavg 2>/dev/null | awk {'print $1'})
-  LOAD5=$(cat /proc/loadavg 2>/dev/null | awk {'print $2'})
-  LOAD15=$(cat /proc/loadavg 2>/dev/null | awk END{'print $3'})
-  echo "===============================================
- - Hostname............: $HOSTNAME
- - Linux Distribution..: $DISTO1
- - Disk Space..........: $DISK_USED/$DISK_TOTAL ($DISK_USAGE) used
- - CPU usage...........: $LOAD1, $LOAD5, $LOAD15 (1, 5, 15 min)
- - Memory used.........: $MEMORY1 / $MEMORY2
- - Swap in use.........: $(free 2>/dev/null | tail -n 1 | awk '{print $3}') MB
-==============================================="
-}
+getstate() { [[ "$PLATFORM" == "macos" ]] && echo "CPU $(ps -A -o %cpu | awk '{s+=$1} END {printf "%.1f", s}')% RAM $(ps -A -o %mem | awk '{s+=$1} END {printf "%.1f", s}')% HDD $(df -h / | awk 'NR==2 {print $5}')" || echo "CPU $(LC_ALL=C top -bn1 2>/dev/null | grep -E "^(%Cpu|Cpu)" | grep -o '[0-9.]*id' | head -1 | sed 's/id//' | awk '{printf "%.1f", 100-$1}')% RAM $(free -m 2>/dev/null | awk '/^Mem:/ {printf "%.1f%%", $3/$2*100}') HDD $(df -h / 2>/dev/null | awk 'NR==2 {print $5}')"; }
+update_terminal_cwd() { [[ "$PLATFORM" =~ ^(macos|linux|wsl)$ ]] && printf '\e]7;file://%s%s\a' "${HOSTNAME:-$(hostname)}" "${PWD// /%20}" || true; }
+welcome() { local h=$(hostname 2>/dev/null || echo unknown); [[ "$PLATFORM" == "macos" ]] && { local d="macOS $(sw_vers -productVersion 2>/dev/null || echo Unknown)"; local mt=$(sysctl -n hw.memsize 2>/dev/null | awk '{print int($1/1024/1024/1024)" GB"}'); local ps=$(vm_stat 2>/dev/null | grep "page size" | awk '{print $8}' | tr -d '.'); local mu=$(vm_stat 2>/dev/null | awk -v ps="${ps:-16384}" '/Pages active:|Pages wired down:|Pages occupied by compressor:/{gsub(/\./,"",$NF); sum+=$NF} END{printf "%.1f GB", sum*ps/1024/1024/1024}'); local di=$(df -h / | awk 'NR==2 {print $3"/"$2" ("$5")"}'); local l=$(uptime | sed -n 's/.*load averages: //p'); } || { local d=$([[ -f /etc/os-release ]] && grep PRETTY_NAME /etc/os-release | cut -d'"' -f2 || echo Unknown); local mu=$(free -m 2>/dev/null | awk '/^Mem:/{print $3" MB"}'); local mt=$(free -m 2>/dev/null | awk '/^Mem:/{print $2" MB"}'); local di=$(df -h / 2>/dev/null | awk 'NR==2{print $3"/"$2" ("$5")"}'); local l=$(awk '{print $1", "$2", "$3" (1, 5, 15 min)"}' /proc/loadavg 2>/dev/null); local s=$(free -m 2>/dev/null | awk '/^Swap:/{print $3" MB"}'); }; printf "===============================================\n - Hostname............: %s\n - Platform............: %s\n - Shell...............: %s\n - OS..................: %s\n - Disk Space..........: %s used\n - CPU Load............: %s\n - Memory..............: %s / %s%s\n===============================================\n" "$h" "$PLATFORM" "$SHELL_TYPE" "${d:-N/A}" "${di:-N/A}" "${l:-N/A}" "${mu:-N/A}" "${mt:-N/A}" "${s:+$(printf '\n - Swap in use.........: %s' "$s")}"; }
