@@ -331,7 +331,7 @@ alias gubs='git push --force-with-lease -o ci.skip -u origin $(mbranch)'
 alias gum='git push -o merge_request.create -o merge_request.target=$(git-main-branch) -o merge_request.merge_when_pipeline_succeeds'
 alias guo='git push --force-with-lease origin'
 alias sshsign='git config gpg.format ssh user.signingkey ~/.ssh/id_ed25519.pub commit.gpgsign true tag.gpgsign true'
-alias ggpg='git config user.signingkey $(gpg --list-secret-keys --keyid-format LONG | grep -A1 $(git config user.email) | tail -1 | awk "{print \$2}")'
+alias ggpg='git config user.signingkey $(gpg --list-secret-keys --keyid-format LONG | grep -B2 $(git config user.email) | head -1 | awk "{split(\$2, a, \"/\"); print a[2]}")'
 alias gw='git switch'
 gta() { [ "$1" ] && git tag -f -am"$(date +%Y-%m-%d) $1" "$1" && echo "Tagged: $1" || echo "Usage: gta <tagname>"; }
 ltag() { curl -sL "https://api.github.com/repos/$1/releases/latest" | grep -Po '"tag_name": "\K[^"]*' || echo "No release found"; }
