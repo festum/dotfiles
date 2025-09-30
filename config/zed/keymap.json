@@ -1,0 +1,18 @@
+[
+  {
+    "context": "Editor",
+    "bindings": {
+      "shift-alt-u": "editor::UniqueLinesCaseInsensitive",
+      "cmd-shift-r": "editor::ReloadFile",
+      "cmd-h": "buffer_search::DeployReplace"
+    }
+  },
+  {
+    "context": "Workspace",
+    "bindings": {
+      "shift shift": "command_palette::Toggle",
+      "ctrl-`": "workspace::ToggleBottomDock",
+      "cmd-`": "workspace::ToggleBottomDock"
+    }
+  }
+]

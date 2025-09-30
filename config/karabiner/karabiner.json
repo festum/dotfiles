@@ -8,44 +8,26 @@
             "complex_modifications": {
                 "rules": [
                     {
-                        "description": "Swap Win+Space/Ctrl+Space and map Alt+Tab to Cmd+Tab (for swapped Cmd/Ctrl)",
+                        "description": "Custom mappings for Win/Ctrl/Alt keys",
                         "manipulators": [
                             {
-                                "description": "Physical Windows key -> OS Ctrl+Space",
+                                "description": "Physical Win+R -> OS Cmd+Space (Spotlight)",
                                 "from": {
-                                    "key_code": "left_control",
-                                    "modifiers": { "optional": ["any"] }
+                                    "key_code": "r",
+                                    "modifiers": {
+                                        "mandatory": ["left_control"],
+                                        "optional": ["any"]
+                                    }
                                 },
                                 "to": [
-                                    {
-                                        "set_variable": {
-                                            "name": "swapped_win_to_ctrl_space_active",
-                                            "value": 1
-                                        }
-                                    },
                                     {
                                         "key_code": "spacebar",
                                         "modifiers": ["left_command"]
                                     }
                                 ],
-                                "to_after_key_up": [
-                                    {
-                                        "set_variable": {
-                                            "name": "swapped_win_to_ctrl_space_active",
-                                            "value": 0
-                                        }
-                                    }
-                                ],
                                 "type": "basic"
                             },
                             {
-                                "conditions": [
-                                    {
-                                        "name": "swapped_win_to_ctrl_space_active",
-                                        "type": "variable_if",
-                                        "value": 0
-                                    }
-                                ],
                                 "description": "Physical Ctrl+Space -> OS Win+Space",
                                 "from": {
                                     "key_code": "spacebar",
