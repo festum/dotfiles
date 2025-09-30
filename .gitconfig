@@ -1,6 +1,7 @@
 [user]
     email = festum@g.pl
     name = Festum Qin
+	signingkey = A88A6ABF8DA5ABC897A451ECC4DDD190BEE80321
 [filter "lfs"]
     smudge = git-lfs smudge -- %f
     process = git-lfs filter-process
