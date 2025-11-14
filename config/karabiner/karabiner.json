@@ -8,10 +8,10 @@
             "complex_modifications": {
                 "rules": [
                     {
-                        "description": "Custom mappings for Win/Ctrl/Alt keys",
+                        "description": "Festum Mappings: Core Keys Swapping, Run Spotlight, Disable Hide Window, Delete in Finder, and Telegram Add Link",
                         "manipulators": [
                             {
-                                "description": "Physical Win+R -> OS Cmd+Space (Spotlight)",
+                                "description": "Physical Win+R -> OS Cmd+Space (Win Run liked Spotlight)",
                                 "from": {
                                     "key_code": "r",
                                     "modifiers": {
@@ -60,12 +60,47 @@
                                     }
                                 ],
                                 "type": "basic"
-                            }
-                        ]
-                    },
-                    {
-                        "description": "Delete key moves file to Trash in Finder",
-                        "manipulators": [
+                            },
+                            {
+                                "description": "Map Cmd+Tab to Alt+Tab (Swap with Alt+Tab to Cmd+Tab)",
+                                "from": {
+                                    "key_code": "tab",
+                                    "modifiers": {
+                                        "mandatory": ["left_command"],
+                                        "optional": ["any"]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "tab",
+                                        "modifiers": ["left_option"]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "bundle_identifiers": [
+                                            "com.microsoft.VSCode",
+                                            "com.sublimetext.3",
+                                            "dev.zed.Zed",
+                                            "^com\\.jetbrains\\.*"
+                                        ],
+                                        "type": "frontmost_application_unless"
+                                    }
+                                ],
+                                "description": "Disable Cmd+H Hide",
+                                "from": {
+                                    "key_code": "h",
+                                    "modifiers": {
+                                        "mandatory": ["left_command"],
+                                        "optional": ["any"]
+                                    }
+                                },
+                                "to": [],
+                                "type": "basic"
+                            },
                             {
                                 "conditions": [
                                     {
@@ -75,6 +110,7 @@
                                         "type": "frontmost_application_if"
                                     }
                                 ],
+                                "description": "Delete key moves file to Trash in Finder",
                                 "from": {
                                     "key_code": "delete_forward",
                                     "modifiers": { "optional": ["any"] }
@@ -85,6 +121,58 @@
                                         "modifiers": ["left_command"]
                                     }
                                 ],
+                                "type": "basic"
+                            },
+                            {
+                                "description": "Ctrl+E to Open Finder",
+                                "from": {
+                                    "key_code": "e",
+                                    "modifiers": {
+                                        "mandatory": ["left_control"],
+                                        "optional": ["any"]
+                                    }
+                                },
+                                "to": [{ "shell_command": "open -a Finder" }],
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "bundle_identifiers": [
+                                            "ru.keepcoder.Telegram"
+                                        ],
+                                        "type": "frontmost_application_if"
+                                    }
+                                ],
+                                "description": "Telegram Add Link Swap",
+                                "from": {
+                                    "key_code": "u",
+                                    "modifiers": { "mandatory": ["command"] }
+                                },
+                                "to": {
+                                    "key_code": "k",
+                                    "modifiers": ["command"]
+                                },
+                                "type": "basic"
+                            },
+                            {
+                                "conditions": [
+                                    {
+                                        "bundle_identifiers": [
+                                            "ru.keepcoder.Telegram"
+                                        ],
+                                        "type": "frontmost_application_if"
+                                    }
+                                ],
+                                "description": "Telegram Add Link Swap",
+                                "from": {
+                                    "key_code": "k",
+                                    "modifiers": { "mandatory": ["command"] }
+                                },
+                                "to": {
+                                    "key_code": "u",
+                                    "modifiers": ["command"]
+                                },
                                 "type": "basic"
                             }
                         ]
@@ -144,49 +232,6 @@
                                         "modifiers": ["left_control"]
                                     }
                                 ],
-                                "type": "basic"
-                            }
-                        ]
-                    },
-                    {
-                        "description": "Telegram Add Link",
-                        "manipulators": [
-                            {
-                                "conditions": [
-                                    {
-                                        "bundle_identifiers": [
-                                            "ru.keepcoder.Telegram"
-                                        ],
-                                        "type": "frontmost_application_if"
-                                    }
-                                ],
-                                "from": {
-                                    "key_code": "u",
-                                    "modifiers": { "mandatory": ["command"] }
-                                },
-                                "to": {
-                                    "key_code": "k",
-                                    "modifiers": ["command"]
-                                },
-                                "type": "basic"
-                            },
-                            {
-                                "conditions": [
-                                    {
-                                        "bundle_identifiers": [
-                                            "ru.keepcoder.Telegram"
-                                        ],
-                                        "type": "frontmost_application_if"
-                                    }
-                                ],
-                                "from": {
-                                    "key_code": "k",
-                                    "modifiers": { "mandatory": ["command"] }
-                                },
-                                "to": {
-                                    "key_code": "u",
-                                    "modifiers": ["command"]
-                                },
                                 "type": "basic"
                             }
                         ]
@@ -505,18 +550,6 @@
                                     "modifiers": { "mandatory": ["command"] }
                                 },
                                 "to": [{ "shell_command": "open -a 'Finder.app'" }],
-                                "type": "basic"
-                            }
-                        ]
-                    },
-                    {
-                        "description": "Disable Cmd+H Hide (rev 2)",
-                        "manipulators": [
-                            {
-                                "from": {
-                                    "key_code": "h",
-                                    "modifiers": { "mandatory": ["control"] }
-                                },
                                 "type": "basic"
                             }
                         ]

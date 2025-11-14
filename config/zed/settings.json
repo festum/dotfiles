@@ -7,6 +7,20 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "agent": {
+    "default_model": {
+      "provider": "copilot_chat",
+      "model": "gpt-4.1"
+    },
+    "always_allow_tool_actions": true,
+    "use_modifier_to_send": false
+  },
+  "agent_servers": {
+    "codex": {
+      "command": "zedcode-acp-codex",
+      "args": []
+    }
+  },
   "ui_font_size": 14,
   "buffer_font_size": 13,
   "buffer_font_family": "FiraCode Nerd Font",
