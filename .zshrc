@@ -2,6 +2,9 @@
 
 zstyle ':omz:update' mode auto       # auto/reminder/disabled
 zstyle ':omz:update' frequency 3     # day
+zstyle ':autocomplete:*' insert-unambiguous yes
+zstyle ':autocomplete:*' delay 0.1
+zstyle ':autocomplete:*' add-space ''
 CASE_SENSITIVE="false"
 HYPHEN_INSENSITIVE="true"
 DISABLE_UNTRACKED_FILES_DIRTY="true" # Performance: Disable marking untracked files under VCS as dirty
@@ -23,6 +26,7 @@ plugins=(
   terraform
   vscode
   z
+  zsh-autocomplete
   zsh-autosuggestions
   zsh-syntax-highlighting
   copybuffer              # ctrl+o copy command line text to clipboard
@@ -35,7 +39,7 @@ plugins=(
 ZSH_THEME=powerlevel10k/powerlevel10k
 # ZSH_THEME_RANDOM_CANDIDATES=( "fwalch" "robbyrussell" "miloshadzic" "arrow" "simple" "wuffers" "zhann")
 ZSH=$HOME/.oh-my-zsh
-[ ! -f $ZSH/oh-my-zsh.sh ] && sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" && sh install.sh && mv -f $HOME/.zshrc.pre-oh-my-zsh $HOME/.zshrc && source $HOME/.aliases && git_install https://github.com/zsh-users/zsh-syntax-highlighting ${ZSH_CUSTOM:-$ZSH/custom}/plugins/zsh-syntax-highlighting && git_install https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-$ZSH/custom}/plugins/zsh-autosuggestions && git_install https://github.com/romkatv/powerlevel10k ${ZSH_CUSTOM:-$ZSH/custom}/themes/powerlevel10k
+[ ! -f $ZSH/oh-my-zsh.sh ] && sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" && sh install.sh && mv -f $HOME/.zshrc.pre-oh-my-zsh $HOME/.zshrc && source $HOME/.aliases && git_install https://github.com/zsh-users/zsh-syntax-highlighting ${ZSH_CUSTOM:-$ZSH/custom}/plugins/zsh-syntax-highlighting && git_install https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-$ZSH/custom}/plugins/zsh-autosuggestions && git_install https://github.com/romkatv/powerlevel10k ${ZSH_CUSTOM:-$ZSH/custom}/themes/powerlevel10k && git_install https://github.com/marlonrichert/zsh-autocomplete ${ZSH_CUSTOM:-$ZSH/custom}/plugins/zsh-autocomplete
 export LANG=en_US.UTF-8
 export EDITOR=$([ -n $SSH_CONNECTION ] && echo 'nvim' || echo 'hx')
 export SCM_CHECK=true SCM_GIT_SHOW_MINIMAL_INFO=true
@@ -62,6 +66,12 @@ source $HOME/.aliases
 safe_source $HOME/.rc_local
 is_runnable fox && eval "$(vfox activate zsh)"
 is_runnable poetry && mkdir -p $ZSH_CUSTOM/plugins/poetry && poetry completions zsh > $ZSH_CUSTOM/plugins/poetry/_poetry
+
+bindkey '^@' menu-complete # Ctrl+Space: Accept top word suggestion (like Tab but for words only)
+bindkey "\e[1;3C" forward-word # Alt+Right Arrow: Forward and accept next word after space
+bindkey '^[[1;5C' .forward-char # Optional: In menu, make Right Arrow cycle completions word-by-word
+bindkey -M menuselect '^[[C' menu-complete
+bindkey '^F' forward-word
 bindkey '^B' backward-word
 bindkey '^F' forward-word
 bindkey "\e[1;3D" backward-word # ⌥←
