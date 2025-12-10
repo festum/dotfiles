@@ -15,6 +15,9 @@
     "always_allow_tool_actions": true,
     "use_modifier_to_send": false
   },
+  "features": {
+    "edit_prediction_provider": "copilot"
+  },
   "agent_servers": {
     "codex": {
       "command": "zedcode-acp-codex",

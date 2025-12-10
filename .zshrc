@@ -26,7 +26,7 @@ plugins=(
   terraform
   vscode
   z
-  zsh-autocomplete
+  # zsh-autocomplete
   zsh-autosuggestions
   zsh-syntax-highlighting
   copybuffer              # ctrl+o copy command line text to clipboard
