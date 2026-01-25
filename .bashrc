@@ -15,6 +15,8 @@ bind "set mark-symlinked-directories on"
 # Enable history expansion with space
 # E.g. typing !!<space> will replace the !! with your last command
 bind Space:magic-space
+# Multi-line parsing requires
+bind 'set enable-bracketed-paste on'
 # Case-insensitive globbing (used in pathname expansion)
 shopt -s nocaseglob;
 # Save multi-line commands as one command
