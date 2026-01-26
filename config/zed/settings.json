@@ -1,7 +1,6 @@
 // Zed settings
 //
-// For information on how to configure Zed, see the Zed
-// documentation: https://zed.dev/docs/configuring-zed
+// Documentation: https://zed.dev/docs/configuring-zed
 //
 // To see all of Zed's default settings without changing your
 // custom settings, run `zed: open default settings` from the
@@ -10,48 +9,50 @@
   "agent": {
     "default_model": {
       "provider": "copilot_chat",
-      "model": "gpt-4.1"
+      "model": "gpt-4.1",
     },
     "always_allow_tool_actions": true,
-    "use_modifier_to_send": false
+    "use_modifier_to_send": false,
   },
   "features": {
-    "edit_prediction_provider": "copilot"
+    "edit_prediction_provider": "copilot",
   },
   "agent_servers": {
     "codex": {
       "command": "zedcode-acp-codex",
-      "args": []
-    }
+      "args": [],
+    },
   },
-  "ui_font_size": 14,
-  "buffer_font_size": 13,
-  "buffer_font_family": "FiraCode Nerd Font",
-  "buffer_font_fallbacks": [],
-  "autosave": "on_window_change", //all
-  "formatter": "auto",
   "auto_signature_help": true,
-  "diagnostics_max_severity": "error",
-  "theme": "Warm Perf",
-  "soft_wrap": "editor_width",
+  "autosave": "on_window_change",
   "base_keymap": "VSCode",
+  "buffer_font_fallbacks": [],
+  "buffer_font_family": "FiraCode Nerd Font",
+  "buffer_font_size": 13,
+  "current_line_highlight": "all",
+  "diagnostics_max_severity": "error",
   "edit_predictions_disabled_in": ["comment", "string"],
-  "current_line_highlight": "all", //gutter
-  "restore_on_startup": "last_session",
+  "formatter": "auto",
+  "hide_mouse": "on_typing",
+  "multi_cursor_modifier": "cmd_or_ctrl",
+  "scroll_beyond_last_line": "off",
+  "soft_wrap": "editor_width",
+  "theme": "Warm Perf",
+  "ui_font_size": 14,
+  "use_autoclose": false,
   "centered_layout": {
     "left_padding": 0,
-    "right_padding": 0
+    "right_padding": 0,
   },
   "active_pane_modifiers": {
     "border_size": 0.0,
-    "inactive_opacity": 0.5
+    "inactive_opacity": 0.5,
   },
-  "hide_mouse": "on_typing",
   "minimap": {
     "show": "auto",
     "thumb": "always",
     "thumb_border": "left_open",
-    "current_line_highlight": "all"
+    "current_line_highlight": "all",
   },
   "tabs": {
     "close_position": "right",
@@ -59,34 +60,30 @@
     "git_status": true,
     "activate_on_close": "left_neighbour",
     "show_close_button": "hover",
-    "show_diagnostics": "errors"
+    "show_diagnostics": "errors",
   },
   "inlay_hints": {
     "enabled": true,
     "show_background": false,
     "edit_debounce_ms": 700,
     "scroll_debounce_ms": 50,
-    "toggle_on_modifiers_press": {
-      "control": true,
-      "shift": true,
-      "alt": true,
-      "platform": true,
-      "function": true
-    }
   },
-  "use_autoclose": false,
-  "multi_cursor_modifier": "cmd_or_ctrl",
-  "private_files": [
-    "**/.env*",
-    "**/*.pem",
-    "**/*.key",
-    "**/*.cert",
-    "**/*.crt",
-    "**/secrets.yml",
-    "**/.dev/*"
-  ],
+  "edit_predictions": {
+    "disabled_globs": [
+      "**/.env*",
+      "**/.dev*",
+      "**/*.pem",
+      "**/*.key",
+      "**/*.cert",
+      "**/*.crt",
+      "**/secrets.yml",
+    ],
+  },
+  "session": {
+    "restore_unsaved_buffers": true,
+  },
   "telemetry": {
     "diagnostics": false,
-    "metrics": false
-  }
+    "metrics": false,
+  },
 }
