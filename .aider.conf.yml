@@ -1,0 +1,15 @@
+model: ollama/deepseek-r1:7b
+editor-model: ollama/qwen2.5-coder:7b-instruct-q5_K_M
+weak-model: ollama/glm-4.7-flash:q4_K_M
+api-base: http://localhost:11434
+system-prompt-file: /home/fqin/src/ai-rules/ai_rules/master-rules.md
+git-diff: true
+use-tools: true  # 啟用檔案讀寫、終端執行
+auto-commits: true  # 自動 commit
+git-commit-verify: true
+auto-test: true
+test: true
+yes-always: true  # Headless 模式
+timeout: 1200
+dark-mode: true
+upgrade: true
