@@ -1,0 +1,16 @@
+model: ollama/deepseek-r1:7b
+editor-model: ollama/qwen2.5-coder:7b-instruct-q5_K_M
+weak-model: ollama/glm-4.7-flash:q4_K_M
+openai-api-base: http://localhost:11434
+stream: false
+show-diffs: true
+auto-commits: true
+git-commit-verify: true
+auto-test: true
+test-cmd: go test ./...
+yes-always: true
+timeout: 1200
+dark-mode: true
+read:
+  - /home/fqin/src/ai-rules/ai_rules/master-rules.md
+no-show-model-warnings: true
