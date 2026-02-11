@@ -275,6 +275,8 @@ alias gmu='git -c user.name="${GIT_USERNAME}" -c user.email="${GIT_USEREMAIL}" c
 alias gmg='git merge'
 alias gmgp='git merge @{-1}'
 alias gmgm='git merge $(git-main-branch)'
+alias gmga='git merge --abort'
+alias gmgc='git merge --continue'
 alias gmv='git mv'
 alias gp='git pull'
 alias gpa='git pull --all'
