@@ -14,9 +14,6 @@
     "always_allow_tool_actions": true,
     "use_modifier_to_send": false,
   },
-  "features": {
-    "edit_prediction_provider": "copilot",
-  },
   "agent_servers": {
     "codex": {
       "command": "zedcode-acp-codex",
@@ -35,7 +32,7 @@
   "formatter": "auto",
   "hide_mouse": "on_typing",
   "multi_cursor_modifier": "cmd_or_ctrl",
-  "scroll_beyond_last_line": "off",
+  "scroll_beyond_last_line": "one_page",
   "soft_wrap": "editor_width",
   "theme": "Warm Perf",
   "ui_font_size": 14,
@@ -69,6 +66,7 @@
     "scroll_debounce_ms": 50,
   },
   "edit_predictions": {
+    "provider": "copilot",
     "disabled_globs": [
       "**/.env*",
       "**/.dev*",

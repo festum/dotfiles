@@ -68,6 +68,7 @@ dotfiles=(
   .inputrc
   .vimrc
   .wgetrc
+  .opencommit
 )
 for file in "${dotfiles[@]}"; do
   link "$file"
