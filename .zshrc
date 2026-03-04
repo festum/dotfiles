@@ -49,6 +49,8 @@ export GPG_TTY=$TTY
 export TMUX_TMPDIR=${TMUX_TMPDIR:-$HOME/.tmux/tmp}
 export NVM_DIR=${NVM_DIR:-$HOME/.nvm}
 export VOLTA_HOME=${NVM_DIR:-$HOME/.volta$}
+export OLLAMA_HOST=0.0.0.0
+export OLLAMA_ORIGINS="*"
 export DOCKER_BUILDKIT=0 DOCKER_DEFAULT_PLATFORM=linux/amd64 COMPOSE_DOCKER_CLI_BUILD=0
 export GOPATH=${GOPATH:-$HOME/.go}
 export GOBIN=${GOBIN:-$GOPATH/bin}

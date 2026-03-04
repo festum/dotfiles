@@ -135,3 +135,4 @@ db.sqlite3*
 
 ### Project-Specific ###
 .github/git-commit-instructions.md
+.aider.*
