@@ -40,7 +40,8 @@ ZSH_THEME=powerlevel10k/powerlevel10k
 # ZSH_THEME_RANDOM_CANDIDATES=( "fwalch" "robbyrussell" "miloshadzic" "arrow" "simple" "wuffers" "zhann")
 ZSH=$HOME/.oh-my-zsh
 [ ! -f $ZSH/oh-my-zsh.sh ] && git_install https://github.com/zsh-users/zsh-syntax-highlighting ${ZSH_CUSTOM:-$ZSH/custom}/plugins/zsh-syntax-highlighting && git_install https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-$ZSH/custom}/plugins/zsh-autosuggestions && git_install https://github.com/romkatv/powerlevel10k ${ZSH_CUSTOM:-$ZSH/custom}/themes/powerlevel10k && git_install https://github.com/marlonrichert/zsh-autocomplete ${ZSH_CUSTOM:-$ZSH/custom}/plugins/zsh-autocomplete && sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" && sh install.sh && mv -f $HOME/.zshrc.pre-oh-my-zsh $HOME/.zshrc && source $HOME/.aliases
-export LANG=en_US.UTF-8
+export LANG=en_US.UTF-
+export CC=clangexport AR=llvm-ar CXX=clang++ CFLAGS="-Wno-implicit-function-declaration" CXXFLAGS="-Wno-implicit-function-declaration"
 export EDITOR=$([ -n $SSH_CONNECTION ] && echo 'nvim' || echo 'hx')
 export SCM_CHECK=true SCM_GIT_SHOW_MINIMAL_INFO=true
 export SHORT_HOSTNAME=$(hostname -s) # Set Xterm/screen/Tmux title with only a short hostname
@@ -58,7 +59,7 @@ export GO111MODULE=${GO111MODULE:-auto}
 export GOPROXY=${GOPROXY:-direct}
 [ -d /usr/local/go ] && export GOROOT=/usr/local/go
 [ -f $HOME/.cargo/env ] && source $HOME/.cargo/env && export CARGO_HOME=$HOME/.cargo/env
-export BIN=$GOROOT/bin:$GOBIN:$JAVA_HOME/bin:$VOLTA_HOME/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$HOME/.rd/bin:$HOME/.local/bin:$HOME/bin:/opt/homebrew/bin:/snap/bin:/usr/local/bin:/usr/bin:/bin:$PATH
+export BIN=$GOROOT/bin:$GOBIN:$JAVA_HOME/bin:$VOLTA_HOME/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$HOME/.bun/bin:$HOME/.rd/bin:$HOME/.local/bin:$HOME/bin:/opt/homebrew/bin:/snap/bin:/usr/local/bin:/usr/bin:/bin:$PATH
 export PATH=$BIN:$PATH
 source $ZSH/oh-my-zsh.sh
 source $HOME/.cargo/env 2>/dev/null

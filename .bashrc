@@ -140,12 +140,13 @@ export SHORT_TERM_LINE=true # Set Xterm/screen/Tmux title with shortened command
 #export SHORT_TERM_LINE=true
 export BYOBU_PREFIX=/usr/local
 export TERM=xterm-256color
-export VISUAL=${VISUAL:-nvim}
+export VISUAL=${VISUAL:-hx}
 export EDITOR=$VISUAL
 export GIT_HOSTING=${GIT_HOSTING:-git@github.com}
 export GIT_EDITOR=$VISUAL
 export TODO=t
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+export CC=clangexport AR=llvm-ar CXX=clang++ CFLAGS="-Wno-implicit-function-declaration" CXXFLAGS="-Wno-implicit-function-declaration"
 export LANG=${LANG:-en_US.UTF-8} LANGUAGE=$LANG LC_ALL=$LANG
 export LESS_TERMCAP_mb=$'\E[01;31m'
 export LESS_TERMCAP_md=$'\E[01;31m'
@@ -167,7 +168,7 @@ export GO111MODULE=${GO111MODULE:-auto}
 export GOPROXY=${GOPROXY:-direct}
 [[ -d /usr/local/go ]] && export GOROOT=/usr/local/go
 export XDG_CONFIG_HOME=$HOME/.config
-export BIN=$GOROOT/bin:$GOBIN:$JAVA_HOME/bin:$VOLTA_HOME/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$HOME/.rd/bin:$HOME/.local/bin:$HOME/bin:/snap/bin:/usr/local/bin:/usr/bin:/bin:$PATH
+export BIN=$GOROOT/bin:$GOBIN:$JAVA_HOME/bin:$VOLTA_HOME/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin::$HOME/.bun/bin:$HOME/.rd/bin:$HOME/.local/bin:$HOME/bin:/snap/bin:/usr/local/bin:/usr/bin:/bin:$PATH
 export PATH=$BIN:$PATH
 [[ ! -f $BASH_IT/install.sh ]] && git clone --depth=1 https://github.com/Bash-it/bash-it $BASH_IT && $BASH_IT/install.sh -s -n
 source $BASH_IT/bash_it.sh 2>/dev/null
