@@ -146,7 +146,7 @@ export GIT_HOSTING=${GIT_HOSTING:-git@github.com}
 export GIT_EDITOR=$VISUAL
 export TODO=t
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
-export CC=clangexport AR=llvm-ar CXX=clang++ CFLAGS="-Wno-implicit-function-declaration" CXXFLAGS="-Wno-implicit-function-declaration"
+export CC=clang AR=llvm-ar CXX=clang++ CFLAGS="-Wno-implicit-function-declaration" CXXFLAGS="-Wno-implicit-function-declaration"
 export LANG=${LANG:-en_US.UTF-8} LANGUAGE=$LANG LC_ALL=$LANG
 export LESS_TERMCAP_mb=$'\E[01;31m'
 export LESS_TERMCAP_md=$'\E[01;31m'
@@ -158,17 +158,17 @@ export LESS_TERMCAP_us=$'\E[01;32m'
 export GPG_TTY=$(tty)
 export TMUX_TMPDIR=${TMUX_TMPDIR:-$HOME/.tmux/tmp}
 export NVM_DIR=${NVM_DIR:-$HOME/.nvm}
-export VOLTA_HOME=${NVM_DIR:-$HOME/.volta$}
 export OLLAMA_HOST=0.0.0.0
 export OLLAMA_ORIGINS="*"
 export DOCKER_BUILDKIT=0 DOCKER_DEFAULT_PLATFORM=linux/amd64 COMPOSE_DOCKER_CLI_BUILD=0
-export GOPATH=${GOPATH:-$HOME/.go}
-export GOBIN=${GOBIN:-$GOPATH/bin}
 export GO111MODULE=${GO111MODULE:-auto}
 export GOPROXY=${GOPROXY:-direct}
+export GOPATH=${GOPATH:-$HOME/.go}
+export GOBIN=${GOBIN:-$GOPATH/bin}
 [[ -d /usr/local/go ]] && export GOROOT=/usr/local/go
 export XDG_CONFIG_HOME=$HOME/.config
-export BIN=$GOROOT/bin:$GOBIN:$JAVA_HOME/bin:$VOLTA_HOME/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin::$HOME/.bun/bin:$HOME/.rd/bin:$HOME/.local/bin:$HOME/bin:/snap/bin:/usr/local/bin:/usr/bin:/bin:$PATH
+export BIN=$GOROOT/bin:$GOBIN:$VOLTA_HOME/bin:$HOME/.config/yarn/global/node_modules/.bin:$HOME/bin:/snap/bin:/usr/local/bin:/usr/bin:/bin
+export BIN=$(find "$HOME" -maxdepth 2 -type d -name bin -print0 2>/dev/null | tr '\0' ':' | sed 's/:$//'):$BIN
 export PATH=$BIN:$PATH
 [[ ! -f $BASH_IT/install.sh ]] && git clone --depth=1 https://github.com/Bash-it/bash-it $BASH_IT && $BASH_IT/install.sh -s -n
 source $BASH_IT/bash_it.sh 2>/dev/null
