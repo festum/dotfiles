@@ -338,6 +338,118 @@ alias gw='git switch'
 gta() { [ "$1" ] && git tag -f -am"$(date +%Y-%m-%d) $1" "$1" && echo "Tagged: $1" || echo "Usage: gta <tagname>"; }
 ltag() { curl -sL "https://api.github.com/repos/$1/releases/latest" | grep -Po '"tag_name": "\K[^"]*' || echo "No release found"; }
 pr() { local u=$(git remote get-url origin | sed -e 's#git@\(.*\):#https://\1/#' -e 's#ssh://git@#https://#' -e 's#\.git$##') b=$(git branch --show-current) o=$(command -v open || command -v xdg-open || echo start); ([[ "$u" =~ github ]] && $o "$u/pull/new/$b") || ([[ "$u" =~ gitlab ]] && $o "$u/-/merge_requests/new?merge_request[source_branch]=$b") || ([[ "$u" =~ bitbucket ]] && $o "$u/pull-requests/new?source=$b"); }
+prr() {
+  setopt local_options nounset pipefail
+  unsetopt errexit
+
+  local pr_number owner repo all=false
+
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      "all") all=true; shift ;;
+      *) echo "Usage: prr [all]" >&2; return 1 ;;
+    esac
+  done
+
+  pr_number=$(gh pr view --json number -q '.number' 2>/dev/null) || {
+    echo "Error: Not in PR context" >&2
+    return 1
+  }
+
+  owner=$(gh repo view --json owner -q '.owner.login' 2>/dev/null) || {
+    echo "Error: Cannot get repo owner" >&2
+    return 1
+  }
+
+  repo=$(gh repo view --json name -q '.name' 2>/dev/null) || {
+    echo "Error: Cannot get repo name" >&2
+    return 1
+  }
+
+  local temp_file=$(mktemp)
+  trap "rm -f $temp_file ${temp_file}.result ${temp_file}.new" EXIT
+  echo "[]" > "$temp_file"
+
+  local cursor="null"
+  local has_next="true"
+
+  while [[ "$has_next" == "true" ]]; do
+    gh api graphql \
+      -f owner="$owner" \
+      -f repo="$repo" \
+      -F number="$pr_number" \
+      -f cursor="$cursor" \
+      -f query='
+        query($owner: String!, $repo: String!, $number: Int!, $cursor: String) {
+          repository(owner: $owner, name: $repo) {
+            pullRequest(number: $number) {
+              reviewThreads(first: 100, after: $cursor) {
+                nodes {
+                  isResolved
+                  isOutdated
+                  comments(first: 100) {
+                    nodes {
+                      body
+                      path
+                      line
+                      originalLine
+                      diffHunk
+                      createdAt
+                      author {
+                        login
+                      }
+                    }
+                  }
+                }
+                pageInfo {
+                  hasNextPage
+                  endCursor
+                }
+              }
+            }
+          }
+        }
+      ' 2>/dev/null | \
+      LC_ALL=C perl -pe 's/[\x00-\x1F\x7F](?![\n\r\t])//g' | \
+      jq -c '
+        (.data.repository.pullRequest.reviewThreads.pageInfo.endCursor // "null") as $next_cursor |
+        (.data.repository.pullRequest.reviewThreads.pageInfo.hasNextPage // false) as $has_next |
+        (.data.repository.pullRequest.reviewThreads.nodes // []) as $nodes |
+        {cursor: $next_cursor, hasNext: $has_next, nodes: $nodes}
+      ' > "${temp_file}.result" 2>/dev/null
+
+    cursor=$(jq -r '.cursor' "${temp_file}.result" 2>/dev/null)
+    has_next=$(jq -r '.hasNext' "${temp_file}.result" 2>/dev/null)
+    jq -c '.nodes' "${temp_file}.result" 2>/dev/null | jq -s '.[0] + .[1]' "$temp_file" - > "${temp_file}.new" 2>/dev/null && mv -f "${temp_file}.new" "$temp_file" >/dev/null 2>&1
+
+    [[ "$has_next" != "true" ]] && break
+  done
+
+  jq -r --arg all "$all" '
+    if (. | length) == 0 then
+      "No matched review threads"
+    else
+      map(select(($all == "true") or (.isResolved | not)))[]
+      | .comments.nodes[0] as $first_comment
+      | . as $thread
+      | $first_comment.path as $path
+      | ($first_comment.line // $first_comment.originalLine // "N/A" | tostring) as $line
+      | $first_comment.diffHunk as $hunk
+      | ($hunk | split("\n") |
+         if length > 12 then
+           (if (length - 12) > 0 then (length - 12) else 0 end) as $skip
+           | .[$skip:]
+         else . end
+         | join("\n")) as $trimmed_hunk
+      | (if $thread.isResolved then "Resolved"
+         elif $thread.isOutdated then "Outdated"
+         else "Unresolved"
+         end) as $status
+      | (.comments.nodes | map("- \(.author.login)@\(.createdAt) says:\n  \(.body)") | join("\n")) as $all_comments
+      | "- File: \($path)#\($line)\n  ```\n\($trimmed_hunk)\n  ```\n- Status: \($status)\n\($all_comments)\n---"
+    end
+  ' "$temp_file" 2>/dev/null || echo "jq or GraphQL failed"
+}
 
 # ------------------------------------
 # Docker related
