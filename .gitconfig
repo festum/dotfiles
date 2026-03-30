@@ -15,6 +15,62 @@
 [receive]
     # Resolving: fatal: the receiving end does not support push options
     advertisePushOptions = true
+[init]
+    defaultBranch = main
+[rebase]
+	autoStash = true
+[rerere]
+	enabled = true
+[help]
+    autocorrect = 1
+[merge]
+    # Include summaries of merged commits in newly created merge commit messages
+    log = true
+[push]
+    # https://git-scm.com/docs/git-config#git-config-pushdefault
+    default = simple
+    # Make `git push` push relevant annotated tags when pushing branches out.
+    followTags = true
+    autoSetupRemote = true
+[apply]
+    # Detect white spaces errors when applying a patch
+    whitespace = fix
+[core]
+    # Use custom `.gitignore` and `.gitattributes`
+    excludesfile = ~/.gitignore_global
+    attributesfile = ~/.gitattributes
+
+    # Treat spaces before tabs and all kinds of trailing whitespace as an error
+    # [default] trailing-space: looks for spaces at the end of a line
+    # [default] space-before-tab: looks for spaces before tabs at the beginning of a line
+    whitespace = space-before-tab,-indent-with-non-tab,trailing-space
+
+    # Make `git rebase` safer on macOS
+    # More info: <http://www.git-tower.com/blog/make-git-rebase-safe-on-osx/>
+    trustctime = false
+
+    # Prevent showing files whose names contain non-ASCII symbols as unversioned.
+    # http://michael-kuehnel.de/git/2014/11/21/git-mac-osx-and-german-umlaute.html
+    precomposeunicode = false
+
+    # Speed up commands involving untracked files such as `git status`.
+    # https://git-scm.com/docs/git-update-index#_untracked_cache
+    untrackedCache = true
+    editor = hx
+    pager = diff-so-fancy | less --tabs=4 -RFX
+[interactive]
+    diffFilter = diff-so-fancy --patch
+	# diffFilter = delta --diff-so-fancy # cargo install git-delta
+[diff-so-fancy]
+	markEmptyLines = false
+	changeHunkIndicators = true
+	stripLeadingSymbols = false
+	useUnicodeRuler = true
+	shortHeaders = true
+[delta]
+    features = side-by-side decorations
+    side-by-side = false
+    navigate = true  # use n and N to move between diff sections
 [alias]
     main = !git symbolic-ref refs/remotes/origin/HEAD | cut -d"/" -f4
 
@@ -62,7 +118,7 @@
     smu = submodule update --remote --merge --recursive
     smp = submodule foreach git pull
     smr = submodule foreach --recursive git reset --hard
-    
+
     # Rebase
     rb = rebase
     rbm = rebase -i --autosquash origin/main --no-verify
@@ -93,7 +149,7 @@
     dcs = diff --cached --shortstat --ignore-blank-lines --color
     # Show the diff between the latest commit and the current state
     ds = !"git diff-index --quiet HEAD -- || clear; git --no-pager diff --patch-with-stat"
- 
+
     # List aliases
     aliases = !git config --get-regexp alias\\. | sed -E "s/alias\\.//"
 
@@ -102,6 +158,8 @@
 
     # `git di $number` shows the diff between the state `$number` revisions ago and the current state
     di = !"d() { git diff --patch-with-stat HEAD~$1; }; git diff-index --quiet HEAD -- || clear; d"
+
+    delta = "!f() { git -c core.pager=delta diff \"$@\"; }; f"
 
     # Commit all changes
     ca = !git add -A && git commit -av
@@ -155,32 +213,6 @@
     mwps = !git push -o merge_request.create -o merge_request.target=$(git main) -o merge_request.merge_when_pipeline_succeeds
 
 
-[apply]
-    # Detect white spaces errors when applying a patch
-    whitespace = fix
-[core]
-    # Use custom `.gitignore` and `.gitattributes`
-    excludesfile = ~/.gitignore_global
-    attributesfile = ~/.gitattributes
-
-    # Treat spaces before tabs and all kinds of trailing whitespace as an error
-    # [default] trailing-space: looks for spaces at the end of a line
-    # [default] space-before-tab: looks for spaces before tabs at the beginning of a line
-    whitespace = space-before-tab,-indent-with-non-tab,trailing-space
-
-    # Make `git rebase` safer on macOS
-    # More info: <http://www.git-tower.com/blog/make-git-rebase-safe-on-osx/>
-    trustctime = false
-
-    # Prevent showing files whose names contain non-ASCII symbols as unversioned.
-    # http://michael-kuehnel.de/git/2014/11/21/git-mac-osx-and-german-umlaute.html
-    precomposeunicode = false
-
-    # Speed up commands involving untracked files such as `git status`.
-    # https://git-scm.com/docs/git-update-index#_untracked_cache
-    untrackedCache = true
-    editor = nvim
-    pager = diff-so-fancy | less --tabs=4 -RFX
 [color]
     ui = true
 [color "branch"]
@@ -208,29 +240,17 @@
     # https://help.github.com/articles/signing-commits-using-gpg/
     gpgsign = true
 [diff]
-    # Detect copies as well as renames
     renames = copies
     tool = nvimdiff
 [diff "bin"]
     # Use `hexdump` to diff binary files
     textconv = hexdump -v -C
 [difftool]
-    prompt = true
+    prompt = false
+[difftool "nvimdiff"]
+    cmd = nvim -d -O "$LOCAL" "$REMOTE"
 [difftool "vscode"]
     cmd = code --wait --diff $LOCAL $REMOTE
-[difftool "nvimdiff"]
-    cmd = nvim -d -O \"$LOCAL\" \"$REMOTE\"
-[help]
-    autocorrect = 1
-[merge]
-    # Include summaries of merged commits in newly created merge commit messages
-    log = true
-[push]
-    # https://git-scm.com/docs/git-config#git-config-pushdefault
-    default = simple
-    # Make `git push` push relevant annotated tags when pushing branches out.
-    followTags = true
-    autoSetupRemote = true
 [url "git@github.com:"]
     insteadOf = "gh:"
     pushInsteadOf = "github:"
@@ -243,13 +263,11 @@
     pushInsteadOf = "git://gist.github.com/"
 [url "git://gist.github.com/"]
     insteadOf = "gist:"
-[init]
-    defaultBranch = main
-[interactive]
-    diffFilter = diff-so-fancy --patch
-[rebase]
-	autoStash = true
 [includeIf "gitdir:~/src/"]
-  path = ~/.gitconfig-local
-[rerere]
-	enabled = true
+	path = ~/.gitconfig-local
+[includeIf "gitdir:~/Repo/"]
+	path = ~/.gitconfig-local
+[includeIf "gitdir:~/repo/"]
+	path = ~/.gitconfig-local
+[includeIf "hasconfig:remote.*.url:github.com/**"]
+    path = ~/.gitconfig-github-private

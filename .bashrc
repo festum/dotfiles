@@ -167,8 +167,8 @@ export GOPATH=${GOPATH:-$HOME/.go}
 export GOBIN=${GOBIN:-$GOPATH/bin}
 [[ -d /usr/local/go ]] && export GOROOT=/usr/local/go
 export XDG_CONFIG_HOME=$HOME/.config
-export BIN=$GOROOT/bin:$GOBIN:$VOLTA_HOME/bin:$HOME/.config/yarn/global/node_modules/.bin:$HOME/bin:/snap/bin:/usr/local/bin:/usr/bin:/bin
-export BIN=$(find "$HOME" -maxdepth 2 -type d -name bin -print0 2>/dev/null | tr '\0' ':' | sed 's/:$//'):$BIN
+export BIN=$GOROOT/bin:$GOBIN:$HOME/.config/yarn/global/node_modules/.bin:/opt/homebrew/bin:/opt/homebrew/opt/llvm/bin:$HOME/bin:/snap/bin:/usr/local/bin:/usr/bin:/bin
+export BIN=$(find "$HOME" -maxdepth 3 -type d -name bin -print0 2>/dev/null | tr '\0' ':' | sed 's/:$//'):$BIN
 export PATH=$BIN:$PATH
 [[ ! -f $BASH_IT/install.sh ]] && git clone --depth=1 https://github.com/Bash-it/bash-it $BASH_IT && $BASH_IT/install.sh -s -n
 source $BASH_IT/bash_it.sh 2>/dev/null
