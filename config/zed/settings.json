@@ -7,18 +7,20 @@
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
   "agent": {
+    "tool_permissions": {
+      "default": "allow"
+    },
     "default_model": {
       "provider": "copilot_chat",
       "model": "gpt-4.1",
     },
-    "always_allow_tool_actions": true,
     "use_modifier_to_send": false,
   },
   "agent_servers": {
-    "codex": {
-      "command": "zedcode-acp-codex",
-      "args": [],
-    },
+    "codex-acp-custom": {
+      "type": "custom",
+      "command": "zedcode-acp-codex"
+    }
   },
   "auto_signature_help": true,
   "autosave": "on_window_change",

@@ -58,8 +58,8 @@ export GOPATH=${GOPATH:-$HOME/.go}
 export GOBIN=${GOBIN:-$GOPATH/bin}
 [ -d /usr/local/go ] && export GOROOT=/usr/local/go
 [ -f $HOME/.cargo/env ] && source $HOME/.cargo/env && export CARGO_HOME=$HOME/.cargo/env
-export BIN=$GOROOT/bin:$GOBIN:$HOME/.config/yarn/global/node_modules/.bin:/opt/homebrew/bin:$HOME/bin:/snap/bin:/usr/local/bin:/usr/bin:/bin
-export BIN=$(find "$HOME" -maxdepth 2 -type d -name bin -print0 2>/dev/null | tr '\0' ':' | sed 's/:$//'):$BIN
+export BIN=$GOROOT/bin:$GOBIN:$HOME/.config/yarn/global/node_modules/.bin:/opt/homebrew/bin:/opt/homebrew/opt/llvm/bin:$HOME/bin:/snap/bin:/usr/local/bin:/usr/bin:/bin
+export BIN=$(find "$HOME" -maxdepth 3 -type d -name bin -print0 2>/dev/null | tr '\0' ':' | sed 's/:$//'):$BIN
 export PATH=$BIN:$PATH
 source $ZSH/oh-my-zsh.sh
 source $HOME/.cargo/env 2>/dev/null
