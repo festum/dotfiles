@@ -110,7 +110,7 @@ if test -n "$KITTY_INSTALLATION_DIR" -a -e "$KITTY_INSTALLATION_DIR/shell-integr
 
 
 debug_handler() { LAST_COMMAND=$BASH_COMMAND; }
-error_handler() { local LAST_HISTORY_ENTRY=$(history | tail -1l); [[ "$LAST_COMMAND" == "$(cut -d ' ' -f 2- <<< $LAST_HISTORY_ENTRY)" ]] && FAILED_COMMANDS="$(cut -d ' ' -f 1 <<< $LAST_HISTORY_ENTRY) $FAILED_COMMANDS"; }
+error_handler() { local LAST_HISTORY_ENTRY=$(history | tail -n 1); [[ "$LAST_COMMAND" == "$(cut -d ' ' -f 2- <<< $LAST_HISTORY_ENTRY)" ]] && FAILED_COMMANDS="$(cut -d ' ' -f 1 <<< $LAST_HISTORY_ENTRY) $FAILED_COMMANDS"; }
 exit_handler() { for i in $(echo $FAILED_COMMANDS | tr ' ' '\n' | uniq); do history -d $i; done; FAILED_COMMANDS=; }
 trap debug_handler DEBUG
 trap error_handler ERR
