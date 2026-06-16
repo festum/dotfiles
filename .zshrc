@@ -40,6 +40,7 @@ ZSH_THEME=powerlevel10k/powerlevel10k
 # ZSH_THEME_RANDOM_CANDIDATES=( "fwalch" "robbyrussell" "miloshadzic" "arrow" "simple" "wuffers" "zhann")
 ZSH=$HOME/.oh-my-zsh
 [ ! -f $ZSH/oh-my-zsh.sh ] && git_install https://github.com/zsh-users/zsh-syntax-highlighting ${ZSH_CUSTOM:-$ZSH/custom}/plugins/zsh-syntax-highlighting && git_install https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-$ZSH/custom}/plugins/zsh-autosuggestions && git_install https://github.com/romkatv/powerlevel10k ${ZSH_CUSTOM:-$ZSH/custom}/themes/powerlevel10k && git_install https://github.com/marlonrichert/zsh-autocomplete ${ZSH_CUSTOM:-$ZSH/custom}/plugins/zsh-autocomplete && sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" && sh install.sh && mv -f $HOME/.zshrc.pre-oh-my-zsh $HOME/.zshrc && source $HOME/.aliases
+export ME=$(id -u -n) USER_ID=$(id -u) GROUP_ID=$(id -g) DOCKER_GID=$(getent group docker | cut -d: -f3)
 export LANG=${LANG:-en_US.UTF-8} LANGUAGE=$LANG LC_ALL=$LANG
 export CC=clang AR=llvm-ar CXX=clang++ CFLAGS="-Wno-implicit-function-declaration" CXXFLAGS="-Wno-implicit-function-declaration"
 export EDITOR=$([ -n $SSH_CONNECTION ] && echo 'nvim' || echo 'hx')
@@ -49,14 +50,14 @@ export SHORT_TERM_LINE=true # Set Xterm/screen/Tmux title with shortened command
 export GPG_TTY=$TTY
 export TMUX_TMPDIR=${TMUX_TMPDIR:-$HOME/.tmux/tmp}
 export NVM_DIR=${NVM_DIR:-$HOME/.nvm}
-export OLLAMA_HOST=0.0.0.0
-export OLLAMA_ORIGINS="*"
-export DOCKER_BUILDKIT=0 DOCKER_DEFAULT_PLATFORM=linux/amd64 COMPOSE_DOCKER_CLI_BUILD=0
+export OLLAMA_HOST=${OLLAMA_HOST:-0.0.0.0}
+export OLLAMA_ORIGINS=${OLLAMA_ORIGINS:-"*"}
+export DOCKER_BUILDKIT=0 DOCKER_DEFAULT_PLATFORM=${DOCKER_DEFAULT_PLATFORM:-linux/amd64} COMPOSE_DOCKER_CLI_BUILD=0
 export GO111MODULE=${GO111MODULE:-auto}
 export GOPROXY=${GOPROXY:-direct}
 export GOPATH=${GOPATH:-$HOME/.go}
 export GOBIN=${GOBIN:-$GOPATH/bin}
-[ -d /usr/local/go ] && export GOROOT=/usr/local/go
+[ -d /usr/local/go ] && export GOROOT=${GOROOT:-/usr/local/go}
 [ -f $HOME/.cargo/env ] && source $HOME/.cargo/env && export CARGO_HOME=$HOME/.cargo/env
 export BIN=$GOROOT/bin:$GOBIN:$HOME/.config/yarn/global/node_modules/.bin:/opt/homebrew/bin:/opt/homebrew/opt/llvm/bin:$HOME/bin:/snap/bin:/usr/local/bin:/usr/bin:/bin
 export BIN=$(find "$HOME" -maxdepth 3 -type d -name bin -print0 2>/dev/null | tr '\0' ':' | sed 's/:$//'):$BIN

@@ -1,7 +1,7 @@
 [user]
     email = festum@g.pl
     name = Festum Qin
-	signingkey = A88A6ABF8DA5ABC897A451ECC4DDD190BEE80321
+	signingkey = ~/.ssh/id_ed25519.pub
 [filter "lfs"]
     smudge = git-lfs smudge -- %f
     process = git-lfs filter-process
@@ -238,7 +238,7 @@
     newHighlight = green bold 22
 [commit]
     # https://help.github.com/articles/signing-commits-using-gpg/
-    gpgsign = true
+	gpgsign = true
 [diff]
     renames = copies
     tool = nvimdiff
@@ -271,3 +271,5 @@
 	path = ~/.gitconfig-local
 [includeIf "hasconfig:remote.*.url:github.com/**"]
     path = ~/.gitconfig-github-private
+[gpg]
+	format = ssh
