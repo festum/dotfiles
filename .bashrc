@@ -116,7 +116,7 @@ trap debug_handler DEBUG
 trap error_handler ERR
 trap exit_handler EXIT
 
-export ME=$(id -u -n)
+export ME=$(id -u -n) USER_ID=$(id -u) GROUP_ID=$(id -g) DOCKER_GID=$(getent group docker | cut -d: -f3)
 export HISTTIMEFORMAT="%F %T "
 export HISTCONTROL=ignoreboth:erasedups #only ignores consecutive duplicate commands
 export HISTFILESIZE=500000
@@ -165,7 +165,7 @@ export GO111MODULE=${GO111MODULE:-auto}
 export GOPROXY=${GOPROXY:-direct}
 export GOPATH=${GOPATH:-$HOME/.go}
 export GOBIN=${GOBIN:-$GOPATH/bin}
-[[ -d /usr/local/go ]] && export GOROOT=/usr/local/go
+[[ -d /usr/local/go ]] && export GOROOT=${GOROOT:-/usr/local/go}
 export XDG_CONFIG_HOME=$HOME/.config
 export BIN=$GOROOT/bin:$GOBIN:$HOME/.config/yarn/global/node_modules/.bin:/opt/homebrew/bin:/opt/homebrew/opt/llvm/bin:$HOME/bin:/snap/bin:/usr/local/bin:/usr/bin:/bin
 export BIN=$(find "$HOME" -maxdepth 3 -type d -name bin -print0 2>/dev/null | tr '\0' ':' | sed 's/:$//'):$BIN
@@ -188,7 +188,7 @@ safe_source $KITTY_INSTALLATION_DIR/shell-integration/bash/kitty.bash
 is_runnable direnv && eval "$(direnv hook bash)"
 is_runnable thefuck && eval "$(thefuck --alias)"
 is_runnable lesspipe && eval "$(SHELL=/bin/sh lesspipe)"
-is_runnable jump && eval "$(jump shell bash --bind=z)" && alias jp='jump pin .'
+is_runnable jump && eval "$(jump shell bash --bind=j)" && alias jp='jump pin .'
 is_runnable awless && source <(awless completion bash)
 is_runnable kitty && source <(kitty + complete setup bash)
 is_runnable fox && eval "$(vfox activate bash)"
