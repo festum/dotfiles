@@ -334,7 +334,8 @@ alias gum='git push -o merge_request.create -o merge_request.target=$(git-main-b
 alias guo='git push --force-with-lease origin'
 alias sshsign='git config gpg.format ssh user.signingkey ~/.ssh/id_ed25519.pub commit.gpgsign true tag.gpgsign true'
 alias ggpg='git config user.signingkey $(gpg --list-secret-keys --keyid-format LONG | grep -B2 $(git config user.email) | head -1 | awk "{split(\$2, a, \"/\"); print a[2]}")'
-alias gw='git switch'
+alias gsw='git switch'
+alias gwt='git worktree'
 gta() { [ "$1" ] && git tag -f -am"$(date +%Y-%m-%d) $1" "$1" && echo "Tagged: $1" || echo "Usage: gta <tagname>"; }
 ltag() { curl -sL "https://api.github.com/repos/$1/releases/latest" | grep -Po '"tag_name": "\K[^"]*' || echo "No release found"; }
 pr() { local u=$(git remote get-url origin | sed -e 's#git@\(.*\):#https://\1/#' -e 's#ssh://git@#https://#' -e 's#\.git$##') b=$(git branch --show-current) o=$(command -v open || command -v xdg-open || echo start); ([[ "$u" =~ github ]] && $o "$u/pull/new/$b") || ([[ "$u" =~ gitlab ]] && $o "$u/-/merge_requests/new?merge_request[source_branch]=$b") || ([[ "$u" =~ bitbucket ]] && $o "$u/pull-requests/new?source=$b"); }

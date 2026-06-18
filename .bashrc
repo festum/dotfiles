@@ -116,7 +116,7 @@ trap debug_handler DEBUG
 trap error_handler ERR
 trap exit_handler EXIT
 
-export ME=$(id -u -n) USER_ID=$(id -u) GROUP_ID=$(id -g) DOCKER_GID=$(getent group docker | cut -d: -f3)
+export ME=$(id -u -n) USER_ID=$(id -u) GROUP_ID=$(id -g) DOCKER_GID=$(grep -E '^docker:' /etc/group 2>/dev/null | cut -d: -f3 || echo "")
 export HISTTIMEFORMAT="%F %T "
 export HISTCONTROL=ignoreboth:erasedups #only ignores consecutive duplicate commands
 export HISTFILESIZE=500000
