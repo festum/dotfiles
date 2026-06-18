@@ -40,10 +40,10 @@ ZSH_THEME=powerlevel10k/powerlevel10k
 # ZSH_THEME_RANDOM_CANDIDATES=( "fwalch" "robbyrussell" "miloshadzic" "arrow" "simple" "wuffers" "zhann")
 ZSH=$HOME/.oh-my-zsh
 [ ! -f $ZSH/oh-my-zsh.sh ] && git_install https://github.com/zsh-users/zsh-syntax-highlighting ${ZSH_CUSTOM:-$ZSH/custom}/plugins/zsh-syntax-highlighting && git_install https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-$ZSH/custom}/plugins/zsh-autosuggestions && git_install https://github.com/romkatv/powerlevel10k ${ZSH_CUSTOM:-$ZSH/custom}/themes/powerlevel10k && git_install https://github.com/marlonrichert/zsh-autocomplete ${ZSH_CUSTOM:-$ZSH/custom}/plugins/zsh-autocomplete && sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" && sh install.sh && mv -f $HOME/.zshrc.pre-oh-my-zsh $HOME/.zshrc && source $HOME/.aliases
-export ME=$(id -u -n) USER_ID=$(id -u) GROUP_ID=$(id -g) DOCKER_GID=$(getent group docker | cut -d: -f3)
+export ME=$(id -u -n) USER_ID=$(id -u) GROUP_ID=$(id -g) DOCKER_GID=$(grep -E '^docker:' /etc/group 2>/dev/null | cut -d: -f3 || echo "")
 export LANG=${LANG:-en_US.UTF-8} LANGUAGE=$LANG LC_ALL=$LANG
 export CC=clang AR=llvm-ar CXX=clang++ CFLAGS="-Wno-implicit-function-declaration" CXXFLAGS="-Wno-implicit-function-declaration"
-export EDITOR=$([ -n $SSH_CONNECTION ] && echo 'nvim' || echo 'hx')
+export EDITOR=$([ -n "$SSH_CONNECTION" ] && echo 'nvim' || echo 'hx')
 export SCM_CHECK=true SCM_GIT_SHOW_MINIMAL_INFO=true
 export SHORT_HOSTNAME=$(hostname -s) # Set Xterm/screen/Tmux title with only a short hostname
 export SHORT_TERM_LINE=true # Set Xterm/screen/Tmux title with shortened command and directory
