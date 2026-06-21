@@ -60,8 +60,7 @@ export GOBIN=${GOBIN:-$GOPATH/bin}
 [ -d /usr/local/go ] && export GOROOT=${GOROOT:-/usr/local/go}
 [ -f $HOME/.cargo/env ] && source $HOME/.cargo/env && export CARGO_HOME=$HOME/.cargo/env
 export BIN=$GOROOT/bin:$GOBIN:$HOME/.config/yarn/global/node_modules/.bin:/opt/homebrew/bin:/opt/homebrew/opt/llvm/bin:$HOME/bin:/snap/bin:/usr/local/bin:/usr/bin:/bin
-export BIN=$(find "$HOME" -maxdepth 3 -type d -name bin -print0 2>/dev/null | tr '\0' ':' | sed 's/:$//'):$BIN
-export PATH=$BIN:$PATH
+export PATH=$(find "$HOME" -mindepth 2 -maxdepth 3 -type d -name bin -not -path '*/.cache/*' -print0 2>/dev/null | tr '\0' ':' | sed 's/:\+$//'):$BIN:$PATH
 source $ZSH/oh-my-zsh.sh
 source $HOME/.cargo/env 2>/dev/null
 [ -f ~/.p10k.zsh ] && source ~/.p10k.zsh # run `p10k configure`

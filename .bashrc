@@ -122,7 +122,7 @@ export HISTCONTROL=ignoreboth:erasedups #only ignores consecutive duplicate comm
 export HISTFILESIZE=500000
 export HISTSIZE=${HISTFILESIZE}
 export HSTR_CONFIG=hicolor,keywords,favorites,noconfirm,verbose-kill
-export PROMPT_COMMAND="history -n; history -w; history -c; history -r; $PROMPT_COMMAND"
+export PROMPT_COMMAND="history -a; history -n; $PROMPT_COMMAND"
 export HISTIGNORE="&[ ]*:l[sla.]:[bf]g:g[agsplu]:gr[sh]*:clear:cls:c:d:exit:bye:mount*:umount*:history*:h:hh:ps*:rv*:pwd:cd*:-:~:..*:d:j *:jp:src:gaa:glp:gub:grbm:gpush:gps:save:undo:redo:fresh:gbd*:venv:pipi:python:php:go:java:node:dc[du]:ed:code"
 source $HOME/.bashrc_local 2>/dev/null
 source $HOME/.rc_local 2>/dev/null
@@ -136,10 +136,10 @@ export SCM_CHECK=true # Version control status checking
 export SCM_GIT_SHOW_MINIMAL_INFO=true
 export SHORT_HOSTNAME=$(hostname -s) # Set Xterm/screen/Tmux title with only a short hostname
 export SHORT_TERM_LINE=true # Set Xterm/screen/Tmux title with shortened command and directory
-#export SHORT_USER=${USER:0:8} # Trim max len of username
+export SHORT_USER=${USER:0:8} # Trim max len of username
 #export SHORT_TERM_LINE=true
 export BYOBU_PREFIX=/usr/local
-export TERM=xterm-256color
+# export TERM=xterm-256color
 export VISUAL=${VISUAL:-hx}
 export EDITOR=$VISUAL
 export GIT_HOSTING=${GIT_HOSTING:-git@github.com}
@@ -168,8 +168,7 @@ export GOBIN=${GOBIN:-$GOPATH/bin}
 [[ -d /usr/local/go ]] && export GOROOT=${GOROOT:-/usr/local/go}
 export XDG_CONFIG_HOME=$HOME/.config
 export BIN=$GOROOT/bin:$GOBIN:$HOME/.config/yarn/global/node_modules/.bin:/opt/homebrew/bin:/opt/homebrew/opt/llvm/bin:$HOME/bin:/snap/bin:/usr/local/bin:/usr/bin:/bin
-export BIN=$(find "$HOME" -maxdepth 3 -type d -name bin -print0 2>/dev/null | tr '\0' ':' | sed 's/:$//'):$BIN
-export PATH=$BIN:$PATH
+export PATH=$(find "$HOME" -mindepth 2 -maxdepth 3 -type d -name bin -not -path '*/.cache/*' -print0 2>/dev/null | tr '\0' ':' | sed 's/:\+$//'):$BIN:$PATH
 [[ ! -f $BASH_IT/install.sh ]] && git clone --depth=1 https://github.com/Bash-it/bash-it $BASH_IT && $BASH_IT/install.sh -s -n
 source $BASH_IT/bash_it.sh 2>/dev/null
 [[ ! -d $HOME/.tmux ]] && git clone --depth=1 https://github.com/gpakosz/.tmux $HOME/.tmux && ln -s -f $HOME/.tmux/.tmux.conf $HOME && mkdir -p $HOME/.tmux/tmp
