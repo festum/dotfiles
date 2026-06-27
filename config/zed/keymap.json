@@ -6,6 +6,7 @@
       "cmd-shift-r": "editor::ReloadFile",
       "cmd-h": "buffer_search::DeployReplace",
       "cmd-g": "go_to_line::Toggle",
+      "ctrl-shift-b": "multi_workspace::ToggleWorkspaceSidebar",
     },
   },
   {

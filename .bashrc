@@ -39,21 +39,10 @@ echo -e -n "\x1b[\x33 q"
 
 
 [[ -z "${debian_chroot:-}" ]] && [[ -r /etc/debian_chroot ]] && debian_chroot=$(cat /etc/debian_chroot)
-case "$TERM" in
-    xterm-color|*-256color) color_prompt=yes;;
-esac
-if [[ -n "$force_color_prompt" ]]; then
-    if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
-        color_prompt=yes
-    else
-        color_prompt=
-    fi
-fi
-if [ "$color_prompt" = yes ]; then
-    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
-else
-    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
-fi
+case "$TERM" in xterm-color|*-256color|xterm-kitty) color_prompt=yes;; esac
+[ "$TERM" = "xterm-kitty" ] && alias ssh='kitty +kitten ssh'
+if [[ -n "$force_color_prompt" ]]; then if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then color_prompt=yes; else color_prompt=; fi; fi
+if [ "$color_prompt" = yes ]; then PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '; else PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '; fi
 unset PROMPT_COMMAND
 unset color_prompt force_color_prompt
 unset MAILCHECK # Don't check mail when opening terminal.
