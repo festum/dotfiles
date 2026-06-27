@@ -610,6 +610,8 @@ i2pdf() { sh -c "gs -sDEVICE=pdfwrite -dNOPAUSE -dBATCH -o converted_from_images
 # TODO: pdfocr - first install ocrmypdf tesseract-lang
 # https://ocrmypdf.readthedocs.io/en/latest/cookbook.html
 # ocrmypdf --deskew -l ger+eng -o2 input.pdf output.pdf
+spull() { local b=$(basename "$2"); [[ "$2" == */ ]] && ssh "$1" "tar -czf - -C '$(dirname "$2")' '$b'" > "./$b.tar.gz" || ssh "$1" "cat '$2'" > "./$b"; }
+spush() { if [[ "$1" == *.tar.gz ]]; then ssh "$2" "mkdir -p \"$3\" && tar -xzf - -C \"$3\"" < "$1"; else ssh "$2" "mkdir -p \"$3\" && cat > \"$3/${1##*/}\"" < "$1"; fi; }
 
 # enable color support of ls and also add handy aliases
 if is_runnable dircolors; then
