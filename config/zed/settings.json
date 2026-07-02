@@ -1,73 +1,91 @@
-// Zed settings
-//
-// Documentation: https://zed.dev/docs/configuring-zed
-//
-// To see all of Zed's default settings without changing your
-// custom settings, run `zed: open default settings` from the
-// command palette (cmd-shift-p / ctrl-shift-p)
 {
   "context_servers": {
+    "Context7": {
+      "enabled": true,
+      "remote": false,
+      "command": "npx",
+      "args": ["-y", "@upstash/context7-mcp"],
+      "env": {
+        // Set CONTEXT7_API_KEY in envvar
+      },
+    },
+    "Sequential-Thinking": {
+      "enabled": true,
+      "remote": false,
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"],
+      "env": {},
+    },
+    "Hindsight": {
+      "enabled": true,
+      "remote": false,
+      "command": "npx",
+      "args": ["-y", "hindsight-mcp"],
+      "env": {
+        "MEMORY_SERVICE_BASE_URL": "http://10.13.0.3:8888/mcp/festum",
+      },
+    },
     "mcp-server-memory": {
       "enabled": true,
       "remote": false,
       "settings": {
-        "memory_file_path": "http://10.13.0.3:8765/mcp/opencode/sse/personal"
-      }
-    }
+        "memory_file_path": "/Users/fqin/Dropbox/LLM/memory/my-knowledge-graph.jsonl",
+      },
+    },
   },
   "cli_default_open_behavior": "new_window",
   "project_panel": {
-    "dock": "left"
+    "dock": "left",
   },
   "outline_panel": {
-    "dock": "left"
+    "dock": "left",
   },
   "collaboration_panel": {
-    "dock": "left"
+    "dock": "left",
   },
   "git_panel": {
-    "dock": "left"
+    "dock": "left",
   },
   "agent": {
     "favorite_models": [
       {
         "provider": "copilot_chat",
         "model": "claude-haiku-4.5",
-        "enable_thinking": true
+        "enable_thinking": true,
       },
       {
         "provider": "copilot_chat",
         "model": "claude-sonnet-4.6",
         "enable_thinking": true,
-        "effort": "high"
-      }
+        "effort": "high",
+      },
     ],
     "dock": "right",
     "tool_permissions": {
-      "default": "allow"
+      "default": "allow",
     },
     "default_model": {
       "effort": "high",
       "enable_thinking": true,
       "provider": "copilot_chat",
-      "model": "claude-sonnet-4.6",
+      "model": "claude-opus-4.7",
     },
     "use_modifier_to_send": false,
   },
   "agent_servers": {
     "qwen-code": {
-      "type": "registry"
+      "type": "registry",
     },
     "opencode": {
-      "type": "registry"
+      "type": "registry",
     },
     "agoragentic-acp": {
-      "type": "registry"
+      "type": "registry",
     },
     "codex-acp-custom": {
       "type": "custom",
-      "command": "zedcode-acp-codex"
-    }
+      "command": "zedcode-acp-codex",
+    },
   },
   "auto_signature_help": true,
   "autosave": "on_window_change",
