@@ -137,4 +137,4 @@ db.sqlite3*
 .github/git-commit-instructions.md
 .aider.*
 
-**/.claude/settings.local.json
+**/.claude/
