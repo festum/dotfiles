@@ -47,6 +47,12 @@
     "dock": "left",
   },
   "agent": {
+    "sandbox_permissions": {
+      "network_hosts": [
+        "labfinder.com",
+        "www.google.com"
+      ]
+    },
     "favorite_models": [
       {
         "provider": "copilot_chat",
