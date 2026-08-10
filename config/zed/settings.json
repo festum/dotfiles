@@ -22,7 +22,7 @@
       "command": "npx",
       "args": ["-y", "hindsight-mcp"],
       "env": {
-        "MEMORY_SERVICE_BASE_URL": "http://10.13.0.3:8888/mcp/festum",
+        "MEMORY_SERVICE_BASE_URL": "http://s0.bombay-city.ts.net:8888/mcp/festum",
       },
     },
     "mcp-server-memory": {
@@ -33,7 +33,7 @@
       },
     },
   },
-  "cli_default_open_behavior": "new_window",
+  "cli_default_open_behavior": "existing_window",
   "project_panel": {
     "dock": "left",
   },
@@ -48,33 +48,37 @@
   },
   "agent": {
     "sandbox_permissions": {
-      "network_hosts": [
-        "labfinder.com",
-        "www.google.com"
-      ]
+      "allow_fs_write_all": true,
+      "allow_network_all": true,
     },
     "favorite_models": [
       {
         "provider": "copilot_chat",
         "model": "claude-haiku-4.5",
-        "enable_thinking": true,
+        "enable_thinking": true
       },
       {
         "provider": "copilot_chat",
         "model": "claude-sonnet-4.6",
         "enable_thinking": true,
-        "effort": "high",
+        "effort": "medium"
       },
+      {
+        "provider": "copilot_chat",
+        "model": "claude-opus-4.7",
+        "enable_thinking": true,
+        "effort": "high"
+      }
     ],
     "dock": "right",
     "tool_permissions": {
       "default": "allow",
     },
     "default_model": {
-      "effort": "high",
+      "effort": "medium",
       "enable_thinking": true,
       "provider": "copilot_chat",
-      "model": "claude-opus-4.7",
+      "model": "claude-sonnet-4.6",
     },
     "use_modifier_to_send": false,
   },

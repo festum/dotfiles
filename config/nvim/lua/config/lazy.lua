@@ -1,5 +1,3 @@
--- ln ./lazyvim/lazy.lua ~/.config/nvim/lua/config/lazy.lua
-
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
   local lazyrepo = "https://github.com/folke/lazy.nvim.git"
@@ -36,8 +34,6 @@ require("lazy").setup({
   checker = {
     enabled = true, -- check for plugin updates periodically
     notify = false, -- notify on update
-    -- See :help lazy.nvim-lazy.nvim-configuration
-    frequency = 86400, -- check for updates once a day
   }, -- automatically check for plugin updates
   performance = {
     rtp = {
