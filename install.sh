@@ -90,7 +90,7 @@ link() {
     exit 1
   fi
 
-  mkdir -p "$target_dir"
+  mkdir -p "$(dirname "$target_path")"
   ensure_link "$source_path" "$target_path"
 }
 
@@ -189,6 +189,7 @@ dotfiles=(
   .vimrc
   .wgetrc
   .opencommit
+  .omp/agent/config.yml
 )
 for file in "${dotfiles[@]}"; do
   link "$file"
