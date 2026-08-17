@@ -17,7 +17,7 @@ First shell may clone Bash-it or Oh My Zsh + Powerlevel10k. Neovim is [LazyVim](
 
 ```text
 clone → ./install.sh
-          ├─ home dots → $HOME/.*
+          ├─ home dots → $HOME/.*  (incl. .omp/agent/config.yml)
           ├─ config/* → ~/.config/* (OS: config/<name>.{mac|linux|win})
           └─ Termux props if ~/.termux exists
 
@@ -32,6 +32,7 @@ shell → OMZ/Bash-it → ~/.aliases (+ local overlays) → tool inits
 | `.zshrc` / `.bashrc` | Shell setup |
 | `.gitconfig` | Git identity, SSH signing, aliases |
 | `config/` | Kitty, Helix, Alacritty (+ mac), Zed, Karabiner, Zellij, LazyVim |
+| `.omp/agent/config.yml` | OMP agent settings (`~/.omp/agent/config.yml`) |
 
 Real files get `*.bak` (timestamped if needed). Wrong/broken symlinks are replaced. Zed is per-file (`-f`) so local-only files stay. Zellij is whole-dir unless local-only files exist. Replacing a real `~/.config/nvim` clears nvim share/state/cache.
 
