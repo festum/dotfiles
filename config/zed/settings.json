@@ -22,7 +22,7 @@
       "command": "npx",
       "args": ["-y", "hindsight-mcp"],
       "env": {
-        "MEMORY_SERVICE_BASE_URL": "http://s0.bombay-city.ts.net:8888/mcp/festum",
+        "MEMORY_SERVICE_BASE_URL": "http://s0.bombay-city.ts.net:8888/mcp/zed",
       },
     },
     "mcp-server-memory": {
@@ -48,6 +48,10 @@
   },
   "agent": {
     "sandbox_permissions": {
+      "network_hosts": [
+        "support.google.com",
+        "www.coinbase.com"
+      ],
       "allow_fs_write_all": true,
       "allow_network_all": true,
     },

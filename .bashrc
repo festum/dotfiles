@@ -164,6 +164,7 @@ source $BASH_IT/bash_it.sh 2>/dev/null
 [[ ! -d $HOME/.tmux/plugins/tpm ]] && git clone https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm
 source $HOME/.aliases
 [[ -s $HOME/.sdkman/bin/sdkman-init.sh ]] && export SDKMAN_DIR=$HOME/.sdkman && source $HOME/.sdkman/bin/sdkman-init.sh
+[ -s $HOME/.bun/_bun ] && source $HOME/.bun/_bun
 safe_source $NVM_DIR/nvm.sh
 safe_source $NVM_DIR/bash_completion
 safe_source $HOME/.gvm/scripts/gvm

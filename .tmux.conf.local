@@ -1,33 +1,24 @@
-# -- Basic -----------------------------------------------------------------
+# : << 'EOF'
+# Cross-platform Oh my tmux! local config (macOS / Linux / Termux)
+# Keep in sync with ~/.tmux (gpakosz/.tmux). Do not edit ~/.tmux/.tmux.conf.
 
-set -g default-terminal "tmux-256color"
-set -g history-limit 50000
-set -g mode-keys vi
-set -g mouse on
-set -g set-clipboard off   # Disable built-in clipboard (termux-clipboard-set takes over)
-set -w -g mode-keys vi
+# -- bindings ------------------------------------------------------------------
+tmux_conf_preserve_stock_bindings=false
 
-# -- Clipboard (Termux specific) -----------------------------------------------------
-# Use termux-clipboard-set instead of xclip/pbcopy
-bind -T copy-mode-vi y     send -X copy-pipe-and-cancel "termux-clipboard-set"
-bind -T copy-mode-vi Enter send -X copy-pipe-and-cancel "termux-clipboard-set"
-bind -T copy-mode-vi MouseDragEnd1Pane send -X copy-pipe-and-cancel "termux-clipboard-set"
-
-# Disable built-in OS clipboard synchronization (it relies on external commands)
-set -g @yank_selection 'clipboard'
-set -g @yank_with_mouse on
-set -g @clipboard_command 'termux-clipboard-set'
-
-# -- Windows/Panel -----------------------------------------------------------
-
+# -- session / window / pane creation ------------------------------------------
+tmux_conf_new_session_prompt=true
+tmux_conf_new_session_retain_current_path=false
 tmux_conf_new_window_retain_current_path=false
+tmux_conf_new_window_reconnect_ssh=false
 tmux_conf_new_pane_retain_current_path=true
 tmux_conf_new_pane_reconnect_ssh=true
-tmux_conf_new_session_prompt=true
 
-# -- Dracula Theme -------------------------------------------------
+# -- display -------------------------------------------------------------------
+# auto: COLORTERM=truecolor|24bit, or tput colors == 16777216
+tmux_conf_24b_colour=auto
 
-tmux_conf_theme_24b_colour=false
+# -- theming (Dracula) ---------------------------------------------------------
+tmux_conf_theme=enabled
 
 tmux_conf_theme_colour_1="#282a36"
 tmux_conf_theme_colour_2="#44475a"
@@ -50,139 +41,105 @@ tmux_conf_theme_colour_17="#bd93f9"
 tmux_conf_theme_window_fg="default"
 tmux_conf_theme_window_bg="default"
 tmux_conf_theme_highlight_focused_pane=false
+tmux_conf_theme_focused_pane_fg="default"
 tmux_conf_theme_focused_pane_bg="$tmux_conf_theme_colour_2"
 tmux_conf_theme_pane_border_style=thin
 tmux_conf_theme_pane_border="$tmux_conf_theme_colour_2"
 tmux_conf_theme_pane_active_border="$tmux_conf_theme_colour_4"
+%if #{>=:#{version},3.2}
+tmux_conf_theme_pane_active_border="#{?pane_in_mode,$tmux_conf_theme_colour_9,#{?synchronize-panes,$tmux_conf_theme_colour_5,$tmux_conf_theme_colour_4}}"
+%endif
 tmux_conf_theme_pane_indicator="$tmux_conf_theme_colour_4"
 tmux_conf_theme_pane_active_indicator="$tmux_conf_theme_colour_4"
 
 tmux_conf_theme_message_fg="$tmux_conf_theme_colour_3"
 tmux_conf_theme_message_bg="$tmux_conf_theme_colour_1"
 tmux_conf_theme_message_attr="bold"
-
 tmux_conf_theme_message_command_fg="$tmux_conf_theme_colour_3"
 tmux_conf_theme_message_command_bg="$tmux_conf_theme_colour_1"
 tmux_conf_theme_message_command_attr="bold"
-
 tmux_conf_theme_mode_fg="$tmux_conf_theme_colour_3"
 tmux_conf_theme_mode_bg="$tmux_conf_theme_colour_1"
 tmux_conf_theme_mode_attr="bold"
-
 tmux_conf_theme_status_fg="$tmux_conf_theme_colour_3"
 tmux_conf_theme_status_bg="$tmux_conf_theme_colour_1"
 tmux_conf_theme_status_attr="none"
 
-# Title
 tmux_conf_theme_terminal_title='#h 🦇 #S 🌱 #I #W'
 
-# Window status style
 tmux_conf_theme_window_status_fg="$tmux_conf_theme_colour_3"
 tmux_conf_theme_window_status_bg="$tmux_conf_theme_colour_1"
 tmux_conf_theme_window_status_attr="none"
 tmux_conf_theme_window_status_format="#I #W"
-
 tmux_conf_theme_window_status_current_fg="$tmux_conf_theme_colour_1"
 tmux_conf_theme_window_status_current_bg="$tmux_conf_theme_colour_4"
 tmux_conf_theme_window_status_current_attr="bold"
 tmux_conf_theme_window_status_current_format="#I #W"
-
 tmux_conf_theme_window_status_activity_fg="default"
 tmux_conf_theme_window_status_activity_bg="default"
 tmux_conf_theme_window_status_activity_attr="underscore"
-
 tmux_conf_theme_window_status_bell_fg="$tmux_conf_theme_colour_5"
 tmux_conf_theme_window_status_bell_bg="default"
 tmux_conf_theme_window_status_bell_attr="blink,bold"
-
 tmux_conf_theme_window_status_last_fg="$tmux_conf_theme_colour_4"
 tmux_conf_theme_window_status_last_bg="$tmux_conf_theme_colour_2"
 tmux_conf_theme_window_status_last_attr="none"
 
-# Pipe
 tmux_conf_theme_left_separator_main='\uE0B0'
 tmux_conf_theme_left_separator_sub='\uE0B1'
 tmux_conf_theme_right_separator_main='\uE0B2'
 tmux_conf_theme_right_separator_sub='\uE0B3'
 
-# Status
 tmux_conf_theme_status_left=" 🦇 #S | ↑#{?uptime_y, #{uptime_y}y,}#{?uptime_d, #{uptime_d}d,}#{?uptime_h, #{uptime_h}h,}#{?uptime_m, #{uptime_m}m,} "
 tmux_conf_theme_status_right=" #{prefix}#{mouse}#{pairing}#{synchronized} , %R , %d %b | #{username}#{root} | #{hostname} "
-
 tmux_conf_theme_status_left_fg="$tmux_conf_theme_colour_6,$tmux_conf_theme_colour_7,$tmux_conf_theme_colour_8"
 tmux_conf_theme_status_left_bg="$tmux_conf_theme_colour_9,$tmux_conf_theme_colour_10,$tmux_conf_theme_colour_11"
 tmux_conf_theme_status_left_attr="bold,none,none"
-
 tmux_conf_theme_status_right_fg="$tmux_conf_theme_colour_12,$tmux_conf_theme_colour_13,$tmux_conf_theme_colour_14"
 tmux_conf_theme_status_right_bg="$tmux_conf_theme_colour_15,$tmux_conf_theme_colour_16,$tmux_conf_theme_colour_17"
 tmux_conf_theme_status_right_attr="none,none,bold"
 
-# Icons
 tmux_conf_theme_pairing="👓"
 tmux_conf_theme_pairing_fg="none"
 tmux_conf_theme_pairing_bg="none"
 tmux_conf_theme_pairing_attr="none"
-
 tmux_conf_theme_prefix="⌨"
 tmux_conf_theme_prefix_fg="none"
 tmux_conf_theme_prefix_bg="none"
 tmux_conf_theme_prefix_attr="none"
-
 tmux_conf_theme_mouse="↗"
 tmux_conf_theme_mouse_fg="none"
 tmux_conf_theme_mouse_bg="none"
 tmux_conf_theme_mouse_attr="none"
-
 tmux_conf_theme_root="☢"
 tmux_conf_theme_root_fg="none"
 tmux_conf_theme_root_bg="none"
 tmux_conf_theme_root_attr="bold,blink"
-
 tmux_conf_theme_synchronized="☁️"
 tmux_conf_theme_synchronized_fg="none"
 tmux_conf_theme_synchronized_bg="none"
 tmux_conf_theme_synchronized_attr="none"
 
-# Clock
 tmux_conf_theme_clock_colour="$tmux_conf_theme_colour_4"
 tmux_conf_theme_clock_style="24"
 
-# -- Keybinding ------------------------------------------------------------------
+# -- clipboard -----------------------------------------------------------------
+# Oh my tmux wires copy-mode to pbcopy / xsel / xclip / wl-copy when true.
+# Termux is not detected upstream; extra binds below cover it.
+tmux_conf_copy_to_os_clipboard=true
 
-# prefix key as C-a（default: C-b）
-# unbind C-b
-# set -g prefix C-a
-# bind C-a send-prefix
+# -- tpm -----------------------------------------------------------------------
+tmux_conf_update_plugins_on_launch=true
+tmux_conf_update_plugins_on_reload=true
+tmux_conf_uninstall_plugins_on_reload=false
 
-# Ver-Horion style split（prefix + -/|）
-unbind %
-bind | split-window -h
-unbind '"'
-bind - split-window -v
-
-# Sync panel（prefix + a）
-bind a run-shell "if [[ `tmux show-options -w | grep 'synchronize-panes.*on'` ]]; then toggle=off; else export toggle=on; fi; tmux display-message \"sync panes tmux: \$toggle\"; tmux set-option -w synchronize-panes \$toggle &> /dev/null"
-
-# Switch window（Shift+ arrow）
-bind-key -n S-Left swap-window -t -1
-bind-key -n S-Right swap-window -t +1
-
-# p to paste buffer in copy mode, v to begin selection
-bind -T copy-mode-vi p paste-buffer
-bind -T copy-mode-vi v send -X begin-selection
-
-# -- TPM (Tmux Plugin Manager) ----------------------------------------------
-
-# Must manual clone:
-# git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-
-set -g @plugin 'tmux-plugins/tpm'
+# Do not add: set -g @plugin 'tmux-plugins/tpm'
+# Do not add: run '~/.tmux/plugins/tpm/tpm'
 set -g @plugin 'tmux-plugins/tmux-sensible'
 set -g @plugin 'tmux-plugins/tmux-resurrect'
 set -g @plugin 'tmux-plugins/tmux-continuum'
 set -g @plugin 'tmux-plugins/tmux-yank'
 set -g @plugin 'tmux-plugins/tmux-open'
-# set -g @plugin "janoamaral/tokyo-night-tmux"
 
 set -g @resurrect-capture-pane-contents 'on'
 set -g @resurrect-strategy-vim 'session'
@@ -194,5 +151,57 @@ set -g @resurrect-restore 'R'
 set -g @continuum-boot 'on'
 set -g @continuum-restore 'on'
 set -g @continuum-save-interval '10'
+set -g @yank_selection 'clipboard'
+set -g @yank_with_mouse on
 
-run '~/.tmux/plugins/tpm/tpm'
+# -- user customizations -------------------------------------------------------
+set -g default-terminal "tmux-256color"
+set -g history-limit 50000
+set -g mode-keys vi
+set -g status-keys vi
+set -g mouse on
+setw -g mode-keys vi
+set -g set-clipboard on
+
+# Truecolor for common outer terminals (Mac kitty/iTerm, Linux, Termux)
+set -as terminal-features ",xterm-kitty:RGB"
+set -as terminal-features ",xterm-256color:RGB"
+set -as terminal-features ",alacritty:RGB"
+set -as terminal-features ",xterm-ghostty:RGB"
+set -as terminal-features ",wezterm:RGB"
+set -as terminal-features ",foot:RGB"
+set -as terminal-overrides ",xterm-kitty:Tc"
+set -as terminal-overrides ",*256col*:Tc"
+
+# Copy-mode yank: first tool present at copy time (Mac pbcopy, Termux, Wayland, X11).
+# #!important reapplies after Oh my tmux rewrite of copy-pipe.
+copy_cmd="sh -c 'command -v pbcopy >/dev/null 2>&1 && exec pbcopy; command -v termux-clipboard-set >/dev/null 2>&1 && exec termux-clipboard-set; command -v wl-copy >/dev/null 2>&1 && exec wl-copy; command -v xsel >/dev/null 2>&1 && exec xsel -i -b; command -v xclip >/dev/null 2>&1 && exec xclip -i -selection clipboard; exec cat >/dev/null'"
+set -g @override_copy_command "$copy_cmd"
+bind -T copy-mode-vi y send -X copy-pipe-and-cancel "$copy_cmd" #!important
+bind -T copy-mode-vi Enter send -X copy-pipe-and-cancel "$copy_cmd" #!important
+bind -T copy-mode-vi MouseDragEnd1Pane send -X copy-pipe-and-cancel "$copy_cmd" #!important
+
+# Splits (prefix + | / -)
+unbind %
+bind | split-window -h -c "#{pane_current_path}" #!important
+unbind '"'
+bind - split-window -v -c "#{pane_current_path}" #!important
+
+# Toggle pane sync (POSIX; works on Termux ash)
+bind a if-shell -F "#{pane_synchronized}" 'setw synchronize-panes off; display-message "sync panes: off"' 'setw synchronize-panes on; display-message "sync panes: on"' #!important
+
+# Move windows
+bind-key -n S-Left swap-window -t -1 \; select-window -t -1 #!important
+bind-key -n S-Right swap-window -t +1 \; select-window -t +1 #!important
+
+# Copy-mode vi extras
+bind -T copy-mode-vi v send -X begin-selection #!important
+bind -T copy-mode-vi p paste-buffer #!important
+
+# -- custom variables ----------------------------------------------------------
+# /!\ do not remove the following line
+# EOF
+#
+# "$@"
+# /!\ do not remove the previous line
+#     do not write below this line
