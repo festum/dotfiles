@@ -239,13 +239,13 @@ alias pname='basename `git rev-parse --show-toplevel`'
 alias ga='git add'
 alias gaa='git add .'
 alias gb='git branch'
-alias gbs='f() { git checkout --recurse-submodules $1 2>/dev/null || git checkout -b $1; unset_func; }; f'
-alias gbl='f() { git fetch --all --prune; branch=$(git branch -r --format="%(refname:short)" | sed "s#origin/##" | grep -v HEAD | sort -u | fzf --height 40% --reverse --prompt="branch> "); branch="${branch#"${branch%%[![:space:]]*}"}"; branch="${branch%"${branch##*[![:space:]]}"}"; [ -z "$branch" ] && return 1; git checkout -t "origin/$branch" 2>/dev/null || git checkout "$branch"; unset -f f; }; f'
+gbs() { local b=$1; [ -z "$b" ] && return 1; if git checkout --recurse-submodules "$b" 2>/dev/null; then return; fi; local wt; wt=$(git worktree list 2>/dev/null | grep -F "[$b]" | head -1 | awk "{print \$1}"); if [ -n "$wt" ]; then cd "$wt"; else git checkout --recurse-submodules -b "$b"; fi; };
+gbl() { git fetch --all --prune; branch=$(git branch -r --format="%(refname:short)" | sed "s#origin/##" | grep -v HEAD | sort -u | fzf --height 40% --reverse --prompt="branch> "); branch="${branch#"${branch%%[![:space:]]*}"}"; branch="${branch%"${branch##*[![:space:]]}"}"; [ -z "$branch" ] && return 1; if git checkout -t "origin/$branch" 2>/dev/null; then return; fi; if git checkout "$branch" 2>/dev/null; then return; fi; local wt; wt=$(git worktree list 2>/dev/null | grep -F "[$branch]" | head -1 | awk "{print \$1}"); [ -n "$wt" ] && cd "$wt"; };
 alias gbr='git rev-parse --abbrev-ref --symbolic-full-name @{u}'
-alias gbd='git branch -D'
+gbd() { local b=$1; [ -z "$b" ] && return 1; local wt; wt=$(git worktree list 2>/dev/null | grep -F "[$b]" | head -1 | awk "{print \$1}"); if [ -n "$wt" ]; then printf "branch [%s] checked out at: %s\n" "$b" "$wt"; return 1; fi; git branch -D "$b"; };
 alias gbdr='git push -d origin'
-alias gbdd='f() { git fetch -p || return; local map=$(git worktree list --porcelain | awk "/^worktree / {w=substr(\$0,10)} /^branch / {sub(\"refs/heads/\",\"\",\$2); print \$2\"\t\"w}"); git for-each-ref --format "%(refname:short) %(upstream:track)" refs/heads | awk "\$2 == \"[gone]\" {print \$1}" | while IFS= read -r b; do wt=$(printf "%s\n" "$map" | awk -F"\t" -v b="$b" "\$1==b {print \$2; exit}"); if [ -n "$wt" ] && ! git worktree remove -- "$wt"; then echo "skip: $b (worktree remove failed: $wt)"; continue; fi; git branch -D -- "$b"; done; unset -f f; }; f'
-alias gbdc='git branch | grep -E -v "^\*|^  (master|main|dev|develop|release)$" | xargs -r git branch -D'
+gbdd() { git fetch -p || return; local map=$(git worktree list --porcelain | awk "/^worktree / {w=substr(\$0,10)} /^branch / {sub(\"refs/heads/\",\"\",\$2); print \$2\"\t\"w}"); git for-each-ref --format "%(refname:short) %(upstream:track)" refs/heads | awk "\$2 == \"[gone]\" {print \$1}" | while IFS= read -r b; do wt=$(printf "%s\n" "$map" | awk -F"\t" -v b="$b" "\$1==b {print \$2; exit}"); if [ -n "$wt" ] && ! git worktree remove -- "$wt"; then echo "skip: $b (worktree remove failed: $wt)"; continue; fi; git branch -D -- "$b"; done; };
+gbdc() { local wt_branches; wt_branches=$(git worktree list --porcelain 2>/dev/null | awk "/^branch / {sub(\"refs/heads/\",\"\",\$2); print \$2}"); git branch | grep -E -v "^\*|^  (master|main|dev|develop|release)$" | while IFS= read -r b; do b=$(echo "$b" | sed "s/^[[:space:]]*//;s/[[:space:]]*$//"); echo "$wt_branches" | grep -qF "$b" && { echo "skip: $b (in worktree)"; continue; }; git branch -D "$b"; done; };
 alias gbo='git for-each-ref --sort=committerdate refs/heads/ --format="%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))"'
 alias gc='git checkout --recurse-submodules'
 alias gcat='git cat-file'
@@ -253,8 +253,8 @@ alias gcfg='$VISUAL .git/config'
 alias gcm='git checkout --recurse-submodules $(git-main-branch)'
 alias gcp='git cherry-pick'
 alias gc1='git clone --depth=1'
-alias gcl='f() { [ -n "$2" ] && git clone "$1" "$2" && cd "$2" || (git clone "$1" && cd "$(basename "$1" .git)"); unset_func; }; f'
-alias gcln='f() { git clone --filter=blob:none --no-checkout "$1" && cd "$(basename "$1" .git)"; unset_func; }; f'
+gcl() { [ -n "$2" ] && git clone "$1" "$2" && cd "$2" || (git clone "$1" && cd "$(basename "$1" .git)"); };
+gcln() { git clone --filter=blob:none --no-checkout "$1" && cd "$(basename "$1" .git)"; };
 alias gd='git diff --no-renames -b -w --ignore-blank-lines --color'
 alias gda='git diff --shortstat $(git-main-branch) | sed -E "s/([0-9]+) file.* ([0-9]+) insertion.* ([0-9]+) deletion.*/#\1 +\2 -\3/"'
 alias gdc='git diff --cached --ignore-blank-lines --color'

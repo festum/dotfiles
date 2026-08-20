@@ -1,4 +1,9 @@
 {
+  "language_models": {
+    "opencode": {
+      "show_zen_models": false
+    }
+  },
   "context_servers": {
     "Context7": {
       "enabled": true,
@@ -50,7 +55,9 @@
     "sandbox_permissions": {
       "network_hosts": [
         "support.google.com",
-        "www.coinbase.com"
+        "www.coinbase.com",
+        "creator.line.me",
+        "github.com"
       ],
       "allow_fs_write_all": true,
       "allow_network_all": true,
@@ -72,6 +79,17 @@
         "model": "claude-opus-4.7",
         "enable_thinking": true,
         "effort": "high"
+      },
+      {
+        "provider": "opencode",
+        "model": "go/mimo-v2.5",
+        "enable_thinking": true,
+        "effort": "high"
+      },
+      {
+        "provider": "opencode",
+        "model": "go/qwen3.7-plus",
+        "enable_thinking": false
       }
     ],
     "dock": "right",
@@ -79,10 +97,10 @@
       "default": "allow",
     },
     "default_model": {
-      "effort": "medium",
+      "effort": "high",
       "enable_thinking": true,
-      "provider": "copilot_chat",
-      "model": "claude-sonnet-4.6",
+      "provider": "opencode",
+      "model": "go/mimo-v2.5",
     },
     "use_modifier_to_send": false,
   },
