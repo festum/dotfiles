@@ -1,32 +1,32 @@
-setupVersion: 1
+setupVersion: 2
 defaultProvider: bifrost
 defaultModel: Copilot/gpt-5.3-codex
 defaultThinkingLevel: auto
-enabledModels:
-  - Copilot/claude-sonnet-4.6
-  - Copilot/claude-haiku-4.5
-  - Copilot/gpt-5.3-codex
-memory:
+memory: 
   backend: hindsight
-hindsight:
+hindsight: 
   apiUrl: http://s0.bombay-city.ts.net:8888
   bankId: pi-s0
   scoping: global
-  recallTimeoutMs: 90000
-providers:
+  recallTimeoutMs: 180000
+providers: 
   streamIdleTimeoutSeconds: 120
-startup:
+startup: 
   quiet: true
 textVerbosity: low
 hideThinkingBlock: true
-statusLine:
+statusLine: 
   preset: minimal
 personality: pragmatic
-retry:
+retry: 
   maxRetries: 2
-tools:
+tools: 
   artifactSpillThreshold: 20
   artifactHeadBytes: 10
   artifactTailBytes: 10
-dev:
+dev: 
   autoqaConsent: granted
+modelRoles: 
+  {}
+composer: 
+  shape: borderless
