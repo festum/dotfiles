@@ -190,6 +190,8 @@ dotfiles=(
   .wgetrc
   .opencommit
   .omp/agent/config.yml
+  .omp/agent/models.yml
+  .omp/agent/extensions/hindsight-bridge.ts
 )
 for file in "${dotfiles[@]}"; do
   link "$file"
