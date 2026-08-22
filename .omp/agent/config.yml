@@ -1,32 +1,51 @@
 setupVersion: 2
 defaultProvider: bifrost
-defaultModel: Copilot/gpt-5.3-codex
+defaultModel: opencode-go/mimo-v2.5
 defaultThinkingLevel: auto
-memory: 
+enabledModels:
+  - opencode-go/mimo-v2.5
+  - opencode-go/muse-spark-1.2-contributor
+  - opencode-go/ox-alpha-free
+  - Copilot/gpt-5.3-codex
+memory:
   backend: hindsight
-hindsight: 
+hindsight:
   apiUrl: http://s0.bombay-city.ts.net:8888
   bankId: pi-s0
   scoping: global
   recallTimeoutMs: 180000
-providers: 
+providers:
   streamIdleTimeoutSeconds: 120
-startup: 
+extensions:
+  - /home/fqin/.omp/agent/extensions/hindsight-bridge.ts
+startup:
   quiet: true
 textVerbosity: low
 hideThinkingBlock: true
-statusLine: 
-  preset: minimal
+statusLine:
+  preset: nerd
+  compactThinkingLevel: true
+  separator: powerline-thin
+  contextLine: percentage
 personality: pragmatic
-retry: 
+retry:
   maxRetries: 2
-tools: 
+tools:
   artifactSpillThreshold: 20
   artifactHeadBytes: 10
   artifactTailBytes: 10
-dev: 
+dev:
   autoqaConsent: granted
-modelRoles: 
-  {}
-composer: 
-  shape: borderless
+modelRoles: {}
+composer:
+  shape: box
+omitThinking: true
+prewalk:
+  enabled: true
+tui:
+  textSizing: true
+  renderMermaid: true
+  tight: true
+  imeSafeCursor: true
+task:
+  showResolvedModelBadge: true

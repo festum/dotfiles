@@ -1,0 +1,37 @@
+providers:
+  opencode-go:
+    baseUrl: https://bifrost.fesq.in/v1
+    api: openai-completions
+    apiKey: env:BIFROST_KEY_OMP
+    compat:
+      supportsDeveloperRole: false
+      supportsReasoningEffort: false
+    models:
+    - id: mimo-v2.5
+      name: MiMo v2.5
+      reasoning: true
+      input:
+      - text
+    - id: muse-spark-1.2-contributor
+      name: Muse Spark 1.2
+      reasoning: false
+      input:
+      - text
+    - id: ox-alpha-free
+      name: OX Alpha Free
+      reasoning: true
+      input:
+      - text
+  Copilot:
+    baseUrl: https://bifrost.fesq.in/v1
+    api: openai-completions
+    apiKey: env:BIFROST_KEY_OMP
+    compat:
+      supportsDeveloperRole: false
+      supportsReasoningEffort: false
+    models:
+    - id: gpt-5.3-codex
+      name: Copilot GPT-5.3 Codex
+      reasoning: false
+      input:
+      - text
