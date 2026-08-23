@@ -16,8 +16,6 @@ hindsight:
   recallTimeoutMs: 180000
 providers:
   streamIdleTimeoutSeconds: 120
-extensions:
-  - /home/fqin/.omp/agent/extensions/hindsight-bridge.ts
 startup:
   quiet: true
 textVerbosity: low
