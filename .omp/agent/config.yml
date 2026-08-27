@@ -7,6 +7,7 @@ enabledModels:
   - opencode-go/muse-spark-1.2-contributor
   - opencode-go/ox-alpha-free
   - Copilot/gpt-5.3-codex
+  - cursor/cursor-grok-4.6-medium
 memory:
   backend: hindsight
 hindsight:
@@ -21,7 +22,7 @@ startup:
 textVerbosity: low
 hideThinkingBlock: true
 statusLine:
-  preset: nerd
+  preset: compact
   compactThinkingLevel: true
   separator: powerline-thin
   contextLine: percentage
@@ -34,9 +35,10 @@ tools:
   artifactTailBytes: 10
 dev:
   autoqaConsent: granted
-modelRoles: {}
+modelRoles:
+  {}
 composer:
-  shape: box
+  shape: borderless
 omitThinking: true
 prewalk:
   enabled: true
@@ -47,3 +49,5 @@ tui:
   imeSafeCursor: true
 task:
   showResolvedModelBadge: true
+theme:
+  dark: dark-twilight
