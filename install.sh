@@ -191,10 +191,27 @@ dotfiles=(
   .opencommit
   .omp/agent/config.yml
   .omp/agent/models.yml
+  .omp/profiles/work/agent/config.yml
 )
 for file in "${dotfiles[@]}"; do
   link "$file"
 done
+
+# Named OMP profiles share the tracked agent models.yml.
+if [[ -d $DOTFILES_DIR/.omp/profiles ]]; then
+  while IFS= read -r -d '' profile_agent; do
+    rel=${profile_agent#"$DOTFILES_DIR/"}
+    mkdir -p "$HOME/$rel"
+    ensure_link "$DOTFILES_DIR/.omp/agent/models.yml" "$HOME/$rel/models.yml"
+  done < <(find "$DOTFILES_DIR/.omp/profiles" -mindepth 2 -maxdepth 2 -type d -name agent -print0)
+fi
+
+# OMP reads agent configs under ~/.omp/agent or ~/.omp/profiles/<name>/agent.
+# A top-level ~/.omp/config.yml is leftover/misleading; retire it if present.
+if [[ -e $HOME/.omp/config.yml || -L $HOME/.omp/config.yml ]]; then
+  echo "Removing leftover $HOME/.omp/config.yml"
+  backup "$HOME/.omp/config.yml"
+fi
 
 config_link kitty
 config_link helix
