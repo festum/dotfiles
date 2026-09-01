@@ -17,7 +17,7 @@ First shell may clone Bash-it or Oh My Zsh + Powerlevel10k. Neovim is [LazyVim](
 
 ```text
 clone → ./install.sh
-          ├─ home dots → $HOME/.*  (incl. .omp/agent/config.yml)
+          ├─ home dots → $HOME/.*  (incl. .omp/agent + .omp/profiles/work)
           ├─ config/* → ~/.config/* (OS: config/<name>.{mac|linux|win})
           └─ Termux props if ~/.termux exists
 
@@ -32,9 +32,13 @@ shell → OMZ/Bash-it → ~/.aliases (+ local overlays) → tool inits
 | `.zshrc` / `.bashrc` | Shell setup |
 | `.gitconfig` | Git identity, SSH signing, aliases |
 | `config/` | Kitty, Helix, Alacritty (+ mac), Zed, Karabiner, Zellij, LazyVim |
-| `.omp/agent/config.yml` | OMP agent settings (`~/.omp/agent/config.yml`) |
+| `.omp/agent/config.yml` | OMP default agent (`bankId: pi-s0`) |
+| `.omp/profiles/work/agent/config.yml` | OMP work profile (`bankId: claude-ppro`) |
+| `.omp/agent/models.yml` | Shared OMP models (also linked into named profiles) |
 
 Real files get `*.bak` (timestamped if needed). Wrong/broken symlinks are replaced. Zed is per-file (`-f`) so local-only files stay. Zellij is whole-dir unless local-only files exist. Replacing a real `~/.config/nvim` clears nvim share/state/cache.
+
+Do not use `~/.omp/config.yml` for bank/memory; OMP reads the agent configs above. `install.sh` backs up and removes that leftover file if present.
 
 Customize Neovim in `config/nvim/lua/config/` and `config/nvim/lua/plugins/`.
 
