@@ -40,7 +40,7 @@ enabledModels:
 memory:
   backend: hindsight
 hindsight:
-  apiUrl: http://10.13.0.3:8888
+  apiUrl: https://hindsight.bombay-city.ts.net
   bankId: claude-ppro
   scoping: global
   recallTimeoutMs: 180000
@@ -67,9 +67,9 @@ dev:
   autoqaConsent: granted
 modelRoles:
   task: google-antigravity/gemini-3.8-flash
-  plan: anthropic/claude-sonnet-5
-  default: google-antigravity/gemini-3.8-flash
-  smol: google-antigravity/gemini-3.8-flash:off
+  default: bansos/mimo-v2.5-free
+  smol: bansos/kilo-auto/free
+  plan: anthropic/claude-sonnet-5:low
 prewalk:
   enabled: true
 plan:

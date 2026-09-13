@@ -1,4 +1,10 @@
 {
+  "agent_buffer_font_size": 13.0,
+  "agent_ui_font_size": 14.0,
+  "terminal": {
+    "font_family": "FiraCode Nerd Font",
+    "font_size": 13.0
+  },
   "language_models": {
     "opencode": {
       "show_zen_models": false
