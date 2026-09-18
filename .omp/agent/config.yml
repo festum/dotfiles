@@ -5,8 +5,19 @@ defaultThinkingLevel: auto
 enabledModels:
   - opencode-go/main
   - opencode-go/smart
-  - opencode-go/unstable
+  - opencode-go/canary
   - Copilot/sonnet
+  - bansos/nvidia/nemotron-3-ultra-550b-a55b:free
+  - bansos/muse-spark-1.3-contributor-free
+  - bansos/minimax/minimax-m3:free
+  - bansos/nvidia/nemotron-3-super-120b-a12b:free
+  - bansos/mimo-v2.5-free
+  - bansos/nvidia/nemotron-3.5-lightning:free
+  - bansos/nemotron-3.5-lightning-free
+  - bansos/stepfun/step-3.7-flash:free
+  - bansos/big-pickle
+  - bansos/nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free
+  - bansos/inclusionai/ling-3.0-flash-fin:free
 memory:
   backend: hindsight
 hindsight:
@@ -37,7 +48,6 @@ dev:
   autoqaConsent: granted
 modelRoles:
   plan: opencode-go/smart
-  smol: opencode-go/main
   default: opencode-go/main
 prewalk:
   enabled: true
