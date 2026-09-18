@@ -273,3 +273,8 @@
     path = ~/.gitconfig-github-private
 [gpg]
 	format = ssh
+[tag]
+	gpgsign = true
+	forceSignAnnotated = true
+[gpg "ssh"]
+	allowedSignersFile = ~/.config/git/allowed_signers
