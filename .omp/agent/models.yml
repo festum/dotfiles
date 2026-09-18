@@ -17,8 +17,8 @@ providers:
       reasoning: true
       input:
       - text
-    - id: unstable
-      name: Unstable
+    - id: canary
+      name: Canary
       reasoning: true
       input:
       - text
