@@ -6,15 +6,26 @@
       "cmd-shift-r": "editor::ReloadFile",
       "cmd-h": "buffer_search::DeployReplace",
       "cmd-g": "go_to_line::Toggle",
-      "ctrl-shift-b": "multi_workspace::ToggleWorkspaceSidebar",
+      "cmd-b cmd-s": "multi_workspace::ToggleWorkspaceSidebar",
+      "cmd-b cmd-a": "workspace::ToggleRightDock",
+      "cmd-b cmd-n": "workspace::ToggleBottomDock",
+      "ctrl-b ctrl-s": "multi_workspace::ToggleWorkspaceSidebar",
+      "ctrl-b ctrl-a": "workspace::ToggleRightDock",
+      "ctrl-b ctrl-n": "workspace::ToggleBottomDock",
     },
   },
   {
     "context": "Workspace",
     "bindings": {
       "shift shift": "file_finder::Toggle",
-      "ctrl-`": "workspace::ToggleBottomDock",
       "cmd-`": "workspace::ToggleBottomDock",
+      "cmd-b cmd-b": "workspace::ToggleBottomDock",
+      "cmd-b cmd-s": "multi_workspace::ToggleWorkspaceSidebar",
+      "cmd-b cmd-a": "workspace::ToggleRightDock",
+      "ctrl-`": "workspace::ToggleBottomDock",
+      "ctrl-b ctrl-b": "workspace::ToggleBottomDock",
+      "ctrl-b ctrl-s": "multi_workspace::ToggleWorkspaceSidebar",
+      "ctrl-b ctrl-a": "workspace::ToggleRightDock",
     },
   },
   {
@@ -30,5 +41,5 @@
       "f3": "search::SelectNextMatch",
       "shift-f3": "search::SelectPreviousMatch",
     },
-  },
+  }
 ]

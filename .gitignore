@@ -1,1 +1,5 @@
+*.lock
+*.bak
+*.tmp
 config/karabiner/automatic_backups/
+

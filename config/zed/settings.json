@@ -1,129 +1,175 @@
 {
+  "calls": {
+    "share_on_join": true,
+    "mute_on_join": true
+  },
+  "diagnostics": {
+    "inline": {
+      "enabled": true
+    }
+  },
+  "prettier": {
+    "allowed": true
+  },
+  "proxy": "",
   "agent_buffer_font_size": 13.0,
   "agent_ui_font_size": 14.0,
+
   "terminal": {
+    "shell": {
+      "program": "bash"
+    },
     "font_family": "FiraCode Nerd Font",
     "font_size": 13.0
   },
   "language_models": {
     "opencode": {
-      "show_zen_models": false
+      "show_zen_models": false,
+      "show_go_models": true
+    },
+    "openai_compatible": {
+      "bifrost": {
+        "api_url": "https://bifrost.bombay-city.ts.net/v1",
+        "available_models": [
+          {
+            "name": "opencode-go/main",
+            "display_name": "Main",
+            "max_tokens": 1000000,
+            "max_output_tokens": 32768,
+            "reasoning_effort": "high",
+            "capabilities": {
+              "tools": true,
+              "images": false,
+              "parallel_tool_calls": true,
+              "prompt_cache_key": true,
+              "chat_completions": true
+            }
+          },
+          {
+            "name": "opencode-go/smart",
+            "display_name": "Smart",
+            "max_tokens": 200000,
+            "max_output_tokens": 32768,
+            "reasoning_effort": "high",
+            "capabilities": {
+              "tools": true,
+              "images": false,
+              "parallel_tool_calls": false,
+              "prompt_cache_key": true,
+              "chat_completions": true
+            }
+          },
+          {
+            "name": "opencode-go/canary",
+            "display_name": "Canary",
+            "max_tokens": 1000000,
+            "max_output_tokens": 32768,
+            "capabilities": {
+              "tools": true,
+              "images": false,
+              "parallel_tool_calls": true,
+              "prompt_cache_key": true,
+              "chat_completions": true
+            }
+          },
+          {
+            "name": "Copilot/sonnet",
+            "display_name": "Sonnet",
+            "max_tokens": 1000000,
+            "max_output_tokens": 32768,
+            "reasoning_effort": "high",
+            "capabilities": {
+              "tools": true,
+              "images": false,
+              "parallel_tool_calls": false,
+              "prompt_cache_key": true,
+              "chat_completions": true
+            }
+          }
+        ]
+      }
     }
   },
   "context_servers": {
     "Context7": {
-      "enabled": true,
-      "remote": false,
       "command": "npx",
       "args": ["-y", "@upstash/context7-mcp"],
-      "env": {
-        // Set CONTEXT7_API_KEY in envvar
-      },
+      "env": {}
     },
     "Sequential-Thinking": {
-      "enabled": true,
-      "remote": false,
       "command": "npx",
       "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"],
-      "env": {},
+      "env": {}
     },
     "Hindsight": {
-      "enabled": true,
-      "remote": false,
       "command": "npx",
       "args": ["-y", "hindsight-mcp"],
       "env": {
-        "MEMORY_SERVICE_BASE_URL": "http://s0.bombay-city.ts.net:8888/mcp/zed",
-      },
+        "MEMORY_SERVICE_BASE_URL": "http://s0.bombay-city.ts.net:8888/mcp/zed"
+      }
     },
     "mcp-server-memory": {
-      "enabled": true,
-      "remote": false,
       "settings": {
-        "memory_file_path": "/Users/fqin/Dropbox/LLM/memory/my-knowledge-graph.jsonl",
-      },
-    },
+        "memory_file_path": "/Users/fqin/Dropbox/LLM/memory/my-knowledge-graph.jsonl"
+      }
+    }
   },
   "cli_default_open_behavior": "existing_window",
-  "project_panel": {
-    "dock": "left",
-  },
-  "outline_panel": {
-    "dock": "left",
-  },
-  "collaboration_panel": {
-    "dock": "left",
-  },
-  "git_panel": {
-    "dock": "left",
-  },
+  "project_panel": { "dock": "left" },
+  "outline_panel": { "dock": "left" },
+  "collaboration_panel": { "dock": "left" },
+  "git_panel": { "dock": "left" },
   "agent": {
+    "play_sound_when_agent_done": "when_hidden",
+    "sidebar_side": "right",
     "sandbox_permissions": {
-      "network_hosts": [
-        "support.google.com",
-        "www.coinbase.com",
-        "creator.line.me",
-        "github.com"
-      ],
-      "allow_fs_write_all": true,
-      "allow_network_all": true,
+      "allow_all_hosts": true,
+      "allow_fs_write_all": true
     },
     "favorite_models": [
       {
         "provider": "copilot_chat",
-        "model": "claude-haiku-4.5",
-        "enable_thinking": true
-      },
-      {
-        "provider": "copilot_chat",
-        "model": "claude-sonnet-4.6",
+        "model": "claude-sonnet-5",
         "enable_thinking": true,
         "effort": "medium"
       },
       {
         "provider": "copilot_chat",
-        "model": "claude-opus-4.7",
+        "model": "claude-opus-5",
         "enable_thinking": true,
         "effort": "high"
       },
       {
-        "provider": "opencode",
-        "model": "go/mimo-v2.5",
+        "provider": "bifrost",
+        "model": "opencode-go/main",
         "enable_thinking": true,
         "effort": "high"
       },
       {
-        "provider": "opencode",
-        "model": "go/qwen3.7-plus",
-        "enable_thinking": false
+        "provider": "bifrost",
+        "model": "opencode-go/canary",
+        "enable_thinking": true
       }
     ],
     "dock": "right",
-    "tool_permissions": {
-      "default": "allow",
-    },
+    "tool_permissions": { "default": "allow" },
     "default_model": {
       "effort": "high",
       "enable_thinking": true,
-      "provider": "opencode",
-      "model": "go/mimo-v2.5",
+      "provider": "bifrost",
+      "model": "opencode-go/main"
     },
-    "use_modifier_to_send": false,
+    "use_modifier_to_send": false
   },
   "agent_servers": {
-    "qwen-code": {
-      "type": "registry",
-    },
-    "opencode": {
-      "type": "registry",
-    },
-    "agoragentic-acp": {
-      "type": "registry",
-    },
+    "qwen-code": { "type": "registry" },
+    "opencode": { "type": "registry" },
+    "agoragentic-acp": { "type": "registry" },
+    // ❓ "type": "custom" + "command"
     "codex-acp-custom": {
       "type": "custom",
-      "command": "zedcode-acp-codex",
-    },
+      "command": "zedcode-acp-codex"
+    }
   },
   "auto_signature_help": true,
   "autosave": "on_window_change",
@@ -142,19 +188,16 @@
   "theme": "Warm Perf",
   "ui_font_size": 14,
   "use_autoclose": false,
-  "centered_layout": {
-    "left_padding": 0,
-    "right_padding": 0,
-  },
+  "centered_layout": { "left_padding": 0, "right_padding": 0 },
   "active_pane_modifiers": {
     "border_size": 0.0,
-    "inactive_opacity": 0.5,
+    "inactive_opacity": 0.5
   },
   "minimap": {
     "show": "auto",
     "thumb": "always",
     "thumb_border": "left_open",
-    "current_line_highlight": "all",
+    "current_line_highlight": "all"
   },
   "tabs": {
     "close_position": "right",
@@ -162,16 +205,23 @@
     "git_status": true,
     "activate_on_close": "left_neighbour",
     "show_close_button": "hover",
-    "show_diagnostics": "errors",
+    "show_diagnostics": "errors"
   },
   "inlay_hints": {
     "enabled": true,
     "show_background": false,
     "edit_debounce_ms": 700,
-    "scroll_debounce_ms": 50,
+    "scroll_debounce_ms": 50
   },
   "edit_predictions": {
-    "provider": "copilot",
+    "allow_data_collection": "no",
+    "provider": "open_ai_compatible_api",
+    "open_ai_compatible_api": {
+      "api_url": "https://bifrost.bombay-city.ts.net/v1/completions",
+      "model": "opencode-go/main",
+      "prompt_format": "infer",
+      "max_output_tokens": 512
+    },
     "disabled_globs": [
       "**/.env*",
       "**/.dev*",
@@ -179,14 +229,12 @@
       "**/*.key",
       "**/*.cert",
       "**/*.crt",
-      "**/secrets.yml",
-    ],
+      "**/secrets.yml"
+    ]
   },
-  "session": {
-    "restore_unsaved_buffers": true,
-  },
+  "session": { "restore_unsaved_buffers": true },
   "telemetry": {
     "diagnostics": false,
-    "metrics": false,
-  },
+    "metrics": false
+  }
 }

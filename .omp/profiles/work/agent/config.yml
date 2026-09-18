@@ -3,14 +3,14 @@ defaultProvider: cursor
 defaultModel: default
 defaultThinkingLevel: auto
 enabledModels:
+  - opencode-go/smart
+  - opencode-go/main
+  - opencode-go/canary
   - cursor/default
-  - cursor/composer-2.5
-  - cursor/cursor-grok-4.6
+  - cursor/claude-sonnet-5-medium
+  - cursor/claude-opus-5-thinking-max
   - cursor/claude-fable-5-medium
   - cursor/claude-fable-5-xhigh
-  - cursor/claude-sonnet-5-medium
-  - cursor/claude-sonnet-5-max
-  - cursor/claude-opus-5-thinking-max
   - anthropic/claude-sonnet-5
   - anthropic/claude-opus-5
   - anthropic/claude-fable-5
@@ -18,25 +18,14 @@ enabledModels:
   - google-antigravity/gemini-3.1-pro
   - google-antigravity/gemini-3.8-flash
   - google-antigravity/claude-sonnet-4-6
-  - google-antigravity/claude-opus-4-6-thinking
   - google-antigravity/gpt-oss-120b
-  - bansos/openrouter/free
-  - bansos/kilo-auto/free
+  - bansos/nvidia/nemotron-3-ultra-550b-a55b:free
   - bansos/muse-spark-1.3-contributor-free
-  - bansos/mimo-v2.5-free
-  - bansos/big-pickle
-  - bansos/cohere/north-mini-code:free
-  - bansos/dots-studio/dots-3-note-preview:free
-  - bansos/laguna-s-2.1-free
-  - bansos/meituan/longcat-2.0-free
-  - bansos/minimax/minimax-m2.7:free
   - bansos/minimax/minimax-m3:free
-  - bansos/nemotron-3-ultra-free
-  - bansos/nemotron-3.5-lightning-free
-  - bansos/nvidia/nemotron-3-super-120b-a12b:free
+  - bansos/mimo-v2.5-free
+  - bansos/nvidia/nemotron-3.5-lightning:free
   - bansos/stepfun/step-3.7-flash:free
-  - bansos/thinkingmachines/inkling-small:free
-  - bansos/thinkingmachines/inkling:free
+  - bansos/big-pickle
 memory:
   backend: hindsight
 hindsight:
@@ -66,10 +55,8 @@ tools:
 dev:
   autoqaConsent: granted
 modelRoles:
-  task: google-antigravity/gemini-3.8-flash
-  default: bansos/mimo-v2.5-free
-  smol: bansos/kilo-auto/free
-  plan: anthropic/claude-sonnet-5:low
+  plan: opencode-go/canary:auto
+  default: opencode-go/main
 prewalk:
   enabled: true
 plan:
