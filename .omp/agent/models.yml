@@ -1,5 +1,5 @@
 providers:
-  opencode-go:
+  bifrost:
     baseUrl: https://bifrost.bombay-city.ts.net/v1
     api: openai-completions
     apiKey: env:OMP_BIFROST_API_KEY
@@ -7,41 +7,34 @@ providers:
       supportsDeveloperRole: false
       supportsReasoningEffort: false
     models:
-    - id: main
+    - id: opencode-go/main
       name: Main
       reasoning: true
       input:
       - text
-    - id: smart
+    - id: opencode-go/smart
       name: Smart
       reasoning: true
       input:
       - text
-    - id: canary
+    - id: opencode-go/canary
       name: Canary
+      api: openai-responses
       reasoning: true
       input:
       - text
-  Copilot:
-    baseUrl: https://bifrost.bombay-city.ts.net/v1
-    api: openai-completions
-    apiKey: env:OMP_BIFROST_API_KEY
-    compat:
-      supportsDeveloperRole: false
-      supportsReasoningEffort: false
-    models:
-    - id: sonnet
-      name: Sonnet
+    - id: opencode-go/free
+      name: Free
       reasoning: true
       input:
       - text
-    - id: opus
-      name: Opus
-      reasoning: true
-      input:
-      - text
-    - id: luna
+    - id: copilot/main
       name: Luna
+      reasoning: true
+      input:
+      - text
+    - id: copilot/smart
+      name: Sol
       reasoning: true
       input:
       - text
