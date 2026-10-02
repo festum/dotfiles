@@ -1,12 +1,13 @@
 setupVersion: 2
 defaultProvider: bifrost
-defaultModel: opencode-go/main
+defaultModel: bifrost/opencode-go/main
 defaultThinkingLevel: auto
 enabledModels:
-  - opencode-go/main
-  - opencode-go/smart
-  - opencode-go/canary
-  - Copilot/sonnet
+  - bifrost/opencode-go/main
+  - bifrost/opencode-go/smart
+  - bifrost/opencode-go/canary
+  - bifrost/copilot/main
+  - bifrost/copilot/smart
   - bansos/nvidia/nemotron-3-ultra-550b-a55b:free
   - bansos/muse-spark-1.3-contributor-free
   - bansos/minimax/minimax-m3:free
@@ -43,8 +44,8 @@ tools:
 dev:
   autoqaConsent: granted
 modelRoles:
-  plan: opencode-go/smart
-  default: opencode-go/main
+  plan: bifrost/opencode-go/smart
+  default: bifrost/opencode-go/main
 prewalk:
   enabled: true
 plan:

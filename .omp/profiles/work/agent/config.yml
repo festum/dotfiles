@@ -3,18 +3,16 @@ defaultProvider: cursor
 defaultModel: default
 defaultThinkingLevel: auto
 enabledModels:
-  - opencode-go/smart
-  - opencode-go/main
-  - opencode-go/canary
+  - bifrost/opencode-go/smart
+  - bifrost/opencode-go/main
+  - bifrost/opencode-go/canary
+  - bifrost/opencode-go/free
   - cursor/default
-  - cursor/claude-sonnet-5-medium
-  - cursor/claude-opus-5-thinking-max
-  - cursor/claude-fable-5-medium
-  - cursor/claude-fable-5-xhigh
-  - anthropic/claude-sonnet-5
-  - anthropic/claude-opus-5
-  - anthropic/claude-fable-5
-  - anthropic/claude-mythos-5
+  - cursor/grok-4.7-medium
+  - cursor/claude-opus-5.5-thinking-max
+  - cursor/claude-fable-5.1-medium
+  - anthropic/claude-sonnet-5.5
+  - anthropic/claude-opus-5.5
   - google-antigravity/gemini-3.1-pro
   - google-antigravity/gemini-3.8-flash
   - google-antigravity/claude-sonnet-4-6
@@ -37,7 +35,7 @@ providers:
   streamIdleTimeoutSeconds: 120
 startup:
   quiet: true
-hideThinkingBlock: true
+hideThinkingBlock: false
 omitThinking: true
 textVerbosity: low
 personality: pragmatic
@@ -55,8 +53,8 @@ tools:
 dev:
   autoqaConsent: granted
 modelRoles:
-  plan: opencode-go/canary:auto
-  default: opencode-go/main
+  default: bifrost/opencode-go/main
+  plan: bifrost/opencode-go/smart:auto
 prewalk:
   enabled: true
 plan:
