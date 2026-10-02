@@ -6,6 +6,7 @@ enabledModels:
   - opencode-go/smart
   - opencode-go/main
   - opencode-go/canary
+  - opencode-go/free
   - cursor/default
   - cursor/claude-sonnet-5-medium
   - cursor/claude-opus-5-thinking-max

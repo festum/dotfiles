@@ -73,8 +73,22 @@
             }
           },
           {
-            "name": "Copilot/sonnet",
-            "display_name": "Sonnet",
+            "name": "copilot/main",
+            "display_name": "luna",
+            "max_tokens": 1000000,
+            "max_output_tokens": 32768,
+            "reasoning_effort": "high",
+            "capabilities": {
+              "tools": true,
+              "images": false,
+              "parallel_tool_calls": false,
+              "prompt_cache_key": true,
+              "chat_completions": true
+            }
+          },
+          {
+            "name": "copilot/smart",
+            "display_name": "sol",
             "max_tokens": 1000000,
             "max_output_tokens": 32768,
             "reasoning_effort": "high",
@@ -129,13 +143,13 @@
     "favorite_models": [
       {
         "provider": "copilot_chat",
-        "model": "claude-sonnet-5",
+        "model": "gpt-6-luna",
         "enable_thinking": true,
         "effort": "medium"
       },
       {
         "provider": "copilot_chat",
-        "model": "claude-opus-5",
+        "model": "gpt-6.1-sol",
         "enable_thinking": true,
         "effort": "high"
       },

@@ -22,7 +22,7 @@ providers:
       reasoning: true
       input:
       - text
-  Copilot:
+  copilot:
     baseUrl: https://bifrost.bombay-city.ts.net/v1
     api: openai-completions
     apiKey: env:OMP_BIFROST_API_KEY
@@ -30,18 +30,13 @@ providers:
       supportsDeveloperRole: false
       supportsReasoningEffort: false
     models:
-    - id: sonnet
-      name: Sonnet
-      reasoning: true
-      input:
-      - text
-    - id: opus
-      name: Opus
-      reasoning: true
-      input:
-      - text
-    - id: luna
+    - id: main
       name: Luna
+      reasoning: true
+      input:
+      - text
+    - id: smart
+      name: Sol
       reasoning: true
       input:
       - text

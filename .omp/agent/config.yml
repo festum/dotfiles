@@ -6,7 +6,8 @@ enabledModels:
   - opencode-go/main
   - opencode-go/smart
   - opencode-go/canary
-  - Copilot/sonnet
+  - copilot/main
+  - copilot/smart
   - bansos/nvidia/nemotron-3-ultra-550b-a55b:free
   - bansos/muse-spark-1.3-contributor-free
   - bansos/minimax/minimax-m3:free
