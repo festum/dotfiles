@@ -33,8 +33,7 @@ download() {
   esac
 }
 
-require_cmd ln mkdir mv uname basename git readlink rm find
-require_download
+require_cmd ln mkdir mv uname basename readlink rm find
 
 # True if path is a symlink pointing exactly at expected (absolute) source.
 is_link_to() {
@@ -97,7 +96,7 @@ link() {
 resolve_config_src() {
   local name=$1
   local src_dir="$DOTFILES_DIR/config/$name"
-  local os_suffix
+  local os_suffix=""
 
   case "$(uname)" in
     Darwin)
@@ -143,6 +142,8 @@ config_link() {
     echo "error: config source not found: $src_dir" >&2
     exit 1
   fi
+
+  mkdir -p "$(dirname "$target_dir")"
 
   if [[ $force == "-f" ]]; then
     # Parent must be a real directory (not a symlink to a whole package tree).
@@ -232,6 +233,7 @@ fi
 config_link nvim
 
 if [[ -d $HOME/.termux ]]; then
+  require_download
   link termux.properties "$HOME/.termux"
   download \
     https://raw.githubusercontent.com/dracula/termux/master/colors.properties \
