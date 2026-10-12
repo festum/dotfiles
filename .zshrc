@@ -53,10 +53,8 @@ export NVM_DIR=${NVM_DIR:-$HOME/.nvm}
 export OLLAMA_HOST=${OLLAMA_HOST:-0.0.0.0}
 export OLLAMA_ORIGINS=${OLLAMA_ORIGINS:-"*"}
 export DOCKER_BUILDKIT=0 DOCKER_DEFAULT_PLATFORM=${DOCKER_DEFAULT_PLATFORM:-linux/amd64} COMPOSE_DOCKER_CLI_BUILD=0
-export GO111MODULE=${GO111MODULE:-auto}
-export GOPROXY=${GOPROXY:-direct}
 export GOPATH=${GOPATH:-$HOME/.go}
-export GOBIN=${GOBIN:-$GOPATH/bin}
+export GO111MODULE=${GO111MODULE:-auto} GOPROXY=${GOPROXY:-direct} GOBIN=${GOBIN:-$GOPATH/bin}
 [ -d /usr/local/go ] && export GOROOT=${GOROOT:-/usr/local/go}
 [ -f $HOME/.cargo/env ] && source $HOME/.cargo/env && export CARGO_HOME=$HOME/.cargo/env
 [ -s $HOME/.bun/_bun ] && source $HOME/.bun/_bun

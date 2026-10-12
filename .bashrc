@@ -51,9 +51,11 @@ export TMUX_TMPDIR=${TMUX_TMPDIR:-$HOME/.tmux/tmp}
 export NVM_DIR=${NVM_DIR:-$HOME/.nvm}
 export OLLAMA_HOST=${OLLAMA_HOST:-0.0.0.0} OLLAMA_ORIGINS=${OLLAMA_ORIGINS:-"*"}
 export DOCKER_BUILDKIT=0 COMPOSE_DOCKER_CLI_BUILD=0 DOCKER_DEFAULT_PLATFORM=${DOCKER_DEFAULT_PLATFORM:-linux/$(case $(uname -m) in x86_64) echo amd64 ;; aarch64|arm64) echo arm64 ;; armv7l) echo arm/v7 ;; *) uname -m ;; esac)}
-export GO111MODULE=${GO111MODULE:-auto} GOPROXY=${GOPROXY:-direct} GOPATH=${GOPATH:-$HOME/.go} GOBIN=${GOBIN:-$GOPATH/bin}
 [[ -d /usr/local/go ]] && export GOROOT=${GOROOT:-/usr/local/go}
+export GOPATH=${GOPATH:-$HOME/.go}
+export GO111MODULE=${GO111MODULE:-auto} GOPROXY=${GOPROXY:-direct} GOBIN=${GOBIN:-$GOPATH/bin}
 export XDG_CONFIG_HOME=$HOME/.config
+export BIN=$GOROOT/bin:$GOBIN:$HOME/.config/yarn/global/node_modules/.bin:$HOME/bin:/snap/bin:/usr/local/bin:/usr/bin:/bin
 export PATH=$(find "$HOME" -mindepth 2 -maxdepth 3 -type d -name bin -not -path '*/.cache/*' -print0 2>/dev/null | tr '\0' ':' | sed 's/:\+$//'):$BIN:$PATH
 
 source "$HOME/.bashrc_local" 2>/dev/null

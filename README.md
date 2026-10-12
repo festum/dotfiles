@@ -9,7 +9,7 @@ git clone git@github.com:festum/dotfiles.git ~/Repo/dotfiles
 ~/Repo/dotfiles/install.sh
 ```
 
-Needs `bash`/`zsh`, `git`, `ln`, and `curl` or `wget`. Script finds its own directory and exits if those tools are missing. Optional Linux fonts: `~/Repo/dotfiles/install-nerdfonts.sh` (also needs `unzip`, `fc-cache`).
+Needs `bash`/`zsh` and `ln`, plus `git` to clone; `curl` or `wget` only for Termux props. Script finds its own directory and exits if a needed tool is missing. Optional Linux fonts: `~/Repo/dotfiles/install-nerdfonts.sh` (also needs `unzip`, `fc-cache`).
 
 First shell may clone Bash-it or Oh My Zsh + Powerlevel10k. Neovim is [LazyVim](https://github.com/LazyVim/LazyVim) under `config/nvim`; first `nvim` pulls plugins via lazy.nvim.
 
@@ -27,7 +27,7 @@ shell → OMZ/Bash-it → ~/.aliases (+ local overlays) → tool inits
 | Path | Role |
 |------|------|
 | `install.sh` | Symlinks |
-| `install-nerdfonts.sh` | Nerd Fonts → `~/.local/share/fonts` |
+| `install-nerdfonts.sh` | Nerd Fonts → `~/.local/share/fonts`; symbols config → `~/.config/fontconfig/conf.d` |
 | `.aliases` | Shared aliases/helpers |
 | `.zshrc` / `.bashrc` | Shell setup |
 | `.gitconfig` | Git identity, SSH signing, aliases |

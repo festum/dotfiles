@@ -31,7 +31,7 @@ download() {
   esac
 }
 
-require_cmd mkdir unzip find rm fc-cache
+require_cmd mkdir mktemp mv unzip find fc-cache
 require_download
 
 declare -a fonts=(
@@ -44,17 +44,35 @@ declare -a fonts=(
 )
 
 fonts_dir="${HOME}/.local/share/fonts"
-mkdir -p "$fonts_dir"
+# fontconfig only loads .conf files from its conf.d directories, not from font dirs.
+conf_dir="${XDG_CONFIG_HOME:-${HOME}/.config}/fontconfig/conf.d"
+
+tmp_dir="$(mktemp -d)"
+trap 'rm -rf "$tmp_dir"' EXIT
+
+mkdir -p "$fonts_dir" "$conf_dir"
 
 for font in "${fonts[@]}"; do
-  zip_file="${font}.zip"
-  download_url="https://github.com/ryanoasis/nerd-fonts/releases/latest/download/${zip_file}"
-  echo "Downloading $download_url"
-  download "$download_url" "/tmp/$zip_file"
-  unzip -o "/tmp/$zip_file" -d "$fonts_dir" -x "*.otf" -x "*.txt" -x "*.md" -x "LICENSE"
-  rm -f "/tmp/$zip_file"
+  echo "Installing $font"
+  zip_file="${tmp_dir}/${font}.zip"
+  download_url="https://github.com/ryanoasis/nerd-fonts/releases/latest/download/${font}.zip"
+  download "$download_url" "$zip_file"
+  # Extract only what belongs in the font dir. Exit 11 means a pattern had no
+  # match in this archive (e.g. no .otf or .conf), which is expected.
+  rc=0
+  unzip -oq "$zip_file" -d "$fonts_dir" '*.ttf' '*.otf' '*.conf' 2>"${tmp_dir}/unzip.err" || rc=$?
+  if [[ $rc -ne 0 && $rc -ne 11 ]]; then
+    cat "${tmp_dir}/unzip.err" >&2
+    exit 1
+  fi
 done
 
 find "$fonts_dir" -name '*Windows Compatible*' -delete
 
-fc-cache -fv
+for conf in "$fonts_dir"/*.conf; do
+  [[ -e $conf ]] || continue
+  mv -f "$conf" "$conf_dir/"
+done
+
+fc-cache -f "$fonts_dir"
+echo "Nerd Fonts installed in $fonts_dir"
