@@ -3,7 +3,8 @@ defaultThinkingLevel: auto
 hideThinkingBlock: true
 omitThinking: true
 enabledModels:
-  - bifrost/opencode-go/*
+  - bifrost/**
+  - bansos/**
   - cursor/default
   - cursor/grok-4.7-medium
   - cursor/claude-opus-5.5-thinking-max
@@ -14,7 +15,6 @@ enabledModels:
   - google-antigravity/gemini-3.8-flash
   - google-antigravity/claude-sonnet-4-6
   - google-antigravity/gpt-oss-120b
-  - bansos/*
 modelRoles:
   default: bifrost/opencode-go/main
   plan: bifrost/opencode-go/canary:auto

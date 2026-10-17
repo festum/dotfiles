@@ -3,9 +3,8 @@ defaultThinkingLevel: auto
 hideThinkingBlock: true
 omitThinking: true
 enabledModels:
-  - bifrost/opencode-go/*
-  - bifrost/copilot/*
-  - bansos/*
+  - bifrost/**
+  - bansos/**
 modelRoles:
   plan: bifrost/opencode-go/smart
   default: bifrost/opencode-go/main

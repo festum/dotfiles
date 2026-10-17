@@ -139,6 +139,7 @@
     },
     "play_sound_when_agent_done": "when_hidden",
     "sandbox_permissions": {
+      "allow_unsandboxed": true,
       "allow_all_hosts": true,
       "allow_fs_write_all": true
     },

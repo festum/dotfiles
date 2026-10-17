@@ -1,57 +1,18 @@
 # dotfiles
 
-Shell and editor configs. Symlink installer: `install.sh` (not stow/chezmoi/ansible).
+Personal shell, terminal, and editor configuration.
 
 ## Install
 
-```bash
+```sh
 git clone git@github.com:festum/dotfiles.git ~/Repo/dotfiles
 ~/Repo/dotfiles/install.sh
 ```
 
-Needs `bash`/`zsh` and `ln`, plus `git` to clone; `curl` or `wget` only for Termux props. Script finds its own directory and exits if a needed tool is missing. Optional Linux fonts: `~/Repo/dotfiles/install-nerdfonts.sh` (also needs `unzip`, `fc-cache`).
-
-First shell load bootstraps Oh My Zsh plus the custom plugins and theme used by `.zshrc`. Neovim is [LazyVim](https://github.com/LazyVim/LazyVim) under `config/nvim`; first `nvim` pulls plugins via lazy.nvim.
-
-## Layout
-
-```text
-clone → ./install.sh
-          ├─ home dots → $HOME/.*  (incl. .omp/agent + .omp/profiles/work)
-          ├─ config/* → ~/.config/* (OS: config/<name>.{mac|linux|win})
-          └─ Termux props if ~/.termux exists
-
-shell → OMZ/Bash-it → ~/.aliases (+ local overlays) → tool inits
-```
-
-| Path | Role |
-|------|------|
-| `install.sh` | Symlinks |
-| `install-nerdfonts.sh` | Nerd Fonts → `~/.local/share/fonts`; symbols config → `~/.config/fontconfig/conf.d` |
-| `.aliases` | Shared aliases/helpers |
-| `.zshrc` / `.bashrc` | Shell setup |
-| `.gitconfig` | Git identity, SSH signing, aliases |
-| `config/` | Kitty, Helix, Alacritty (+ mac), Zed, Karabiner, Zellij, LazyVim |
-| `.omp/agent/config.yml` | OMP default agent (`bankId: pi-s0`) |
-| `.omp/profiles/work/agent/config.yml` | OMP work profile (`bankId: claude-ppro`) |
-| `.omp/agent/models.yml` | Shared OMP models (also linked into named profiles) |
-
-Real files get `*.bak` (timestamped if needed). Wrong/broken symlinks are replaced. Zed is per-file (`-f`) so local-only files stay. Zellij is whole-dir unless local-only files exist. Replacing a real `~/.config/nvim` clears nvim share/state/cache.
-
-Do not use `~/.omp/config.yml` for bank/memory; OMP reads the agent configs above. `install.sh` backs up and removes that leftover file if present.
-
-Customize Neovim in `config/nvim/lua/config/` and `config/nvim/lua/plugins/`.
+The installer links configs into `$HOME` and bootstraps shell plugins. The zsh prompt uses Oh My Zsh's `robbyrussell` theme. Optional Linux fonts: `~/Repo/dotfiles/install-nerdfonts.sh`.
 
 ## Local overrides
 
-| File | Purpose |
-|------|---------|
-| `~/.aliases_local` / `~/.aliases.local` | Alias overrides |
-| `~/.rc_local` | Shared RC extras |
-| `~/.bashrc_local` | Bash-only |
-| `~/.bash_keys` | Secrets |
-| `~/.p10k.zsh` | Powerlevel10k |
-| `~/.gitconfig-local` | Per-machine git |
-| `~/.gitconfig-github-private` | Private GitHub (`includeIf`) |
+Use `~/.aliases_local`, `~/.rc_local`, `~/.bashrc_local`, `~/.bash_keys`, `~/.gitconfig-local`, and `~/.gitconfig-github-private` for machine-specific settings. Keep secrets in `~/.bash_keys`.
 
-Put `CR_PAT`, `CONTEXT7_API_KEY`, and SSH keys on the host (`sshlo` loads the agent). Default editor is `hx`. No Brewfile or CI; deploy is clone + `install.sh`. Package upgrades: `up`.
+OMP agent configs live under `.omp/agent` and `.omp/profiles`; do not use `~/.omp/config.yml`. Neovim settings live in `config/nvim/lua/config/` and `config/nvim/lua/plugins/`.

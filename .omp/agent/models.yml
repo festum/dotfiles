@@ -19,7 +19,6 @@ providers:
       - text
     - id: opencode-go/canary
       name: Canary
-      api: openai-responses
       reasoning: true
       input:
       - text
