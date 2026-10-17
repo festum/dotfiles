@@ -11,7 +11,7 @@ git clone git@github.com:festum/dotfiles.git ~/Repo/dotfiles
 
 Needs `bash`/`zsh` and `ln`, plus `git` to clone; `curl` or `wget` only for Termux props. Script finds its own directory and exits if a needed tool is missing. Optional Linux fonts: `~/Repo/dotfiles/install-nerdfonts.sh` (also needs `unzip`, `fc-cache`).
 
-First shell may clone Bash-it or Oh My Zsh + Powerlevel10k. Neovim is [LazyVim](https://github.com/LazyVim/LazyVim) under `config/nvim`; first `nvim` pulls plugins via lazy.nvim.
+First shell load bootstraps Oh My Zsh plus the custom plugins and theme used by `.zshrc`. Neovim is [LazyVim](https://github.com/LazyVim/LazyVim) under `config/nvim`; first `nvim` pulls plugins via lazy.nvim.
 
 ## Layout
 
