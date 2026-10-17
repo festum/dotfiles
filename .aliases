@@ -17,7 +17,6 @@ unset_func() { unset -f f >/dev/null 2>&1; }
 safe_source() { [ -f $1 ] && [ -s $1 ] && [ -r $1 ] && source "$1"; }
 is_runnable() { command -v $1 >/dev/null 2>&1; }
 app_alias() { is_runnable $1 && ! [ -f ~/.local/bin/$2 ] && mkdir -p ~/.local/bin/ && ln -s $(which $1) ~/.local/bin/$2; }
-git_install() { [ ! -d $2/.git ] && git clone --depth 1 $1 $2; }
 bare_run() { local a=$(alias "${1%% *}" 2>&1) && unalias "${1%% *}" || a=; eval "$@"; [[ $a ]] && eval "$a"; }
 runsh() { curl -LSs "$1" | sh -; }
 safe_source $HOME/.aliases_local
@@ -47,7 +46,7 @@ alias hrmdup='nl ~/.bash_history | sort -k 2  -k 1,1nr| uniq -f 1 | sort -n | cu
 alias g='git'
 alias {ack,ak}='ack-grep'
 alias uig='f(){ grep -i --color $@ /etc/group; unset_func; }; f' # uig: List file groups
-alias up='command -v dnf >/dev/null && sudo dnf upgrade --refresh -y; command -v flatpak >/dev/null && flatpak update; command -v snap >/dev/null && snap refresh; for pm in brew apt pkg pacman eopkg; do command -v $pm >/dev/null && eval "$pm update && $pm upgrade"; done; command -v go >/dev/null && { command -v go-global-update >/dev/null && GO111MODULE=on go-global-update || go install github.com/Gelio/go-global-update@latest; }' # App upgrades
+alias up='is_runnable dnf && sudo dnf upgrade --refresh -y; is_runnable flatpak && flatpak update; is_runnable snap && snap refresh; for pm in brew apt pkg pacman eopkg; do is_runnable $pm && eval "$pm update && $pm upgrade"; done; is_runnable go && { is_runnable go-global-update && GO111MODULE=on go-global-update || go install github.com/Gelio/go-global-update@latest; }' # App upgrades
 
 # Directory Listing
 alias path='echo -e ${PATH//:/\\n}' # path: Echo all executable Paths

@@ -44,7 +44,6 @@ export BYOBU_PREFIX=/usr/local
 export VISUAL=${VISUAL:-hx} EDITOR=$VISUAL GIT_EDITOR=$VISUAL TODO=t
 export GIT_HOSTING=${GIT_HOSTING:-git@github.com} GPG_TTY=$(tty)
 export GCC_COLORS="error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01;32:locus=01:quote=01"
-export CC=clang AR=llvm-ar CXX=clang++ CFLAGS="-Wno-implicit-function-declaration" CXXFLAGS="-Wno-implicit-function-declaration"
 export LANG=${LANG:-en_US.UTF-8} LANGUAGE=$LANG LC_ALL=$LANG
 export LESS_TERMCAP_mb=$'\E[01;31m' LESS_TERMCAP_md=$'\E[01;31m' LESS_TERMCAP_me=$'\E[0m' LESS_TERMCAP_se=$'\E[0m' LESS_TERMCAP_so=$'\E[01;44;33m' LESS_TERMCAP_ue=$'\E[0m' LESS_TERMCAP_us=$'\E[01;32m'
 export TMUX_TMPDIR=${TMUX_TMPDIR:-$HOME/.tmux/tmp}
@@ -108,6 +107,7 @@ source $BASH_IT/bash_it.sh 2>/dev/null
 [[ ! -d $HOME/.tmux ]] && git clone --depth=1 https://github.com/gpakosz/.tmux $HOME/.tmux && ln -s -f $HOME/.tmux/.tmux.conf $HOME && mkdir -p $HOME/.tmux/tmp
 [[ ! -d $HOME/.tmux/plugins/tpm ]] && git clone https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm
 source $HOME/.aliases
+is_runnable clang && is_runnable clang++ && is_runnable llvm-ar && export CC=clang AR=llvm-ar CXX=clang++ CFLAGS="-Wno-implicit-function-declaration" CXXFLAGS="-Wno-implicit-function-declaration"
 [[ -s $HOME/.sdkman/bin/sdkman-init.sh ]] && export SDKMAN_DIR=$HOME/.sdkman && source $HOME/.sdkman/bin/sdkman-init.sh
 [[ -s $HOME/.bun/_bun ]] && source $HOME/.bun/_bun
 

@@ -39,10 +39,9 @@ plugins=(
 ZSH_THEME=powerlevel10k/powerlevel10k
 # ZSH_THEME_RANDOM_CANDIDATES=( "fwalch" "robbyrussell" "miloshadzic" "arrow" "simple" "wuffers" "zhann")
 ZSH=$HOME/.oh-my-zsh
-[ ! -f $ZSH/oh-my-zsh.sh ] && git_install https://github.com/zsh-users/zsh-syntax-highlighting ${ZSH_CUSTOM:-$ZSH/custom}/plugins/zsh-syntax-highlighting && git_install https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-$ZSH/custom}/plugins/zsh-autosuggestions && git_install https://github.com/romkatv/powerlevel10k ${ZSH_CUSTOM:-$ZSH/custom}/themes/powerlevel10k && git_install https://github.com/marlonrichert/zsh-autocomplete ${ZSH_CUSTOM:-$ZSH/custom}/plugins/zsh-autocomplete && sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" && sh install.sh && mv -f $HOME/.zshrc.pre-oh-my-zsh $HOME/.zshrc && source $HOME/.aliases
+[ ! -f $ZSH/oh-my-zsh.sh ] && { d=$(mktemp -d) && git clone --depth 1 https://github.com/ohmyzsh/ohmyzsh.git $d/omz && mkdir -p $ZSH && cp -R $d/omz/. $ZSH/ && rm -rf $d; for r in plugins:zsh-users/zsh-syntax-highlighting plugins:zsh-users/zsh-autosuggestions themes:romkatv/powerlevel10k plugins:marlonrichert/zsh-autocomplete; do p=${r#*:} t=$ZSH/custom/${r%%:*}/${p##*/}; [ -d $t/.git ] || git clone --depth 1 https://github.com/$p $t; done; }
 export ME=$(id -u -n) USER_ID=$(id -u) GROUP_ID=$(id -g) DOCKER_GID=$(grep -E '^docker:' /etc/group 2>/dev/null | cut -d: -f3 || echo "")
 export LANG=${LANG:-en_US.UTF-8} LANGUAGE=$LANG LC_ALL=$LANG
-export CC=clang AR=llvm-ar CXX=clang++ CFLAGS="-Wno-implicit-function-declaration" CXXFLAGS="-Wno-implicit-function-declaration"
 export EDITOR=$([ -n "$SSH_CONNECTION" ] && echo 'nvim' || echo 'hx')
 export SCM_CHECK=true SCM_GIT_SHOW_MINIMAL_INFO=true
 export SHORT_HOSTNAME=$(hostname -s) # Set Xterm/screen/Tmux title with only a short hostname
@@ -60,19 +59,22 @@ export GO111MODULE=${GO111MODULE:-auto} GOPROXY=${GOPROXY:-direct} GOBIN=${GOBIN
 [ -s $HOME/.bun/_bun ] && source $HOME/.bun/_bun
 export BIN=$GOROOT/bin:$GOBIN:$HOME/.config/yarn/global/node_modules/.bin:/opt/homebrew/bin:/opt/homebrew/opt/llvm/bin:$HOME/bin:/snap/bin:/usr/local/bin:/usr/bin:/bin
 export PATH=$(find "$HOME" -mindepth 2 -maxdepth 3 -type d -name bin -not -path '*/.cache/*' -print0 2>/dev/null | tr '\0' ':' | sed 's/:\+$//'):$BIN:$PATH
-source $ZSH/oh-my-zsh.sh
+[ -f $ZSH/oh-my-zsh.sh ] && source $ZSH/oh-my-zsh.sh
+command -v zmodload >/dev/null && zmodload -i zsh/complist
 source $HOME/.cargo/env 2>/dev/null
-[ -f ~/.p10k.zsh ] && source ~/.p10k.zsh # run `p10k configure`
+[ -f ~/.p10k.zsh ] || cp $ZSH/custom/themes/powerlevel10k/config/p10k-lean.zsh ~/.p10k.zsh 2>/dev/null
+[ -f ~/.p10k.zsh ] && source ~/.p10k.zsh # `p10k configure` rewrites this file
 source $HOME/.fzf.zsh 2>/dev/null
 source $HOME/.aliases
+is_runnable clang && is_runnable clang++ && is_runnable llvm-ar && export CC=clang AR=llvm-ar CXX=clang++ CFLAGS="-Wno-implicit-function-declaration" CXXFLAGS="-Wno-implicit-function-declaration"
 safe_source $HOME/.rc_local
 is_runnable fox && eval "$(vfox activate zsh)"
-is_runnable poetry && mkdir -p $ZSH_CUSTOM/plugins/poetry && poetry completions zsh > $ZSH_CUSTOM/plugins/poetry/_poetry
+is_runnable poetry && mkdir -p ${ZSH_CUSTOM:-$ZSH/custom}/plugins/poetry && poetry completions zsh > ${ZSH_CUSTOM:-$ZSH/custom}/plugins/poetry/_poetry
 
 bindkey '^@' menu-complete # Ctrl+Space: Accept top word suggestion (like Tab but for words only)
 bindkey "\e[1;3C" forward-word # Alt+Right Arrow: Forward and accept next word after space
 bindkey '^[[1;5C' .forward-char # Optional: In menu, make Right Arrow cycle completions word-by-word
-bindkey -M menuselect '^[[C' menu-complete
+bindkey -l | grep -qx menuselect && bindkey -M menuselect '^[[C' menu-complete
 bindkey '^F' forward-word
 bindkey '^B' backward-word
 bindkey '^F' forward-word
