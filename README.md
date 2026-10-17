@@ -11,7 +11,7 @@ git clone git@github.com:festum/dotfiles.git ~/Repo/dotfiles
 
 Needs `bash`/`zsh` and `ln`, plus `git` to clone; `curl` or `wget` only for Termux props. Script finds its own directory and exits if a needed tool is missing. Optional Linux fonts: `~/Repo/dotfiles/install-nerdfonts.sh` (also needs `unzip`, `fc-cache`).
 
-First shell load bootstraps Oh My Zsh plus the custom plugins and theme used by `.zshrc`. Neovim is [LazyVim](https://github.com/LazyVim/LazyVim) under `config/nvim`; first `nvim` pulls plugins via lazy.nvim.
+First shell load bootstraps Oh My Zsh plus the custom plugins referenced by `.zshrc`; the prompt is Starship (`config/starship.toml`). Neovim is [LazyVim](https://github.com/LazyVim/LazyVim) under `config/nvim`; first `nvim` pulls plugins via lazy.nvim.
 
 ## Layout
 
@@ -31,7 +31,7 @@ shell → OMZ/Bash-it → ~/.aliases (+ local overlays) → tool inits
 | `.aliases` | Shared aliases/helpers |
 | `.zshrc` / `.bashrc` | Shell setup |
 | `.gitconfig` | Git identity, SSH signing, aliases |
-| `config/` | Kitty, Helix, Alacritty (+ mac), Zed, Karabiner, Zellij, LazyVim |
+| `config/` | Kitty, Helix, Alacritty (+ mac), Zed, Karabiner, Zellij, Starship, LazyVim |
 | `.omp/agent/config.yml` | OMP default agent (`bankId: pi-s0`) |
 | `.omp/profiles/work/agent/config.yml` | OMP work profile (`bankId: claude-ppro`) |
 | `.omp/agent/models.yml` | Shared OMP models (also linked into named profiles) |
@@ -50,7 +50,6 @@ Customize Neovim in `config/nvim/lua/config/` and `config/nvim/lua/plugins/`.
 | `~/.rc_local` | Shared RC extras |
 | `~/.bashrc_local` | Bash-only |
 | `~/.bash_keys` | Secrets |
-| `~/.p10k.zsh` | Powerlevel10k |
 | `~/.gitconfig-local` | Per-machine git |
 | `~/.gitconfig-github-private` | Private GitHub (`includeIf`) |
 

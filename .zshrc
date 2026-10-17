@@ -1,5 +1,3 @@
-[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ] && source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-
 zstyle ':omz:update' mode auto       # auto/reminder/disabled
 zstyle ':omz:update' frequency 3     # day
 zstyle ':autocomplete:*' insert-unambiguous yes
@@ -36,10 +34,10 @@ plugins=(
   web-search              # google/ddg/sp/github/youtube/image/ducky/map
   poetry
 )
-ZSH_THEME=powerlevel10k/powerlevel10k
+ZSH_THEME="" # prompt comes from starship (config/starship.toml)
 # ZSH_THEME_RANDOM_CANDIDATES=( "fwalch" "robbyrussell" "miloshadzic" "arrow" "simple" "wuffers" "zhann")
 ZSH=$HOME/.oh-my-zsh
-[ ! -f $ZSH/oh-my-zsh.sh ] && { d=$(mktemp -d) && git clone --depth 1 https://github.com/ohmyzsh/ohmyzsh.git $d/omz && mkdir -p $ZSH && cp -R $d/omz/. $ZSH/ && rm -rf $d; for r in plugins:zsh-users/zsh-syntax-highlighting plugins:zsh-users/zsh-autosuggestions themes:romkatv/powerlevel10k plugins:marlonrichert/zsh-autocomplete; do p=${r#*:} t=$ZSH/custom/${r%%:*}/${p##*/}; [ -d $t/.git ] || git clone --depth 1 https://github.com/$p $t; done; }
+[ ! -f $ZSH/oh-my-zsh.sh ] && { d=$(mktemp -d) && git clone --depth 1 https://github.com/ohmyzsh/ohmyzsh.git $d/omz && mkdir -p $ZSH && cp -R $d/omz/. $ZSH/ && rm -rf $d; for r in plugins:zsh-users/zsh-syntax-highlighting plugins:zsh-users/zsh-autosuggestions plugins:marlonrichert/zsh-autocomplete; do p=${r#*:} t=$ZSH/custom/${r%%:*}/${p##*/}; [ -d $t/.git ] || git clone --depth 1 https://github.com/$p $t; done; }
 export ME=$(id -u -n) USER_ID=$(id -u) GROUP_ID=$(id -g) DOCKER_GID=$(grep -E '^docker:' /etc/group 2>/dev/null | cut -d: -f3 || echo "")
 export LANG=${LANG:-en_US.UTF-8} LANGUAGE=$LANG LC_ALL=$LANG
 export EDITOR=$([ -n "$SSH_CONNECTION" ] && echo 'nvim' || echo 'hx')
@@ -62,8 +60,10 @@ export PATH=$(find "$HOME" -mindepth 2 -maxdepth 3 -type d -name bin -not -path 
 [ -f $ZSH/oh-my-zsh.sh ] && source $ZSH/oh-my-zsh.sh
 command -v zmodload >/dev/null && zmodload -i zsh/complist
 source $HOME/.cargo/env 2>/dev/null
-[ -f ~/.p10k.zsh ] || cp $ZSH/custom/themes/powerlevel10k/config/p10k-lean.zsh ~/.p10k.zsh 2>/dev/null
-[ -f ~/.p10k.zsh ] && source ~/.p10k.zsh # `p10k configure` rewrites this file
+command -v starship >/dev/null && eval "$(starship init zsh)" && typeset -g _starship_prompt=$PROMPT _starship_rprompt=$RPROMPT
+function _transient_line_finish() { PROMPT='%F{green}❯%f ' RPROMPT=; zle reset-prompt; zle -R }
+function _transient_restore() { PROMPT=$_starship_prompt RPROMPT=$_starship_rprompt }
+autoload -Uz add-zle-hook-widget add-zsh-hook && add-zle-hook-widget line-finish _transient_line_finish && add-zsh-hook precmd _transient_restore
 source $HOME/.fzf.zsh 2>/dev/null
 source $HOME/.aliases
 is_runnable clang && is_runnable clang++ && is_runnable llvm-ar && export CC=clang AR=llvm-ar CXX=clang++ CFLAGS="-Wno-implicit-function-declaration" CXXFLAGS="-Wno-implicit-function-declaration"

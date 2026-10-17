@@ -1,0 +1,34 @@
+# Two-line prompt: info line on top, input on the next line.
+# The info line collapses to just the prompt character after each command
+# (see _transient_line_finish in .zshrc).
+format = "$directory$git_branch$git_status\n$character"
+add_newline = false
+
+[character]
+success_symbol = "[❯](bold green)"
+error_symbol = "[❯](bold red)"
+
+[directory]
+style = "bold blue"
+truncation_length = 3
+truncate_to_repo = false
+
+[git_branch]
+format = "[$symbol$branch]($style) "
+symbol = ""
+style = "bold white"
+
+[git_status]
+format = "[$all_status$ahead_behind]($style) "
+style = "bold white"
+conflicted = "=${count}"
+ahead = "⇡${count}"
+behind = "⇣${count}"
+diverged = "⇕${count}"
+up_to_date = ""
+untracked = "?${count}"
+modified = "!${count}"
+staged = "+${count}"
+renamed = "»${count}"
+deleted = "✘${count}"
+stashed = ""

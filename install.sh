@@ -221,6 +221,9 @@ config_link alacritty
 config_link karabiner
 config_link_auto zellij
 
+# Starship is a single file at ~/.config/starship.toml, not a directory.
+ensure_link "$DOTFILES_DIR/config/starship.toml" "$HOME/.config/starship.toml"
+
 # LazyVim: https://github.com/LazyVim/starter (imports LazyVim/LazyVim)
 nvim_src="$DOTFILES_DIR/config/nvim"
 nvim_dst="$HOME/.config/nvim"
