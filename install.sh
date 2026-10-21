@@ -220,6 +220,7 @@ config_link zed -f
 config_link alacritty
 config_link karabiner
 config_link_auto zellij
+config_link opencode -f
 
 # LazyVim: https://github.com/LazyVim/starter (imports LazyVim/LazyVim)
 nvim_src="$DOTFILES_DIR/config/nvim"

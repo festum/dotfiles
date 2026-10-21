@@ -1,0 +1,90 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "plugin": [
+    "opencode-rules@latest",
+    "@tarquinen/opencode-dcp@latest"
+  ],
+  "autoupdate": true,
+  "model": "github-copilot/gpt-4.1",
+  "mcp": {
+    "sequential-thinking": {
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "@modelcontextprotocol/server-sequential-thinking"
+      ],
+      "enabled": true
+    },
+    "context7": {
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "@upstash/context7-mcp@latest",
+        "--api-key",
+        "{file:~/.config/opencode/.opencode-secrets}"
+      ],
+      "enabled": true
+    },
+    "memory": {
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "@modelcontextprotocol/server-memory"
+      ],
+      "enabled": true
+    }
+  },
+  "permission": {
+    "*": "allow",
+    "bash": "allow",
+    "write": "allow",
+    "list": "allow",
+    "edit": "allow",
+    "patch": "allow",
+    "grep": "allow",
+    "glob": "allow",
+    "tools": "allow",
+    "todowrite": "allow",
+    "webfetch": "allow",
+    "websearch": "allow",
+    "skill": {
+      "*": "allow",
+      "golang-*": "deny",
+      "go-reviewer": "deny"
+    },
+    "lsp": "allow"
+  },
+  "provider": {
+    "github-copilot": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "GitHub Copilot",
+      "options": {
+        "timeout": false,
+        "setCacheKey": true
+      },
+      "models": {
+        "gpt-4.1": {
+          "name": "GPT-4.1"
+        }
+      }
+    }
+  },
+  "compaction": {
+    "auto": true,
+    "prune": true,
+    "reserved": 20000
+  },
+  "command": {
+    "test": {
+      "template": "Run the full test suite with coverage report and show any failures.\nFocus on the failing tests and fix them.",
+      "description": "Run tests with coverage",
+      "agent": "build"
+    }
+  },
+  "disabled_providers": [
+    "github-copilot"
+  ]
+}
