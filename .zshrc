@@ -64,7 +64,7 @@ is_runnable clang && is_runnable clang++ && is_runnable llvm-ar && export CC=cla
 safe_source $HOME/.rc_local
 is_runnable fox && eval "$(vfox activate zsh)"
 is_runnable poetry && mkdir -p ${ZSH_CUSTOM:-$ZSH/custom}/plugins/poetry && poetry completions zsh > ${ZSH_CUSTOM:-$ZSH/custom}/plugins/poetry/_poetry
-
+is_runnable pyenv && { eval "$(pyenv init --path)"; eval "$(pyenv init -)"; if [ -d "$(pyenv root)/plugins/pyenv-virtualenv" ]; then eval "$(pyenv virtualenv-init -)"; else git clone https://github.com/pyenv/pyenv-virtualenv.git "$(pyenv root)/plugins/pyenv-virtualenv" && eval "$(pyenv virtualenv-init -)"; fi; } || true
 bindkey '^@' menu-complete # Ctrl+Space: Accept top word suggestion (like Tab but for words only)
 bindkey "\e[1;3C" forward-word # Alt+Right Arrow: Forward and accept next word after space
 bindkey '^[[1;5C' .forward-char # Optional: In menu, make Right Arrow cycle completions word-by-word
@@ -79,4 +79,3 @@ bindkey '^[e' end-of-line
 unsetopt correct_all
 setopt ksh_glob
 # export ARCHFLAGS="-arch x86_64"
-is_runnable pyenv && { eval "$(pyenv init --path)"; eval "$(pyenv init -)"; if [ -d "$(pyenv root)/plugins/pyenv-virtualenv" ]; then eval "$(pyenv virtualenv-init -)"; else git clone https://github.com/pyenv/pyenv-virtualenv.git "$(pyenv root)/plugins/pyenv-virtualenv" && eval "$(pyenv virtualenv-init -)"; fi; }
