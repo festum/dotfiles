@@ -16,7 +16,7 @@ enabledModels:
   - google-antigravity/claude-sonnet-4-6
   - google-antigravity/gpt-oss-120b
 modelRoles:
-  default: bifrost/opencode-go/main
+  default: bifrost/opencode-go/canary
   plan: bifrost/opencode-go/canary:auto
   advisor: bifrost/opencode-go/canary:auto
 prewalk.enabled: true
@@ -60,3 +60,11 @@ dev:
 providers:
   streamFirstEventTimeoutSeconds: 120
   streamIdleTimeoutSeconds: 120
+memory:
+  backend: hindsight
+  hindsight:
+    bankId: claude-ppro
+    scoping: global
+    retainEveryNTurns: 10
+    retainOverlapTurns: 5
+    recallBudget: low

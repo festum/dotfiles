@@ -51,3 +51,11 @@ dev:
 providers:
   streamFirstEventTimeoutSeconds: 120
   streamIdleTimeoutSeconds: 120
+memory:
+  backend: hindsight
+  hindsight:
+    bankId: pi-s0
+    scoping: global
+    retainEveryNTurns: 10
+    retainOverlapTurns: 5
+    recallBudget: low

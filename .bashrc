@@ -55,7 +55,8 @@ export GOPATH=${GOPATH:-$HOME/.go}
 export GO111MODULE=${GO111MODULE:-auto} GOPROXY=${GOPROXY:-direct} GOBIN=${GOBIN:-$GOPATH/bin}
 export XDG_CONFIG_HOME=$HOME/.config
 export BIN=$GOROOT/bin:$GOBIN:$HOME/.config/yarn/global/node_modules/.bin:$HOME/bin:/snap/bin:/usr/local/bin:/usr/bin:/bin
-export PATH=$(find "$HOME" -mindepth 2 -maxdepth 3 -type d -name bin -not -path '*/.cache/*' -print0 2>/dev/null | tr '\0' ':' | sed 's/:\+$//'):$BIN:$PATH
+_bashrc_path_dirs_cache=${XDG_CACHE_HOME:-$HOME/.cache}/dotfiles-path-dirs; if [ -s "$_bashrc_path_dirs_cache" ] && [ -n "$(find "$_bashrc_path_dirs_cache" -mtime -7 2>/dev/null)" ]; then _bashrc_path_dirs=$(<"$_bashrc_path_dirs_cache"); else _bashrc_path_dirs=$(find "$HOME" -mindepth 2 -maxdepth 3 -type d -name bin -not -path '*/.cache/*' -print0 2>/dev/null | tr '\0' ':' | sed 's/:\+$//'); mkdir -p "${_bashrc_path_dirs_cache%/*}" && printf '%s' "$_bashrc_path_dirs" > "$_bashrc_path_dirs_cache"; fi
+export PATH=$_bashrc_path_dirs:$BIN:$PATH
 
 source "$HOME/.bashrc_local" 2>/dev/null
 source "$HOME/.rc_local" 2>/dev/null
@@ -70,8 +71,7 @@ if [[ -x "$(command -v kubectl)" ]]; then
     export PATH=$HOME/.kubectx:$PATH
 fi
 
-if [[ $PS1 && -f /usr/share/bash-completion/bash_completion ]]; then
-    . /usr/share/bash-completion/bash_completion
+if [[ $PS1 ]]; then
     set show-all-if-ambiguous on
     set visible-stats on
 fi
@@ -109,7 +109,6 @@ source $BASH_IT/bash_it.sh 2>/dev/null
 source $HOME/.aliases
 is_runnable clang && is_runnable clang++ && is_runnable llvm-ar && export CC=clang AR=llvm-ar CXX=clang++ CFLAGS="-Wno-implicit-function-declaration" CXXFLAGS="-Wno-implicit-function-declaration"
 [[ -s $HOME/.sdkman/bin/sdkman-init.sh ]] && export SDKMAN_DIR=$HOME/.sdkman && source $HOME/.sdkman/bin/sdkman-init.sh
-[[ -s $HOME/.bun/_bun ]] && source $HOME/.bun/_bun
 
 safe_source $NVM_DIR/nvm.sh
 safe_source $NVM_DIR/bash_completion
@@ -127,8 +126,9 @@ is_runnable jump && eval "$(jump shell bash --bind=j)" && alias jp='jump pin .'
 is_runnable awless && source <(awless completion bash)
 is_runnable kitty && source <(kitty + complete setup bash)
 is_runnable fox && eval "$(vfox activate bash)"
-is_runnable poetry && mkdir -p ${XDG_DATA_HOME:-~/.local/share}/bash-completion/completions && poetry completions bash > ${XDG_DATA_HOME:-~/.local/share}/bash-completion/completions/poetry
-is_runnable pyenv && { eval "$(pyenv init --path)"; eval "$(pyenv init -)"; if [ -d "$(pyenv root)/plugins/pyenv-virtualenv" ]; then eval "$(pyenv virtualenv-init -)"; else git clone https://github.com/pyenv/pyenv-virtualenv.git "$(pyenv root)/plugins/pyenv-virtualenv" && eval "$(pyenv virtualenv-init -)"; fi; }
+is_runnable poetry && { _bashrc_poetry_comp=${XDG_DATA_HOME:-~/.local/share}/bash-completion/completions/poetry; mkdir -p "${_bashrc_poetry_comp%/*}"; { [ -s "$_bashrc_poetry_comp" ] && [ -n "$(find "$_bashrc_poetry_comp" -mtime -7 2>/dev/null)" ]; } || poetry completions bash > "$_bashrc_poetry_comp"; }
+is_runnable pyenv && export PYENV_ROOT=${PYENV_ROOT:-$HOME/.pyenv} && [ -d $PYENV_ROOT/shims ] && export PATH=$PYENV_ROOT/shims:$PATH
+pyenv() { unset -f pyenv; eval "$(command pyenv init -)"; [ -d "$(command pyenv root)/plugins/pyenv-virtualenv" ] || git clone https://github.com/pyenv/pyenv-virtualenv.git "$(command pyenv root)/plugins/pyenv-virtualenv" && eval "$(command pyenv virtualenv-init -)"; pyenv "$@"; }
 
 export PROMPT_COMMAND="history -a; history -n; printf '\e[?1000l\e[?1002l\e[?1003l\e[?1006l'; $PROMPT_COMMAND"
 

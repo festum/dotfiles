@@ -207,8 +207,8 @@
     "default_model": {
       "effort": "high",
       "enable_thinking": true,
-      "provider": "copilot_chat",
-      "model": "gpt-6.1-sol"
+      "provider": "bifrost",
+      "model": "opencode-go/main"
     },
     "use_modifier_to_send": false
   },
