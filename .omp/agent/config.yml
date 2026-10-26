@@ -5,6 +5,7 @@ omitThinking: true
 enabledModels:
   - bifrost/**
   - bansos/**
+  - mlx/**
 modelRoles:
   plan: bifrost/opencode-go/smart
   default: bifrost/opencode-go/main

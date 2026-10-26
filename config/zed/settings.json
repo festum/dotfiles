@@ -23,8 +23,11 @@
     "font_size": 13.0
   },
   "language_models": {
+    "ollama": {
+      "api_url": "http://localhost:11434"
+    },
     "opencode": {
-      "show_zen_models": false,
+      "show_zen_models": true,
       "show_go_models": true
     },
     "openai_compatible": {
@@ -101,6 +104,25 @@
             }
           }
         ]
+      },
+      "mlx": {
+        "api_url": "http://127.0.0.1:8866/v1",
+        "available_models": [
+          {
+            "name": "nicolasramos/Qwen3.8-4B-Distill-MLX-oQ4e-fp16-mtp",
+            "display_name": "Qwen3.8-4B",
+            "max_tokens": 1000000,
+            "max_output_tokens": 32768,
+            "reasoning_effort": "high",
+            "capabilities": {
+              "tools": true,
+              "images": false,
+              "parallel_tool_calls": true,
+              "prompt_cache_key": true,
+              "chat_completions": true
+            }
+          }
+        ]
       }
     }
   },
@@ -134,7 +156,10 @@
   "collaboration_panel": { "dock": "left" },
   "git_panel": { "dock": "left" },
   "agent": {
+    "enable_feedback": false,
     "threads_sidebar": {
+      "auto_open": false,
+      "default_width": 150.0,
       "position": "right"
     },
     "play_sound_when_agent_done": "when_hidden",
@@ -169,12 +194,21 @@
       }
     ],
     "dock": "right",
-    "tool_permissions": { "default": "allow" },
+    "tool_permissions": {
+      "default": "allow",
+      "tools": {
+        "terminal": {
+          "always_deny": [
+            { "pattern": "\\bbw\\s+(get\\s+item|list\\s+items)" }
+          ]
+        }
+      }
+    },
     "default_model": {
       "effort": "high",
       "enable_thinking": true,
-      "provider": "bifrost",
-      "model": "opencode-go/main"
+      "provider": "copilot_chat",
+      "model": "gpt-6.1-sol"
     },
     "use_modifier_to_send": false
   },

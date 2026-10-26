@@ -1,4 +1,17 @@
 providers:
+  mlx:
+    baseUrl: http://127.0.0.1:8866/v1
+    api: openai-completions
+    auth: none
+    compat:
+      supportsDeveloperRole: false
+      supportsReasoningEffort: false
+    models:
+    - id: Jackrong/MLX-Qwen3.5-4B-Claude-4.6-Opus-Reasoning-Distilled-4bit
+      name: Qwen3.5-4B-Distilled
+      reasoning: true
+      input:
+      - text
   bifrost:
     baseUrl: https://bifrost.bombay-city.ts.net/v1
     api: openai-completions

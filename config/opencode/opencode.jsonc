@@ -1,11 +1,15 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "plugin": [
-    "opencode-rules@latest",
-    "@tarquinen/opencode-dcp@latest"
+  "plugins": [
+    "@tarquinen/opencode-dcp@latest",
+    {
+      "package": "opencode-rules@latest",
+      "options": {
+        "additionalRuleDirectories": [],
+      },
+    },
   ],
   "autoupdate": true,
-  "model": "github-copilot/gpt-4.1",
   "mcp": {
     "sequential-thinking": {
       "type": "local",
@@ -57,21 +61,7 @@
     },
     "lsp": "allow"
   },
-  "provider": {
-    "github-copilot": {
-      "npm": "@ai-sdk/openai-compatible",
-      "name": "GitHub Copilot",
-      "options": {
-        "timeout": false,
-        "setCacheKey": true
-      },
-      "models": {
-        "gpt-4.1": {
-          "name": "GPT-4.1"
-        }
-      }
-    }
-  },
+  "provider": {},
   "compaction": {
     "auto": true,
     "prune": true,
@@ -85,6 +75,5 @@
     }
   },
   "disabled_providers": [
-    "github-copilot"
   ]
 }
