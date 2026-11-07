@@ -1,5 +1,5 @@
-setupVersion: 2
-defaultThinkingLevel: auto
+setupVersion: 3
+defaultThinkingLevel: medium
 hideThinkingBlock: true
 omitThinking: true
 enabledModels:
@@ -7,8 +7,8 @@ enabledModels:
   - bansos/**
   - mlx/**
 modelRoles:
+  default: bifrost/opencode-go/main:medium
   plan: bifrost/opencode-go/smart
-  default: bifrost/opencode-go/main
   advisor: bifrost/opencode-go/canary
 prewalk.enabled: true
 advisor:
@@ -17,12 +17,12 @@ advisor:
   reviewMode: agent-end
 checkpoint.enabled: false
 plan.defaultOnStartup: false
-memory.backend: hindsight
 hindsight:
   apiUrl: https://hindsight.bombay-city.ts.net
   bankId: pi-s0
   scoping: global
   recallTimeoutMs: 180000
+compaction.supersedeReads: false
 providers.streamIdleTimeoutSeconds: 120
 startup.quiet: true
 textVerbosity: low
@@ -59,3 +59,5 @@ memory:
     retainEveryNTurns: 10
     retainOverlapTurns: 5
     recallBudget: low
+update:
+  auto: auto

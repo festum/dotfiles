@@ -1,5 +1,5 @@
-setupVersion: 2
-defaultThinkingLevel: auto
+setupVersion: 3
+defaultThinkingLevel: mediam
 hideThinkingBlock: true
 omitThinking: true
 enabledModels:
@@ -16,9 +16,9 @@ enabledModels:
   - google-antigravity/claude-sonnet-4-6
   - google-antigravity/gpt-oss-120b
 modelRoles:
+  plan: bifrost/opencode-go/main:high
+  advisor: bifrost/opencode-go/canary:high
   default: bifrost/opencode-go/canary
-  plan: bifrost/opencode-go/canary:auto
-  advisor: bifrost/opencode-go/canary:auto
 prewalk.enabled: true
 advisor:
   enabled: true
@@ -26,12 +26,12 @@ advisor:
   reviewMode: agent-end
 checkpoint.enabled: false
 plan.defaultOnStartup: true
-memory.backend: hindsight
 hindsight:
   apiUrl: https://hindsight.bombay-city.ts.net
   bankId: claude-ppro
   scoping: global
   recallTimeoutMs: 180000
+compaction.supersedeReads: false
 providers.streamIdleTimeoutSeconds: 120
 startup.quiet: true
 textVerbosity: low
@@ -68,3 +68,5 @@ memory:
     retainEveryNTurns: 10
     retainOverlapTurns: 5
     recallBudget: low
+update:
+  auto: auto
